@@ -17,11 +17,11 @@
 
 // cal tag + index for pred
 struct pred_1_IO {
-  // Input
+  // Input : 416
   uint32_t pc;
   uint32_t FH[FH_N_MAX][TN_MAX];
 
-  // Output
+  // Output : 192
   uint32_t base_idx;
   uint8_t tag_pc[TN_MAX];
   uint32_t index[TN_MAX];

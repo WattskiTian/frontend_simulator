@@ -244,7 +244,7 @@ void TAGE_do_update(update_IO *IO) {
   uint32_t u_clear_cnt = IO->u_clear_cnt_read + 1;
   uint32_t u_cnt = u_clear_cnt & (0x7ff);
   uint32_t row_cnt = (u_clear_cnt >> 11) & (0xfff);
-  bool u_msb_reset = ((u_clear_cnt) & 0x1) >> 23;
+  bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
 
   IO->u_clear_cnt_wen = 1;
   IO->u_clear_cnt_wdata = u_clear_cnt;

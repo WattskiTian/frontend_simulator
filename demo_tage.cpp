@@ -294,7 +294,7 @@ void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
   uint32_t u_clear_cnt = useful_reset_cnt;
   uint32_t u_cnt = u_clear_cnt & (0x7ff);
   uint32_t row_cnt = (u_clear_cnt >> 11) & (0xfff);
-  bool u_msb_reset = ((u_clear_cnt) & 0x1) >> 23;
+  bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
 
   if (u_cnt == 0) {
     // reset the msb
