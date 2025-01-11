@@ -375,7 +375,6 @@ void show_TAGE() {
 }
 
 void show_HR() {
-  printf("GHR\n");
   for (int i = 0; i < GHR_LENGTH; i++) {
     printf("%b", GHR[i]);
   }
@@ -387,6 +386,8 @@ void show_HR() {
   }
 }
 
+#include <map>
+std::map<std::uint32_t, int> kvMap;
 int main() {
   srand(time(0));
   // log PC read
@@ -405,6 +406,7 @@ int main() {
     }
     if (bp_dir == log_bp)
       bp_cnt++;
+
     /*if (log_pc_max <= 1000)*/
     /*  printf("pc = %08x\n", log_pc);*/
     /*show_TAGE();*/
@@ -414,6 +416,10 @@ int main() {
   double acc = (double)bp_cnt / inst_cnt;
   printf("[version tage]     inst_cnt = %lu bp_cnt = %lu ACC = %.3f%%\n",
          inst_cnt, bp_cnt, acc * 100);
+  /*for (const auto &[key, value] : kvMap) {*/
+  /*if (value >= 3)*/
+  /*  printf("0x%08x %d\n", key, value);*/
+  /*}*/
   /*show_TAGE();*/
   /*show_HR();*/
   return 0;
