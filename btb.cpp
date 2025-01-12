@@ -24,6 +24,26 @@ uint32_t ras[RAS_ENTRY_NUM];
 uint32_t ras_cnt[RAS_ENTRY_NUM];
 uint32_t ras_sp;
 
+// TARGET_CAHCE
+#define TC_ENTRY_NUM 2048
+#define BHT_ENTRY_NUM 2048
+#define BHT_LEN 32
+uint32_t bht[BHT_ENTRY_NUM];
+uint32_t target_cache[TC_ENTRY_NUM];
+
+uint32_t tc_pred(uint32_t pc) {
+  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
+  uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
+  return target_cache[tc_idx];
+}
+
+void tc_update(uint32_t pc, bool pc_dir, uint32_t actualAddr) {
+  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
+  uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
+  bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
+  target_cache[tc_idx] = actualAddr;
+}
+
 void ras_push(uint32_t addr) {
   if (addr == ras[ras_sp]) {
     ras_cnt[ras_sp]++;
@@ -66,17 +86,20 @@ uint32_t btb_pred(uint32_t pc) {
   } else if (br_type == BR_RET) {
     return ras_pop();
   } else
-    // TODO:TARGET_BUFFER
-    return -1;
+    return tc_pred(pc);
 }
 
-void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type) {
+void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
+                bool actualdir) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
   btb_valid[idx] = true;
   btb_bta[idx] = actualAddr;
   btb_tag[idx] = tag;
   btb_br_type[idx] = br_type;
+  if (br_type == BR_IDIRECT) {
+    tc_update(pc, actualdir, actualAddr);
+  }
 }
 
 using namespace std;
@@ -137,7 +160,7 @@ int main() {
       btb_res = btb_pred(log_pc);
       if (btb_res == log_nextpc)
         btb_hit++;
-      btb_update(log_pc, log_nextpc, log_br_type);
+      btb_update(log_pc, log_nextpc, log_br_type, log_bp);
     }
   }
   double acc = (double)btb_hit / bp_cnt;
