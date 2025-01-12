@@ -3,12 +3,48 @@
 #include <fstream>
 #include <sys/types.h>
 
-#define BTB_ENTRY_NUM 64
+#define BTB_ENTRY_NUM 2048
 #define BTB_TAG_LEN 8
 
 uint32_t btb_tag[BTB_ENTRY_NUM];
 uint32_t btb_bta[BTB_ENTRY_NUM];
 bool btb_valid[BTB_ENTRY_NUM];
+uint32_t btb_br_type[BTB_ENTRY_NUM];
+
+#define BR_DIRECT 0
+#define BR_CALL 1
+#define BR_RET 2
+#define BR_IDIRECT 3
+
+// RAS
+// TODO:RAS_MAX_DEAL
+#define RAS_ENTRY_NUM 2048
+#define RAS_CNT_LEN 8 // cnt for repeated call
+uint32_t ras[RAS_ENTRY_NUM];
+uint32_t ras_cnt[RAS_ENTRY_NUM];
+uint32_t ras_sp;
+
+void ras_push(uint32_t addr) {
+  if (addr == ras[ras_sp]) {
+    ras_cnt[ras_sp]++;
+    return;
+  }
+  ras_sp++;
+  ras[ras_sp] = addr;
+  ras_cnt[ras_sp] = 1;
+}
+
+uint32_t ras_pop() {
+  if (ras_cnt[ras_sp] > 1) {
+    ras_cnt[ras_sp]--;
+    return ras[ras_sp];
+  } else if (ras_cnt[ras_sp] == 1) {
+    ras_cnt[ras_sp]--;
+    ras_sp--;
+    return ras[ras_sp + 1];
+  } else
+    return -1; // null on top
+}
 
 uint32_t btb_get_tag(uint32_t pc) { return pc & ((1 << BTB_TAG_LEN) - 1); }
 uint32_t btb_get_idx(uint32_t pc) {
@@ -18,18 +54,29 @@ uint32_t btb_get_idx(uint32_t pc) {
 uint32_t btb_pred(uint32_t pc) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
-  if (tag == btb_tag[idx] && btb_valid[idx] == true) {
+  uint32_t br_type = btb_br_type[idx];
+  if (tag != btb_tag[idx] || btb_valid[idx] != true)
+    return -1;
+
+  if (br_type == BR_DIRECT) {
     return btb_bta[idx];
-  }
-  return pc + 4;
+  } else if (br_type == BR_CALL) {
+    ras_push(pc + 4);
+    return btb_bta[idx];
+  } else if (br_type == BR_RET) {
+    return ras_pop();
+  } else
+    // TODO:TARGET_BUFFER
+    return -1;
 }
 
-void btb_update(uint32_t pc, uint32_t actualAddr) {
+void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
   btb_valid[idx] = true;
   btb_bta[idx] = actualAddr;
   btb_tag[idx] = tag;
+  btb_br_type[idx] = br_type;
 }
 
 using namespace std;
@@ -39,6 +86,7 @@ ifstream log_file;
 uint32_t log_pc;
 uint32_t log_nextpc;
 bool log_bp;
+uint32_t log_br_type; // TODO BR_TYPE_LOG
 bool show_details = false;
 
 uint32_t log_pc_buffer = -1;
@@ -89,7 +137,7 @@ int main() {
       btb_res = btb_pred(log_pc);
       if (btb_res == log_nextpc)
         btb_hit++;
-      btb_update(log_pc, log_nextpc);
+      btb_update(log_pc, log_nextpc, log_br_type);
     }
   }
   double acc = (double)btb_hit / bp_cnt;
