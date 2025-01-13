@@ -104,65 +104,45 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
 
 using namespace std;
 
-ifstream log_file;
-
+// file data
+FILE *log_file;
+bool log_dir;
 uint32_t log_pc;
 uint32_t log_nextpc;
-bool log_bp;
-uint32_t log_br_type; // TODO BR_TYPE_LOG
+uint32_t log_br_type;
 bool show_details = false;
 
 uint32_t log_pc_buffer = -1;
 
-void log_read() {
-  char pc_str[40];
-  if (log_pc_buffer == -1) {
-    log_file.getline(pc_str, 40);
-    log_pc_buffer = 0;
-    for (int i = 0; i < 8; i++) {
-      if (i != 0)
-        log_pc_buffer = log_pc_buffer << 4;
-      log_pc_buffer += pc_str[i] - (pc_str[i] >= 'a' ? ('a' - 10) : '0');
-    }
+void readFileData() {
+  uint32_t num1, num2, num3, num4;
+  if (fscanf(log_file, "%u %x %x %u\n", &num1, &num2, &num3, &num4) == 4) {
+    /*printf("%u 0x%08x 0x%08x %u\n", num1, num2, num3, num4);*/
+    log_dir = (bool)num1;
+    log_pc = num2;
+    log_nextpc = num3;
+    log_br_type = num4;
+    /*printf("%u 0x%08x 0x%08x %u\n", log_dir, log_pc, log_nextpc,
+     * log_br_type);*/
+  } else {
+    printf("ops");
   }
-
-  char branch_taken_str[5];
-  log_file.getline(branch_taken_str, 5);
-  log_file.getline(pc_str, 40);
-
-  log_pc = log_pc_buffer;
-
-  log_nextpc = 0;
-  log_bp = true;
-  for (int i = 0; i < 8; i++) {
-    if (i != 0)
-      log_nextpc = log_nextpc << 4;
-    log_nextpc += pc_str[i] - (pc_str[i] >= 'a' ? ('a' - 10) : '0');
-  }
-  log_pc_buffer = log_nextpc;
-  log_bp = branch_taken_str[0] - '0';
-  if (show_details == true)
-    printf("pc = %08x bp = %b log_nextpc=%08x\n", log_pc, log_bp, log_nextpc);
 }
 
-#define DEBUG false
+#define DEBUG true
 uint64_t bp_cnt = 0;
 uint64_t btb_hit = 0;
 int main() {
-  log_file.open("../../rv-simu/log");
+  log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
+  if (log_file == NULL) {
+    printf("log_file open error\n");
+    return 0;
+  }
   int log_pc_max = DEBUG ? 10 : 1000000;
   while (log_pc_max--) {
-    log_read();
-
-    uint32_t btb_res = 0;
-    if (log_bp == true) {
-      bp_cnt++;
-      btb_res = btb_pred(log_pc);
-      if (btb_res == log_nextpc)
-        btb_hit++;
-      btb_update(log_pc, log_nextpc, log_br_type, log_bp);
-    }
+    readFileData();
   }
+  fclose(log_file);
   double acc = (double)btb_hit / bp_cnt;
   printf("[version btb]     branch_cnt= %lu btb_hit = %lu ACC = %.3f%%\n",
          bp_cnt, btb_hit, acc * 100);
