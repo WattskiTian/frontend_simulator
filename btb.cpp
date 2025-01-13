@@ -1,6 +1,5 @@
 #include <cstdint>
 #include <cstdio>
-#include <fstream>
 #include <sys/types.h>
 
 #define BTB_ENTRY_NUM 2048
@@ -37,10 +36,15 @@ uint32_t tc_pred(uint32_t pc) {
   return target_cache[tc_idx];
 }
 
-void tc_update(uint32_t pc, bool pc_dir, uint32_t actualAddr) {
+void bht_update(uint32_t pc, bool pc_dir) {
+  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
+  bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
+}
+
+// if needed. firest do tc_update, then update bht
+void tc_update(uint32_t pc, uint32_t actualAddr) {
   uint32_t bht_idx = pc % BHT_ENTRY_NUM;
   uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
-  bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
   target_cache[tc_idx] = actualAddr;
 }
 
@@ -75,8 +79,10 @@ uint32_t btb_pred(uint32_t pc) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
   uint32_t br_type = btb_br_type[idx];
-  if (tag != btb_tag[idx] || btb_valid[idx] != true)
-    return -1;
+  /*if (tag != btb_tag[idx] || btb_valid[idx] != true)*/
+  /*  return -1;*/
+
+  /*return btb_bta[idx];*/
 
   if (br_type == BR_DIRECT) {
     return btb_bta[idx];
@@ -98,7 +104,7 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
   btb_tag[idx] = tag;
   btb_br_type[idx] = br_type;
   if (br_type == BR_IDIRECT) {
-    tc_update(pc, actualdir, actualAddr);
+    tc_update(pc, actualAddr);
   }
 }
 
@@ -112,25 +118,27 @@ uint32_t log_nextpc;
 uint32_t log_br_type;
 bool show_details = false;
 
-uint32_t log_pc_buffer = -1;
-
-void readFileData() {
+uint64_t line_cnt = 0;
+int readFileData() {
   uint32_t num1, num2, num3, num4;
   if (fscanf(log_file, "%u %x %x %u\n", &num1, &num2, &num3, &num4) == 4) {
     /*printf("%u 0x%08x 0x%08x %u\n", num1, num2, num3, num4);*/
+    line_cnt++;
     log_dir = (bool)num1;
     log_pc = num2;
     log_nextpc = num3;
     log_br_type = num4;
     /*printf("%u 0x%08x 0x%08x %u\n", log_dir, log_pc, log_nextpc,
      * log_br_type);*/
+    return 0;
   } else {
-    printf("ops");
+    printf("log file END at line %lu\n", line_cnt);
+    return 1;
   }
 }
 
-#define DEBUG true
-uint64_t bp_cnt = 0;
+#define DEBUG false
+uint64_t control_cnt = 0;
 uint64_t btb_hit = 0;
 int main() {
   log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
@@ -140,11 +148,27 @@ int main() {
   }
   int log_pc_max = DEBUG ? 10 : 1000000;
   while (log_pc_max--) {
-    readFileData();
+    int log_eof = readFileData();
+    if (log_eof != 0)
+      break;
+
+    if (log_dir != 1)
+      continue; // not a control inst, need to coop with tage
+
+    control_cnt++;
+    uint32_t pred_npc = btb_pred(log_pc);
+    if (pred_npc == log_nextpc) {
+      btb_hit++;
+      bht_update(log_pc, log_dir);
+      continue;
+    } else {
+      btb_update(log_pc, log_nextpc, log_br_type, log_dir);
+      bht_update(log_pc, log_dir);
+    }
   }
   fclose(log_file);
-  double acc = (double)btb_hit / bp_cnt;
+  double acc = (double)btb_hit / control_cnt;
   printf("[version btb]     branch_cnt= %lu btb_hit = %lu ACC = %.3f%%\n",
-         bp_cnt, btb_hit, acc * 100);
+         control_cnt, btb_hit, acc * 100);
   return 0;
 }
