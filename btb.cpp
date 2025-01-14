@@ -16,8 +16,7 @@ uint32_t btb_br_type[BTB_ENTRY_NUM];
 #define BR_IDIRECT 3
 
 // RAS
-// TODO:RAS_MAX_DEAL
-#define RAS_ENTRY_NUM 2048
+#define RAS_ENTRY_NUM 64
 #define RAS_CNT_LEN 8 // cnt for repeated call
 uint32_t ras[RAS_ENTRY_NUM];
 uint32_t ras_cnt[RAS_ENTRY_NUM];
@@ -53,7 +52,7 @@ void ras_push(uint32_t addr) {
     ras_cnt[ras_sp]++;
     return;
   }
-  ras_sp++;
+  ras_sp = (ras_sp + 1) % RAS_ENTRY_NUM;
   ras[ras_sp] = addr;
   ras_cnt[ras_sp] = 1;
 }
@@ -63,8 +62,8 @@ uint32_t ras_pop() {
     ras_cnt[ras_sp]--;
     return ras[ras_sp];
   } else if (ras_cnt[ras_sp] == 1) {
-    ras_cnt[ras_sp]--;
-    ras_sp--;
+    ras_cnt[ras_sp] = 0;
+    ras_sp = (ras_sp + RAS_ENTRY_NUM - 1) % RAS_ENTRY_NUM;
     return ras[ras_sp + 1];
   } else
     return -1; // null on top
