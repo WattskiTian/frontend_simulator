@@ -1,7 +1,7 @@
 log file END at line 999970
-[version btb]     branch_cnt= 106277 btb_hit = 101044 ACC = 95.076%
-[version btb]     dir_cnt   = 69289 dir_hit = 67979 ACC = 98.109%
-[version btb]     call_cnt  = 17109 call_hit = 16131 ACC = 94.284%
-[version btb]     ret_cnt   = 17142 ret_hit = 14222 ACC = 82.966%
-[version btb]     ras_cnt   = 34251 ras_hit = 30353 ACC = 88.619%
-[version btb]    indir_cnt  = 2737 indir_hit = 2712 ACC = 99.087%
+[version btb]   branch_cnt =   106277  hit =   101044  ACC = 95.076%
+[version btb]      dir_cnt =    69289  hit =    67979  ACC = 98.109%
+[version btb]     call_cnt =    17109  hit =    16131  ACC = 94.284%
+[version btb]      ret_cnt =    17142  hit =    14222  ACC = 82.966%
+[version btb]      ras_cnt =    34251  hit =    30353  ACC = 88.619%
+[version btb]    indir_cnt =     2737  hit =     2712  ACC = 99.087%

@@ -331,28 +331,29 @@ void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
 
 using namespace std;
 
-ifstream log_file;
-
-uint32_t log_pc;
-bool log_bp;
+FILE *log_file;
+bool log_dir;          
+uint32_t log_pc;       
+uint32_t log_nextpc;   
+uint32_t log_br_type;  
 bool show_details = false;
+uint64_t line_cnt = 0;
 
-void log_read() {
-  char pc_str[40];
-  char branch_taken_str[5];
-  log_file.getline(pc_str, 40);
-  log_file.getline(branch_taken_str, 5);
-  log_pc = 0;
-  log_bp = false;
-  for (int i = 0; i < 8; i++) {
-    if (i != 0)
-      log_pc = log_pc << 4;
-    log_pc += pc_str[i] - (pc_str[i] >= 'a' ? ('a' - 10) : '0');
-  }
-  log_bp = branch_taken_str[0] - '0';
-  if (show_details == true)
-    printf("pc = %08x bp = %b ", log_pc, log_bp);
+int readFileData() {
+    uint32_t num1, num2, num3, num4;
+    if (fscanf(log_file, "%u %x %x %u\n", &num1, &num2, &num3, &num4) == 4) {
+        line_cnt++;
+        log_dir = (bool)num1;
+        log_pc = num2;
+        log_nextpc = num3;
+        log_br_type = num4;
+        return 0;
+    } else {
+        printf("log file END at line %lu\n", line_cnt);
+        return 1;
+    }
 }
+
 uint64_t inst_cnt = 0;
 uint64_t bp_cnt = 0;
 bool bp_dir;
@@ -386,41 +387,36 @@ void show_HR() {
   }
 }
 
-#include <map>
-std::map<std::uint32_t, int> kvMap;
 int main() {
   srand(time(0));
-  // log PC read
-  log_file.open("../../rv-simu/log");
+  log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
+  if (log_file == NULL) {
+    printf("log_file open error\n");
+    return 0;
+  }
+
   int log_pc_max = DEBUG ? 10 : 1000000;
   while (log_pc_max--) {
-    log_read();
+    int log_eof = readFileData();
+    if (log_eof != 0)
+      break;
+
     inst_cnt++;
     bp_dir = TAGE_get_prediction(log_pc);
-    TAGE_do_update(log_pc, log_bp, bp_dir);
+    TAGE_do_update(log_pc, log_dir, bp_dir);  
     if (show_details == true) {
-      printf("TAGE_bp = %b", bp_dir);
-      if (bp_dir == log_bp)
-        printf("HIT%b", log_bp);
+      printf("TAGE_bp = %d", bp_dir);
+      if (bp_dir == log_dir)
+        printf("HIT%d", log_dir);
       printf("\n");
     }
-    if (bp_dir == log_bp)
+    if (bp_dir == log_dir)
       bp_cnt++;
-
-    /*if (log_pc_max <= 1000)*/
-    /*  printf("pc = %08x\n", log_pc);*/
-    /*show_TAGE();*/
   }
-  log_file.close();
+  fclose(log_file);  
 
   double acc = (double)bp_cnt / inst_cnt;
   printf("[version tage]     inst_cnt = %lu bp_cnt = %lu ACC = %.3f%%\n",
          inst_cnt, bp_cnt, acc * 100);
-  /*for (const auto &[key, value] : kvMap) {*/
-  /*if (value >= 3)*/
-  /*  printf("0x%08x %d\n", key, value);*/
-  /*}*/
-  /*show_TAGE();*/
-  /*show_HR();*/
   return 0;
 }

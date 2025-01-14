@@ -193,24 +193,25 @@ int main() {
     }
   }
   fclose(log_file);
+
   ras_hit = call_hit + ret_hit;
   double btb_acc = (double)btb_hit / control_cnt;
-  printf("[version btb]     branch_cnt= %lu btb_hit = %lu ACC = %.3f%%\n",
+  printf("[version btb]   branch_cnt = %8lu  hit = %8lu  ACC = %6.3f%%\n",
          control_cnt, btb_hit, btb_acc * 100);
   double dir_acc = (double)dir_hit / dir_cnt;
-  printf("[version btb]     dir_cnt   = %lu dir_hit = %lu ACC = %.3f%%\n",
+  printf("[version btb]      dir_cnt = %8lu  hit = %8lu  ACC = %6.3f%%\n",
          dir_cnt, dir_hit, dir_acc * 100);
   double call_acc = (double)call_hit / call_cnt;
-  printf("[version btb]     call_cnt  = %lu call_hit = %lu ACC = %.3f%%\n",
+  printf("[version btb]     call_cnt = %8lu  hit = %8lu  ACC = %6.3f%%\n",
          call_cnt, call_hit, call_acc * 100);
   double ret_acc = (double)ret_hit / ret_cnt;
-  printf("[version btb]     ret_cnt   = %lu ret_hit = %lu ACC = %.3f%%\n",
+  printf("[version btb]      ret_cnt = %8lu  hit = %8lu  ACC = %6.3f%%\n",
          ret_cnt, ret_hit, ret_acc * 100);
   double ras_acc = (double)ras_hit / (call_cnt + ret_cnt);
-  printf("[version btb]     ras_cnt   = %lu ras_hit = %lu ACC = %.3f%%\n",
+  printf("[version btb]      ras_cnt = %8lu  hit = %8lu  ACC = %6.3f%%\n",
          ret_cnt + call_cnt, ras_hit, ras_acc * 100);
   double indir_acc = (double)indir_hit / indir_cnt;
-  printf("[version btb]    indir_cnt  = %lu indir_hit = %lu ACC = %.3f%%\n",
+  printf("[version btb]    indir_cnt = %8lu  hit = %8lu  ACC = %6.3f%%\n",
          indir_cnt, indir_hit, indir_acc * 100);
   return 0;
 }
