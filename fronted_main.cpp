@@ -68,7 +68,9 @@ int main() {
     if (tage_dir == log_dir)
       tage_hit++;
 
-    uint32_t pred_npc = btb_pred(log_pc);
+    uint32_t pred_npc = log_pc + 4;
+    if (tage_dir == 1)
+      pred_npc = btb_pred(log_pc);
 
     if (pred_npc == log_nextpc && log_dir == 1) {
       btb_hit++;
@@ -85,15 +87,18 @@ int main() {
         indir_hit++;
       }
       bht_update(log_pc, log_dir);
-      continue;
     } else {
-      if (log_dir == 1) { // only update btb when branch is taken
+      // update BTB regardless of hit or not if it is a branch instruction
+      if (log_br_type == BR_DIRECT || log_br_type == BR_CALL ||
+          log_br_type == BR_RET || log_br_type == BR_IDIRECT) {
         btb_update(log_pc, log_nextpc, log_br_type, log_dir);
+        bht_update(log_pc, log_dir);
       }
-      bht_update(log_pc, log_dir);
     }
+
+    //  no branch and tage predict no branch also counts as fronted hit
     if (log_dir == 0 && tage_dir == 0) {
-      fronted_hit++; // no a branch and tage predict no branch
+      fronted_hit++;
     }
   }
   fclose(log_file);

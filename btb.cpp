@@ -4,11 +4,17 @@
 
 #define BTB_ENTRY_NUM 2048
 #define BTB_TAG_LEN 8
+#define BTB_WAY_NUM 4
 
-uint32_t btb_tag[BTB_ENTRY_NUM];
-uint32_t btb_bta[BTB_ENTRY_NUM];
-bool btb_valid[BTB_ENTRY_NUM];
-uint32_t btb_br_type[BTB_ENTRY_NUM];
+#define BTB_IDX_LEN 11 // log2(BTB_ENTRY_NUM)
+#define BTB_IDX_MASK (BTB_ENTRY_NUM - 1)
+#define BTB_TAG_MASK ((1 << BTB_TAG_LEN) - 1)
+
+uint32_t btb_tag[BTB_WAY_NUM][BTB_ENTRY_NUM];
+uint32_t btb_bta[BTB_WAY_NUM][BTB_ENTRY_NUM];
+bool btb_valid[BTB_WAY_NUM][BTB_ENTRY_NUM];
+uint32_t btb_br_type[BTB_WAY_NUM][BTB_ENTRY_NUM];
+uint32_t btb_lru[BTB_ENTRY_NUM];
 
 #define BR_DIRECT 0
 #define BR_CALL 1
@@ -69,11 +75,9 @@ uint32_t ras_pop() {
     return -1; // null on top
 }
 
-uint32_t btb_get_tag(uint32_t pc) { return pc & ((1 << BTB_TAG_LEN) - 1); }
-uint32_t btb_get_idx(uint32_t pc) {
-  /*return (pc >> BTB_TAG_LEN) % BTB_ENTRY_NUM;*/
-  return pc % BTB_ENTRY_NUM;
-}
+uint32_t btb_get_tag(uint32_t pc) { return (pc >> BTB_IDX_LEN) & BTB_TAG_MASK; }
+
+uint32_t btb_get_idx(uint32_t pc) { return pc & BTB_IDX_MASK; }
 
 // only for statistic
 uint64_t dir_cnt = 0;
@@ -81,39 +85,106 @@ uint64_t call_cnt = 0;
 uint64_t ret_cnt = 0;
 uint64_t indir_cnt = 0;
 
+void update_lru(uint32_t idx, int way) {
+  uint32_t current_age = (btb_lru[idx] >> (way * 2)) & 0x3;
+
+  // update all older ways, but not exceed 3
+  for (int i = 0; i < BTB_WAY_NUM; i++) {
+    uint32_t age = (btb_lru[idx] >> (i * 2)) & 0x3;
+    if (age < current_age) {
+      uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
+      btb_lru[idx] &= ~(0x3 << (i * 2));
+      btb_lru[idx] |= (new_age << (i * 2));
+    }
+  }
+
+  // set current way to latest
+  btb_lru[idx] &= ~(0x3 << (way * 2));
+}
+
 uint32_t btb_pred(uint32_t pc) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
-  uint32_t br_type = btb_br_type[idx];
-  /*if (tag != btb_tag[idx] || btb_valid[idx] != true)*/
-  /*  return -1;*/
 
-  /*return btb_bta[idx];*/
+  // find match in all ways
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    if (btb_valid[way][idx] && btb_tag[way][idx] == tag) {
+      // update LRU
+      update_lru(idx, way);
 
-  if (br_type == BR_DIRECT) {
-    dir_cnt++;
-    return btb_bta[idx];
-  } else if (br_type == BR_CALL) {
-    call_cnt++;
-    ras_push(pc + 4);
-    return btb_bta[idx];
-  } else if (br_type == BR_RET) {
-    ret_cnt++;
-    return ras_pop();
-  } else {
-    indir_cnt++;
-    return tc_pred(pc);
+      uint32_t br_type = btb_br_type[way][idx];
+      if (br_type == BR_DIRECT) {
+        dir_cnt++;
+        return btb_bta[way][idx];
+      } else if (br_type == BR_CALL) {
+        call_cnt++;
+        ras_push(pc + 4);
+        return btb_bta[way][idx];
+      } else if (br_type == BR_RET) {
+        ret_cnt++;
+        return ras_pop();
+      } else {
+        indir_cnt++;
+        return tc_pred(pc);
+      }
+    }
   }
+  return -1;
 }
 
 void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
                 bool actualdir) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
-  btb_valid[idx] = true;
-  btb_bta[idx] = actualAddr;
-  btb_tag[idx] = tag;
-  btb_br_type[idx] = br_type;
+
+  // find match in all ways
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    if (btb_valid[way][idx] && btb_tag[way][idx] == tag) {
+      btb_bta[way][idx] = actualAddr;
+      btb_br_type[way][idx] = br_type;
+      update_lru(idx, way);
+
+      if (br_type == BR_IDIRECT) {
+        tc_update(pc, actualAddr);
+      }
+      return;
+    }
+  }
+
+  // find empty way
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    if (!btb_valid[way][idx]) {
+      btb_valid[way][idx] = true;
+      btb_tag[way][idx] = tag;
+      btb_bta[way][idx] = actualAddr;
+      btb_br_type[way][idx] = br_type;
+      update_lru(idx, way);
+
+      if (br_type == BR_IDIRECT) {
+        tc_update(pc, actualAddr);
+      }
+      return;
+    }
+  }
+
+  // all ways are occupied, find LRU way to replace
+  int lru_way = 0;
+  uint32_t max_age = 0;
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    uint32_t age = (btb_lru[idx] >> (way * 2)) & 0x3;
+    if (age > max_age) {
+      max_age = age;
+      lru_way = way;
+    }
+  }
+
+  // replace LRU way
+  btb_valid[lru_way][idx] = true;
+  btb_tag[lru_way][idx] = tag;
+  btb_bta[lru_way][idx] = actualAddr;
+  btb_br_type[lru_way][idx] = br_type;
+  update_lru(idx, lru_way);
+
   if (br_type == BR_IDIRECT) {
     tc_update(pc, actualAddr);
   }
