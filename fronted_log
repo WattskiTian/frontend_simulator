@@ -1,14 +1,14 @@
-log file END at line 999970
+log file END at line 4999970
 
 === BTB Statistics ===
-Branch Total: cnt =     106277  hit =     100031  ACC =  94.123%
-Direct:      cnt =      68958  hit =      63187  ACC =  91.631%
-Call:        cnt =      17071  hit =      17071  ACC = 100.000%
-Return:      cnt =      17115  hit =      17065  ACC =  99.708%
-Indirect:    cnt =       2731  hit =       2708  ACC =  99.158%
+Branch Total: cnt =     443067  hit =     410906  ACC =  92.741%
+Direct:      cnt =     234749  hit =     203080  ACC =  86.509%
+Call:        cnt =      99971  hit =      99971  ACC = 100.000%
+Return:      cnt =     100017  hit =      99966  ACC =  99.949%
+Indirect:    cnt =       7912  hit =       7889  ACC =  99.709%
 
 === TAGE Statistics ===
-Total:       cnt =     999970  hit =     999340  ACC =  99.937%
+Total:       cnt =    4999970  hit =    4999328  ACC =  99.987%
 
 === Fronted Statistics ===
-Fronted:     cnt =     999970  hit =     993570  ACC =  99.360%
+Fronted:     cnt =    4999970  hit =    4967658  ACC =  99.354%

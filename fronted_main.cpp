@@ -43,6 +43,40 @@ uint64_t tage_hit = 0; // tage hit count
 uint64_t fronted_hit = 0; // fronted hit count
 
 #define DEBUG false
+
+void print_statistics() {
+  // BTB statistics
+  double btb_acc = (double)btb_hit / control_cnt;
+  double dir_acc = (double)dir_hit / dir_cnt;
+  double call_acc = (double)call_hit / call_cnt;
+  double ret_acc = (double)ret_hit / ret_cnt;
+  double indir_acc = (double)indir_hit / indir_cnt;
+
+  printf("\n=== BTB Statistics ===\n");
+  printf("Branch Total: cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", control_cnt,
+         btb_hit, btb_acc * 100);
+  printf("Direct:      cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", dir_cnt,
+         dir_hit, dir_acc * 100);
+  printf("Call:        cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", call_cnt,
+         call_hit, call_acc * 100);
+  printf("Return:      cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", ret_cnt,
+         ret_hit, ret_acc * 100);
+  printf("Indirect:    cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", indir_cnt,
+         indir_hit, indir_acc * 100);
+
+  // TAGE statistics
+  double tage_acc = (double)tage_hit / inst_cnt;
+  printf("\n=== TAGE Statistics ===\n");
+  printf("Total:       cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", inst_cnt,
+         tage_hit, tage_acc * 100);
+
+  // Fronted statistics
+  double fronted_acc = (double)fronted_hit / inst_cnt;
+  printf("\n=== Fronted Statistics ===\n");
+  printf("Fronted:     cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", inst_cnt,
+         fronted_hit, fronted_acc * 100);
+}
+
 int main() {
   srand(time(0));
 
@@ -52,7 +86,7 @@ int main() {
     return 0;
   }
 
-  int log_pc_max = DEBUG ? 10 : 1000000;
+  int log_pc_max = DEBUG ? 10 : 5000000;
   while (log_pc_max--) {
     int log_eof = readFileData();
     if (log_eof != 0)
@@ -103,36 +137,6 @@ int main() {
   }
   fclose(log_file);
 
-  // BTB statistics
-  double btb_acc = (double)btb_hit / control_cnt;
-  double dir_acc = (double)dir_hit / dir_cnt;
-  double call_acc = (double)call_hit / call_cnt;
-  double ret_acc = (double)ret_hit / ret_cnt;
-  double indir_acc = (double)indir_hit / indir_cnt;
-
-  printf("\n=== BTB Statistics ===\n");
-  printf("Branch Total: cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", control_cnt,
-         btb_hit, btb_acc * 100);
-  printf("Direct:      cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", dir_cnt,
-         dir_hit, dir_acc * 100);
-  printf("Call:        cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", call_cnt,
-         call_hit, call_acc * 100);
-  printf("Return:      cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", ret_cnt,
-         ret_hit, ret_acc * 100);
-  printf("Indirect:    cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", indir_cnt,
-         indir_hit, indir_acc * 100);
-
-  // TAGE statistics
-  double tage_acc = (double)tage_hit / inst_cnt;
-  printf("\n=== TAGE Statistics ===\n");
-  printf("Total:       cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", inst_cnt,
-         tage_hit, tage_acc * 100);
-
-  // Fronted statistics
-  double fronted_acc = (double)fronted_hit / inst_cnt;
-  printf("\n=== Fronted Statistics ===\n");
-  printf("Fronted:     cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", inst_cnt,
-         fronted_hit, fronted_acc * 100);
-
+  print_statistics();
   return 0;
 }
