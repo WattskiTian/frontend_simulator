@@ -5,8 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
-// superscalar
-#define FETCH_WIDTH 4
+#include "frontend.h"
 
 FILE *log_file;
 bool log_dir[FETCH_WIDTH];
