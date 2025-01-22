@@ -1,30 +1,54 @@
 #include "btb.h"
 #include "demo_tage.h"
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
 
+// superscalar
+#define FETCH_WIDTH 4
+
 FILE *log_file;
-bool log_dir;
-uint32_t log_pc;
-uint32_t log_nextpc;
-uint32_t log_br_type;
+bool log_dir[FETCH_WIDTH];
+uint32_t log_pc[FETCH_WIDTH];
+uint32_t log_nextpc[FETCH_WIDTH];
+uint32_t log_br_type[FETCH_WIDTH];
 bool show_details = false;
 uint64_t line_cnt = 0;
 
-int readFileData() {
+int readFileData(int fetch_offset) {
   uint32_t num1, num2, num3, num4;
   if (fscanf(log_file, "%u %x %x %u\n", &num1, &num2, &num3, &num4) == 4) {
     line_cnt++;
-    log_dir = (bool)num1;
-    log_pc = num2;
-    log_nextpc = num3;
-    log_br_type = num4;
+    log_dir[fetch_offset] = (bool)num1;
+    log_pc[fetch_offset] = num2;
+    log_nextpc[fetch_offset] = num3;
+    log_br_type[fetch_offset] = num4;
     return 0;
   } else {
     printf("log file END at line %lu\n", line_cnt);
     return 1;
   }
+}
+
+uint32_t next_fetch_address;
+int first_taken_offset = 0;
+int readFileData_superscalar() {
+  for (int i = 0; i < FETCH_WIDTH; i++) {
+    int log_eof = readFileData(i);
+    if (log_eof != 0)
+      return 1;
+  } // fetch one group of instructions
+  next_fetch_address = log_pc[0] + 4 * FETCH_WIDTH;
+  for (int i = 0; i < FETCH_WIDTH; i++) {
+    if (log_dir[i] == 1) {
+      next_fetch_address =
+          log_nextpc[i]; // if branch, update next fetch address
+      first_taken_offset = i;
+      return 0;
+    }
+  }
+  return 0;
 }
 
 // BTB statistics
@@ -86,53 +110,72 @@ int main() {
     return 0;
   }
 
-  int log_pc_max = DEBUG ? 10 : 5000000;
+  int log_pc_max = DEBUG ? 10 : (5000000 / FETCH_WIDTH);
   while (log_pc_max--) {
-    int log_eof = readFileData();
+    int log_eof = readFileData_superscalar();
     if (log_eof != 0)
       break;
 
     inst_cnt++;
-    if (log_dir == 1)
-      control_cnt++;
-
-    // TAGE
-    bool tage_dir = TAGE_get_prediction(log_pc);
-    TAGE_do_update(log_pc, log_dir, tage_dir);
-    if (tage_dir == log_dir)
-      tage_hit++;
-
-    uint32_t pred_npc = log_pc + 4;
-    if (tage_dir == 1)
-      pred_npc = btb_pred(log_pc);
-
-    if (pred_npc == log_nextpc && log_dir == 1) {
-      btb_hit++;
-      if (tage_dir == 1) {
-        fronted_hit++; // btb hit and tage hit
-      }
-      if (log_br_type == BR_DIRECT) {
-        dir_hit++;
-      } else if (log_br_type == BR_CALL) {
-        call_hit++;
-      } else if (log_br_type == BR_RET) {
-        ret_hit++;
-      } else if (log_br_type == BR_IDIRECT) {
-        indir_hit++;
-      }
-      bht_update(log_pc, log_dir);
-    } else {
-      // update BTB regardless of hit or not if it is a branch instruction
-      if (log_br_type == BR_DIRECT || log_br_type == BR_CALL ||
-          log_br_type == BR_RET || log_br_type == BR_IDIRECT) {
-        btb_update(log_pc, log_nextpc, log_br_type, log_dir);
-        bht_update(log_pc, log_dir);
+    for (int i = 0; i < FETCH_WIDTH; i++) {
+      if (log_dir[i] == 1) {
+        control_cnt++;
+        break; // for one fetch group, only one branch is counted
       }
     }
 
-    //  no branch and tage predict no branch also counts as fronted hit
-    if (log_dir == 0 && tage_dir == 0) {
+    // first run TAGE on all the instructions in this fetch group
+    // stop when a taken branch is predicted
+    int tage_pred_taken_offset = 0;
+    bool tage_dir = 0;
+    for (int i = 0; i < FETCH_WIDTH; i++) {
+      tage_dir = TAGE_get_prediction(log_pc[i]);
+      if (tage_dir == 1) {
+        tage_pred_taken_offset = i;
+        break;
+      }
+    }
+    if (log_dir[tage_pred_taken_offset] == tage_dir)
+      tage_hit++;
+    // update TAGE
+    TAGE_do_update(log_pc[tage_pred_taken_offset],
+                   log_dir[tage_pred_taken_offset], tage_dir);
+
+    uint32_t pred_npc = log_pc[0] + 4 * FETCH_WIDTH; // default next pc
+
+    if (tage_dir == 1)
+      pred_npc = btb_pred(log_pc[tage_pred_taken_offset]);
+
+    if (pred_npc == next_fetch_address) {
       fronted_hit++;
+      if (log_br_type[tage_pred_taken_offset] == BR_DIRECT) {
+        dir_hit++;
+        btb_hit++;
+      } else if (log_br_type[tage_pred_taken_offset] == BR_CALL) {
+        call_hit++;
+        btb_hit++;
+      } else if (log_br_type[tage_pred_taken_offset] == BR_RET) {
+        ret_hit++;
+        btb_hit++;
+      } else if (log_br_type[tage_pred_taken_offset] == BR_IDIRECT) {
+        indir_hit++;
+        btb_hit++;
+      }
+      bht_update(log_pc[tage_pred_taken_offset],
+                 log_dir[tage_pred_taken_offset]);
+    } else {
+      // update BTB regardless of hit or not if it is a branch instruction
+      if (log_br_type[tage_pred_taken_offset] == BR_DIRECT ||
+          log_br_type[tage_pred_taken_offset] == BR_CALL ||
+          log_br_type[tage_pred_taken_offset] == BR_RET ||
+          log_br_type[tage_pred_taken_offset] == BR_IDIRECT) {
+        btb_update(log_pc[tage_pred_taken_offset],
+                   log_nextpc[tage_pred_taken_offset],
+                   log_br_type[tage_pred_taken_offset],
+                   log_dir[tage_pred_taken_offset]);
+        bht_update(log_pc[tage_pred_taken_offset],
+                   log_dir[tage_pred_taken_offset]);
+      }
     }
   }
   fclose(log_file);
