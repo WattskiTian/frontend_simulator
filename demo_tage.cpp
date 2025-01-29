@@ -2,7 +2,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
-#include <fstream>
 
 /*#define DEBUG true*/
 #define DEBUG false
