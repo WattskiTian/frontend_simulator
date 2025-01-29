@@ -6,5 +6,8 @@ C++实现的前端模拟器，支持超标量
 
 目前需要配合trace数据进行使用
 
-![front-end-arch](https://github.com/WattskiTian/C_tage-tage_IO/blob/master/front.svg)
+![BPU-arch](https://github.com/WattskiTian/C_tage-tage_IO/blob/master/front.svg)
 
+![BPU-top-arch](https://github.com/WattskiTian/C_tage-tage_IO/blob/master/BPU_arch.svg)
+
+![front-end-top-arch](https://github.com/WattskiTian/C_tage-tage_IO/blob/master/front_end_top.svg)
