@@ -4,7 +4,6 @@
 #include "frontend.h"
 #include <cstdint>
 
-#define RESET_PC 0x80000000
 uint32_t current_fetch_address; // this should be a register
 
 void BPU_top(struct BPU_in *in, struct BPU_out *out) {
@@ -29,6 +28,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   }
   // no refetch request, do branch prediction
   else {
+    // reset should also do branch prediction
     // traverse instructions in fetch_group, find the first TAGE prediction
     // that is taken
     bool found_taken_branch = false;

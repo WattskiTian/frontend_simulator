@@ -4,8 +4,6 @@
 #include <cstdint>
 // no actual icache, just a simple simulation
 
-#define PMEM_OFFSET 0x80000000
-
 uint32_t pmem[1024];
 
 void icache_top(struct icache_in *in, struct icache_out *out) {
