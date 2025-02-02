@@ -61,6 +61,7 @@ void test_env_checker(uint64_t step_count) {
       printf("[test_env_checker] log file opened\n");
 
       in->reset = true;
+      in->FIFO_read_enable = true;
       front_top(in, out);
       printf("[test_env_checker] front_top reset done\n");
 
@@ -114,21 +115,29 @@ void test_env_checker(uint64_t step_count) {
       // set the feedback signal
       in->reset = false;
       in->back2front_valid = true;
-      in->refetch_valid = (pred.predict_next_fetch_address != actual_next_pc);
+      in->refetch = (pred.predict_next_fetch_address != actual_next_pc);
       in->predict_base_pc = actual.pc[first_taken];
       in->refetch_address = actual_next_pc;
       in->predict_dir = pred.predict_dir;
       in->actual_dir = actual.dir[first_taken];
       in->actual_br_type = actual.br_type[first_taken];
+      in->FIFO_read_enable = true;
+      printf("[test_env_checker] refetch: %d\n", in->refetch);
     } else {
       in->reset = false;
       in->back2front_valid = false;
-      in->refetch_valid = false;
+      in->refetch = false;
       in->predict_base_pc = 0;
       in->refetch_address = 0;
       in->predict_dir = false;
       in->actual_dir = false;
       in->actual_br_type = 0;
+      in->FIFO_read_enable = true;
     }
   }
+}
+
+int main() {
+  test_env_checker(100);
+  return 0;
 }
