@@ -8,20 +8,22 @@ struct PTAB_entry {
   uint32_t predict_base_pc;
 };
 
+// the FIFO control of PTAB is the same as instruction FIFO !
+// the FIFO control of PTAB is the same as instruction FIFO !
+// the FIFO control of PTAB is the same as instruction FIFO !
 static std::queue<PTAB_entry> ptab;
 
 void PTAB_top(struct PTAB_in *in, struct PTAB_out *out) {
   // dealing with mispredict
-  if (in->mispredict) {
+  if (in->reset) {
     while (!ptab.empty()) {
       ptab.pop();
     }
-    out->predict_dir = false;
     return;
   }
 
   // when there is new prediction, add it to PTAB
-  if (in->PTAB_write_enable) {
+  if (in->write_enable) {
     PTAB_entry entry;
     entry.predict_dir = in->predict_dir;
     entry.predict_next_fetch_address = in->predict_next_fetch_address;
@@ -30,7 +32,7 @@ void PTAB_top(struct PTAB_in *in, struct PTAB_out *out) {
   }
 
   // output prediction
-  if (in->PTAB_read_enable) {
+  if (in->read_enable) {
     out->predict_dir = ptab.front().predict_dir;
     out->predict_next_fetch_address = ptab.front().predict_next_fetch_address;
     out->predict_base_pc = ptab.front().predict_base_pc;

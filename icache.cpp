@@ -8,16 +8,18 @@
 uint32_t pmem[1024];
 
 void icache_top(struct icache_in *in, struct icache_out *out) {
+  if (in->reset) {
+    printf("[icache] reset\n");
+  }
+  out->icache_read_ready = true;
   // when BPU sends a valid read request
   if (in->icache_read_valid) {
     // read instructions from pmem
     for (int i = 0; i < FETCH_WIDTH; i++) {
       uint32_t pmem_address = in->fetch_address + (i * 4);
       // out->fetch_group[i] = pmem[pmem_address - PMEM_OFFSET];
-      printf("pmem_address: %x\n", pmem_address);
+      printf("[icache] pmem_address: %x\n", pmem_address);
+      out->fetch_group[i] = pmem_address;
     }
-    out->icache_read_ready = true;
-  } else {
-    out->icache_read_ready = false;
   }
 }

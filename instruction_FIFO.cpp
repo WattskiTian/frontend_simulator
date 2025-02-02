@@ -15,40 +15,34 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
                           struct instruction_FIFO_out *out) {
   // dealing with mispredict
   // clear FIFO
-  if (in->mispredict) {
+  if (in->reset) {
     while (!fifo.empty()) {
       fifo.pop();
     }
-    out->FIFO_valid = false;
-    out->FIFO_ready = true;
+    out->full = false;
+    out->empty = true;
     return;
   }
 
   // if FIFO is not full and icache has new data
-  if (fifo.size() < FIFO_SIZE && in->icache_read_ready) {
+  if (fifo.size() < FIFO_SIZE && in->write_enable) {
     FIFO_entry entry;
     for (int i = 0; i < FETCH_WIDTH; i++) {
       entry.instructions[i] = in->fetch_group[i];
     }
     fifo.push(entry);
-    out->PTAB_write_enable = true;
-  } else {
-    out->PTAB_write_enable = false;
   }
 
-  // set ready signal
-  out->FIFO_ready = (fifo.size() < FIFO_SIZE);
-
   // output data
-  if (!fifo.empty() && in->FIFO_read_enable) {
-    out->FIFO_valid = true;
+  if (!fifo.empty() && in->read_enable) {
     for (int i = 0; i < FETCH_WIDTH; i++) {
       out->instructions[i] = fifo.front().instructions[i];
     }
     fifo.pop();
-    out->PTAB_read_enable = true;
+    out->FIFO_valid = true;
   } else {
     out->FIFO_valid = false;
-    out->PTAB_read_enable = false;
   }
+  out->empty = fifo.empty();
+  out->full = fifo.size() == FIFO_SIZE;
 }

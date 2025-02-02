@@ -8,7 +8,7 @@ struct front_top_in {
   bool reset;
   // from back-end
   bool back2front_valid;
-  bool refetch_valid;
+  bool refetch;
   uint32_t predict_base_pc;
   uint32_t refetch_address;
   bool predict_dir;
@@ -30,7 +30,7 @@ struct BPU_in {
   bool reset;
   // from back-end
   bool back2front_valid;
-  bool refetch_valid;
+  bool refetch;
   uint32_t predict_base_pc;
   uint32_t refetch_address;
   bool predict_dir;
@@ -45,12 +45,14 @@ struct BPU_out {
   bool icache_read_valid;
   uint32_t fetch_address;
   // to PTAB
+  bool PTAB_write_enable;
   bool predict_dir;
   uint32_t predict_next_fetch_address;
   uint32_t predict_base_pc;
 };
 
 struct icache_in {
+  bool reset;
   // from BPU
   bool icache_read_valid;
   uint32_t fetch_address;
@@ -76,6 +78,7 @@ struct instruction_FIFO_out {
   bool full;
   bool empty;
   // to back-end
+  bool FIFO_valid;
   uint32_t instructions[FETCH_WIDTH];
 };
 

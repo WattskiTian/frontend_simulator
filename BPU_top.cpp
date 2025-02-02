@@ -20,7 +20,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
     }
   }
   // do refetch
-  if (in->refetch_valid) {
+  if (in->refetch && in->back2front_valid) {
     current_fetch_address = in->refetch_address;
     out->predict_dir = false;
     out->predict_next_fetch_address = in->refetch_address;
@@ -60,6 +60,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   }
 
   // send fetch request to icache
-  out->icache_read_valid = true; // always valid
+  out->icache_read_valid = true; // now always valid
   out->fetch_address = current_fetch_address;
+  out->PTAB_write_enable = true;
 }
