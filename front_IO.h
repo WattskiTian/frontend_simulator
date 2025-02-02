@@ -64,38 +64,35 @@ struct icache_out {
 };
 
 struct instruction_FIFO_in {
+  bool reset; // reset or mispredict
   // from icache
-  bool icache_read_ready;
+  bool write_enable;
   uint32_t fetch_group[FETCH_WIDTH];
   // from back-end
-  bool mispredict;
-  bool FIFO_read_enable;
+  bool read_enable;
 };
 
 struct instruction_FIFO_out {
-  // to icache
-  bool FIFO_ready;
+  bool full;
+  bool empty;
   // to back-end
-  bool FIFO_valid;
   uint32_t instructions[FETCH_WIDTH];
-  // to PTAB
-  bool PTAB_read_enable;
-  bool PTAB_write_enable;
 };
 
 struct PTAB_in {
-  // from instruction FIFO
-  bool PTAB_read_enable;
-  bool PTAB_write_enable;
+  bool reset; // reset or mispredict
   // from BPU
+  bool write_enable;
   bool predict_dir;
   uint32_t predict_next_fetch_address;
   uint32_t predict_base_pc;
   // from back-end
-  bool mispredict;
+  bool read_enable;
 };
 
 struct PTAB_out {
+  bool full;
+  bool empty;
   // to back-end
   bool predict_dir;
   uint32_t predict_next_fetch_address;

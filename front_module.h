@@ -12,4 +12,6 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
 
 void PTAB_top(struct PTAB_in *in, struct PTAB_out *out);
 
+void front_top(struct front_top_in *in, struct front_top_out *out);
+
 #endif // FRONT_MODULE_H
