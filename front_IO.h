@@ -66,7 +66,8 @@ struct icache_out {
 };
 
 struct instruction_FIFO_in {
-  bool reset; // reset or mispredict
+  bool reset;
+  bool refetch;
   // from icache
   bool write_enable;
   uint32_t fetch_group[FETCH_WIDTH];
@@ -83,7 +84,8 @@ struct instruction_FIFO_out {
 };
 
 struct PTAB_in {
-  bool reset; // reset or mispredict
+  bool reset;
+  bool refetch;
   // from BPU
   bool write_enable;
   bool predict_dir;

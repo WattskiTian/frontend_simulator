@@ -10,6 +10,7 @@ uint32_t pmem[1024];
 void icache_top(struct icache_in *in, struct icache_out *out) {
   if (in->reset) {
     printf("[icache] reset\n");
+    return;
   }
   out->icache_read_ready = true;
   // when BPU sends a valid read request

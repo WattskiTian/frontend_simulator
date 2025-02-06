@@ -16,10 +16,10 @@ struct PredictResult {
 
 // to store the actual execution result
 struct ActualResult {
-  bool dir[FETCH_WIDTH];
-  uint32_t pc[FETCH_WIDTH];
-  uint32_t nextpc[FETCH_WIDTH];
-  uint32_t br_type[FETCH_WIDTH];
+  bool dir;
+  uint32_t pc;
+  uint32_t nextpc;
+  uint32_t br_type;
 };
 
 static FILE *log_file = nullptr;
@@ -35,10 +35,13 @@ static int read_actual_result(ActualResult &result) {
     if (fscanf(log_file, "%u %x %x %u\n", &dir, &pc, &nextpc, &br_type) != 4) {
       return 1;
     }
-    result.dir[i] = (bool)dir;
-    result.pc[i] = pc;
-    result.nextpc[i] = nextpc;
-    result.br_type[i] = br_type;
+    result.dir = (bool)dir;
+    result.pc = pc;
+    result.nextpc = nextpc;
+    result.br_type = br_type;
+    if (dir == 1) {
+      return 0; // stop reading when first taken branch is found
+    }
   }
   return 0;
 }
@@ -85,6 +88,7 @@ void test_env_checker(uint64_t step_count) {
       pred_result.predict_next_fetch_address = out->predict_next_fetch_address;
       pred_result.predict_base_pc = out->predict_base_pc;
       predict_queue.push(pred_result);
+      printf("pushing %x\n", out->predict_next_fetch_address);
 
       // read the actual execution result
       ActualResult actual_result;
@@ -100,29 +104,27 @@ void test_env_checker(uint64_t step_count) {
       ActualResult actual = actual_queue.front();
       predict_queue.pop();
       actual_queue.pop();
-
-      // find the first taken branch
-      int first_taken = -1;
-      uint32_t actual_next_pc = actual.pc[0] + 4 * FETCH_WIDTH;
-      for (int i = 0; i < FETCH_WIDTH; i++) {
-        if (actual.dir[i]) {
-          first_taken = i;
-          actual_next_pc = actual.nextpc[i];
-          break;
-        }
-      }
+      printf("popping...\n");
 
       // set the feedback signal
       in->reset = false;
       in->back2front_valid = true;
-      in->refetch = (pred.predict_next_fetch_address != actual_next_pc);
-      in->predict_base_pc = actual.pc[first_taken];
-      in->refetch_address = actual_next_pc;
+      in->refetch = (pred.predict_next_fetch_address != actual.nextpc);
+      in->predict_base_pc = actual.pc;
+      in->refetch_address = actual.nextpc;
       in->predict_dir = pred.predict_dir;
-      in->actual_dir = actual.dir[first_taken];
-      in->actual_br_type = actual.br_type[first_taken];
+      in->actual_dir = actual.dir;
+      in->actual_br_type = actual.br_type;
       in->FIFO_read_enable = true;
-      printf("[test_env_checker] refetch: %d\n", in->refetch);
+      printf("[test_env_checker] refetch: %d,predict_npc: %x,actual_npc: %x\n",
+             in->refetch, pred.predict_next_fetch_address, actual.nextpc);
+      if (in->refetch) {
+        // empty predict_queue
+        while (!predict_queue.empty()) {
+          predict_queue.pop();
+          printf("popping...\n");
+        }
+      }
     } else {
       in->reset = false;
       in->back2front_valid = false;

@@ -14,14 +14,17 @@ struct PTAB_entry {
 static std::queue<PTAB_entry> ptab;
 
 void PTAB_top(struct PTAB_in *in, struct PTAB_out *out) {
-  // dealing with mispredict
   if (in->reset) {
     while (!ptab.empty()) {
       ptab.pop();
     }
     return;
   }
-
+  if (in->refetch) {
+    while (!ptab.empty()) {
+      ptab.pop();
+    }
+  }
   // when there is new prediction, add it to PTAB
   if (in->write_enable) {
     PTAB_entry entry;

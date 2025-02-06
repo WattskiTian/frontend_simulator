@@ -2,7 +2,7 @@
 #define FRONTEND_H
 
 #define FETCH_WIDTH 4
-#define RESET_PC 0x80000000
-#define PMEM_OFFSET 0x80000000
+#define RESET_PC 0x1008c
+#define PMEM_OFFSET RESET_PC
 
 #endif

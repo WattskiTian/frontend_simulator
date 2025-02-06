@@ -1,599 +1,1189 @@
 [test_env_checker] log file opened
 [icache] reset
-[icache] pmem_address: 80000000
-[icache] pmem_address: 80000004
-[icache] pmem_address: 80000008
-[icache] pmem_address: 8000000c
 [test_env_checker] front_top reset done
-[icache] pmem_address: 80000010
-[icache] pmem_address: 80000014
-[icache] pmem_address: 80000018
-[icache] pmem_address: 8000001c
+[BPU_top] icache_fetch_address: 1008c
+[BPU_top] predict_next_fetch_address: 1009c
+[BPU_top] predict_base_pc: 1008c
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 1008c
+[icache] pmem_address: 10090
+[icache] pmem_address: 10094
+[icache] pmem_address: 10098
 [test_env_checker] front_top cycle 1 done
-[icache] pmem_address: 80000020
-[icache] pmem_address: 80000024
-[icache] pmem_address: 80000028
-[icache] pmem_address: 8000002c
+pushing 1009c
+[BPU_top] icache_fetch_address: 1009c
+[BPU_top] predict_next_fetch_address: 100ac
+[BPU_top] predict_base_pc: 1009c
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 1009c
+[icache] pmem_address: 100a0
+[icache] pmem_address: 100a4
+[icache] pmem_address: 100a8
 [test_env_checker] front_top cycle 2 done
-[icache] pmem_address: 80000030
-[icache] pmem_address: 80000034
-[icache] pmem_address: 80000038
-[icache] pmem_address: 8000003c
+pushing 100ac
+[BPU_top] icache_fetch_address: 100ac
+[BPU_top] predict_next_fetch_address: 100bc
+[BPU_top] predict_base_pc: 100ac
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 100ac
+[icache] pmem_address: 100b0
+[icache] pmem_address: 100b4
+[icache] pmem_address: 100b8
 [test_env_checker] front_top cycle 3 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10474
-[icache] pmem_address: 10478
-[icache] pmem_address: 1047c
-[icache] pmem_address: 10480
+pushing 100bc
+popping...
+[test_env_checker] refetch: 0,predict_npc: 1009c,actual_npc: 1009c
+[BPU_top] icache_fetch_address: 100bc
+[BPU_top] predict_next_fetch_address: 100cc
+[BPU_top] predict_base_pc: 100bc
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 100bc
+[icache] pmem_address: 100c0
+[icache] pmem_address: 100c4
+[icache] pmem_address: 100c8
 [test_env_checker] front_top cycle 4 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10464
-[icache] pmem_address: 10468
-[icache] pmem_address: 1046c
-[icache] pmem_address: 10470
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100ac,actual_npc: 11dd4
+popping...
+popping...
+[BPU_top] icache_fetch_address: 11dd4
+[BPU_top] predict_next_fetch_address: 11de4
+[BPU_top] predict_base_pc: 11dd4
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11dd4
+[icache] pmem_address: 11dd8
+[icache] pmem_address: 11ddc
+[icache] pmem_address: 11de0
 [test_env_checker] front_top cycle 5 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10470
-[icache] pmem_address: 10474
-[icache] pmem_address: 10478
-[icache] pmem_address: 1047c
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11de4
+[BPU_top] icache_fetch_address: 11de4
+[BPU_top] predict_next_fetch_address: 11df4
+[BPU_top] predict_base_pc: 11de4
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11de4
+[icache] pmem_address: 11de8
+[icache] pmem_address: 11dec
+[icache] pmem_address: 11df0
 [test_env_checker] front_top cycle 6 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10e60
-[icache] pmem_address: 10e64
-[icache] pmem_address: 10e68
-[icache] pmem_address: 10e6c
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df4
+[BPU_top] icache_fetch_address: 11df4
+[BPU_top] predict_next_fetch_address: 11e04
+[BPU_top] predict_base_pc: 11df4
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df4
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
 [test_env_checker] front_top cycle 7 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10e76
-[icache] pmem_address: 10e7a
-[icache] pmem_address: 10e7e
-[icache] pmem_address: 10e82
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e04
+[BPU_top] icache_fetch_address: 11e04
+[BPU_top] predict_next_fetch_address: 11e14
+[BPU_top] predict_base_pc: 11e04
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11e04
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
 [test_env_checker] front_top cycle 8 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10e7e
-[icache] pmem_address: 10e82
-[icache] pmem_address: 10e86
-[icache] pmem_address: 10e8a
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 9 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10e86
-[icache] pmem_address: 10e8a
-[icache] pmem_address: 10e8e
-[icache] pmem_address: 10e92
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: 11e18
+[BPU_top] predict_base_pc: 11e08
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 10 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10e8e
-[icache] pmem_address: 10e92
-[icache] pmem_address: 10e96
-[icache] pmem_address: 10e9a
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 11 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10e9a
-[icache] pmem_address: 10e9e
-[icache] pmem_address: 10ea2
-[icache] pmem_address: 10ea6
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: 11e18
+[BPU_top] predict_base_pc: 11e08
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 12 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10ea4
-[icache] pmem_address: 10ea8
-[icache] pmem_address: 10eac
-[icache] pmem_address: 10eb0
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 13 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d048
-[icache] pmem_address: 1d04c
-[icache] pmem_address: 1d050
-[icache] pmem_address: 1d054
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 14 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d05a
-[icache] pmem_address: 1d05e
-[icache] pmem_address: 1d062
-[icache] pmem_address: 1d066
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 15 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d062
-[icache] pmem_address: 1d066
-[icache] pmem_address: 1d06a
-[icache] pmem_address: 1d06e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 16 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a3d8
-[icache] pmem_address: 1a3dc
-[icache] pmem_address: 1a3e0
-[icache] pmem_address: 1a3e4
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 17 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a3ea
-[icache] pmem_address: 1a3ee
-[icache] pmem_address: 1a3f2
-[icache] pmem_address: 1a3f6
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 18 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a3f8
-[icache] pmem_address: 1a3fc
-[icache] pmem_address: 1a400
-[icache] pmem_address: 1a404
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 19 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a464
-[icache] pmem_address: 1a468
-[icache] pmem_address: 1a46c
-[icache] pmem_address: 1a470
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 20 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
-[icache] pmem_address: 1a42a
-[icache] pmem_address: 1a42e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 21 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a42c
-[icache] pmem_address: 1a430
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 22 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
-[icache] pmem_address: 1a440
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 23 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 24 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a430
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 25 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 26 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a42c
-[icache] pmem_address: 1a430
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 27 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
-[icache] pmem_address: 1a440
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 28 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 29 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a430
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 30 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 31 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a42c
-[icache] pmem_address: 1a430
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 32 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
-[icache] pmem_address: 1a440
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 33 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 34 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a430
-[icache] pmem_address: 1a434
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 35 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a438
-[icache] pmem_address: 1a43c
-[icache] pmem_address: 1a440
-[icache] pmem_address: 1a444
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 36 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a444
-[icache] pmem_address: 1a448
-[icache] pmem_address: 1a44c
-[icache] pmem_address: 1a450
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 37 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a44e
-[icache] pmem_address: 1a452
-[icache] pmem_address: 1a456
-[icache] pmem_address: 1a45a
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 38 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a442
-[icache] pmem_address: 1a446
-[icache] pmem_address: 1a44a
-[icache] pmem_address: 1a44e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 39 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a442
-[icache] pmem_address: 1a446
-[icache] pmem_address: 1a44a
-[icache] pmem_address: 1a44e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 40 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a454
-[icache] pmem_address: 1a458
-[icache] pmem_address: 1a45c
-[icache] pmem_address: 1a460
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 41 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a462
-[icache] pmem_address: 1a466
-[icache] pmem_address: 1a46a
-[icache] pmem_address: 1a46e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 42 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d07a
-[icache] pmem_address: 1d07e
-[icache] pmem_address: 1d082
-[icache] pmem_address: 1d086
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 43 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d086
-[icache] pmem_address: 1d08a
-[icache] pmem_address: 1d08e
-[icache] pmem_address: 1d092
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 44 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
-[icache] pmem_address: 1d098
-[icache] pmem_address: 1d09c
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 45 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 46 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d088
-[icache] pmem_address: 1d08c
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 47 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 48 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d088
-[icache] pmem_address: 1d08c
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 49 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 50 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d088
-[icache] pmem_address: 1d08c
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 51 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 52 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d088
-[icache] pmem_address: 1d08c
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 53 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 54 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d088
-[icache] pmem_address: 1d08c
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 55 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 56 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d088
-[icache] pmem_address: 1d08c
-[icache] pmem_address: 1d090
-[icache] pmem_address: 1d094
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 57 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d09c
-[icache] pmem_address: 1d0a0
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 58 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0a4
-[icache] pmem_address: 1d0a8
-[icache] pmem_address: 1d0ac
-[icache] pmem_address: 1d0b0
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 59 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0ac
-[icache] pmem_address: 1d0b0
-[icache] pmem_address: 1d0b4
-[icache] pmem_address: 1d0b8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 60 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0b4
-[icache] pmem_address: 1d0b8
-[icache] pmem_address: 1d0bc
-[icache] pmem_address: 1d0c0
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 61 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0bc
-[icache] pmem_address: 1d0c0
-[icache] pmem_address: 1d0c4
-[icache] pmem_address: 1d0c8
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 62 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0c4
-[icache] pmem_address: 1d0c8
-[icache] pmem_address: 1d0cc
-[icache] pmem_address: 1d0d0
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 63 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0d0
-[icache] pmem_address: 1d0d4
-[icache] pmem_address: 1d0d8
-[icache] pmem_address: 1d0dc
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 64 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0e0
-[icache] pmem_address: 1d0e4
-[icache] pmem_address: 1d0e8
-[icache] pmem_address: 1d0ec
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 65 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d0f0
-[icache] pmem_address: 1d0f4
-[icache] pmem_address: 1d0f8
-[icache] pmem_address: 1d0fc
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 66 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d11c
-[icache] pmem_address: 1d120
-[icache] pmem_address: 1d124
-[icache] pmem_address: 1d128
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 67 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1d12c
-[icache] pmem_address: 1d130
-[icache] pmem_address: 1d134
-[icache] pmem_address: 1d138
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 68 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 10ea8
-[icache] pmem_address: 10eac
-[icache] pmem_address: 10eb0
-[icache] pmem_address: 10eb4
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 69 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cb5a
-[icache] pmem_address: 1cb5e
-[icache] pmem_address: 1cb62
-[icache] pmem_address: 1cb66
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 70 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cb6e
-[icache] pmem_address: 1cb72
-[icache] pmem_address: 1cb76
-[icache] pmem_address: 1cb7a
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 71 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cb7e
-[icache] pmem_address: 1cb82
-[icache] pmem_address: 1cb86
-[icache] pmem_address: 1cb8a
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 72 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cb8a
-[icache] pmem_address: 1cb8e
-[icache] pmem_address: 1cb92
-[icache] pmem_address: 1cb96
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 73 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cb96
-[icache] pmem_address: 1cb9a
-[icache] pmem_address: 1cb9e
-[icache] pmem_address: 1cba2
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 74 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a3d8
-[icache] pmem_address: 1a3dc
-[icache] pmem_address: 1a3e0
-[icache] pmem_address: 1a3e4
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 75 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a3e8
-[icache] pmem_address: 1a3ec
-[icache] pmem_address: 1a3f0
-[icache] pmem_address: 1a3f4
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 76 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a3f4
-[icache] pmem_address: 1a3f8
-[icache] pmem_address: 1a3fc
-[icache] pmem_address: 1a400
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 77 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a464
-[icache] pmem_address: 1a468
-[icache] pmem_address: 1a46c
-[icache] pmem_address: 1a470
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 78 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a412
-[icache] pmem_address: 1a416
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 79 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a42a
-[icache] pmem_address: 1a42e
-[icache] pmem_address: 1a432
-[icache] pmem_address: 1a436
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 80 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a432
-[icache] pmem_address: 1a436
-[icache] pmem_address: 1a43a
-[icache] pmem_address: 1a43e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 81 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 82 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a42e
-[icache] pmem_address: 1a432
-[icache] pmem_address: 1a436
-[icache] pmem_address: 1a43a
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 83 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a41a
-[icache] pmem_address: 1a41e
-[icache] pmem_address: 1a422
-[icache] pmem_address: 1a426
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 84 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a42a
-[icache] pmem_address: 1a42e
-[icache] pmem_address: 1a432
-[icache] pmem_address: 1a436
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 85 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a432
-[icache] pmem_address: 1a436
-[icache] pmem_address: 1a43a
-[icache] pmem_address: 1a43e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 86 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a43a
-[icache] pmem_address: 1a43e
-[icache] pmem_address: 1a442
-[icache] pmem_address: 1a446
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 87 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a472
-[icache] pmem_address: 1a476
-[icache] pmem_address: 1a47a
-[icache] pmem_address: 1a47e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 88 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a44c
-[icache] pmem_address: 1a450
-[icache] pmem_address: 1a454
-[icache] pmem_address: 1a458
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 89 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1a462
-[icache] pmem_address: 1a466
-[icache] pmem_address: 1a46a
-[icache] pmem_address: 1a46e
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 90 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc34
-[icache] pmem_address: 1cc38
-[icache] pmem_address: 1cc3c
-[icache] pmem_address: 1cc40
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 91 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc4a
-[icache] pmem_address: 1cc4e
-[icache] pmem_address: 1cc52
-[icache] pmem_address: 1cc56
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 92 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc44
-[icache] pmem_address: 1cc48
-[icache] pmem_address: 1cc4c
-[icache] pmem_address: 1cc50
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 93 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc44
-[icache] pmem_address: 1cc48
-[icache] pmem_address: 1cc4c
-[icache] pmem_address: 1cc50
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 94 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc54
-[icache] pmem_address: 1cc58
-[icache] pmem_address: 1cc5c
-[icache] pmem_address: 1cc60
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 95 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc44
-[icache] pmem_address: 1cc48
-[icache] pmem_address: 1cc4c
-[icache] pmem_address: 1cc50
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 96 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc44
-[icache] pmem_address: 1cc48
-[icache] pmem_address: 1cc4c
-[icache] pmem_address: 1cc50
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 97 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc44
-[icache] pmem_address: 1cc48
-[icache] pmem_address: 1cc4c
-[icache] pmem_address: 1cc50
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[BPU_top] icache_fetch_address: 11e08
+[BPU_top] predict_next_fetch_address: ffffffff
+[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_dir: 1
+[icache] pmem_address: 11e08
+[icache] pmem_address: 11e0c
+[icache] pmem_address: 11e10
+[icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 98 done
-[test_env_checker] refetch: 1
-[icache] pmem_address: 1cc44
-[icache] pmem_address: 1cc48
-[icache] pmem_address: 1cc4c
-[icache] pmem_address: 1cc50
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[BPU_top] icache_fetch_address: 11df8
+[BPU_top] predict_next_fetch_address: 11e08
+[BPU_top] predict_base_pc: 11df8
+[BPU_top] predict_dir: 0
+[icache] pmem_address: 11df8
+[icache] pmem_address: 11dfc
+[icache] pmem_address: 11e00
+[icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 99 done
-[test_env_checker] refetch: 1
+pushing 100cc
+popping...
+[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08

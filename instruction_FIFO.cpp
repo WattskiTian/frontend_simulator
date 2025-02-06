@@ -13,7 +13,6 @@ static std::queue<FIFO_entry> fifo;
 
 void instruction_FIFO_top(struct instruction_FIFO_in *in,
                           struct instruction_FIFO_out *out) {
-  // dealing with mispredict
   // clear FIFO
   if (in->reset) {
     while (!fifo.empty()) {
@@ -22,6 +21,13 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
     out->full = false;
     out->empty = true;
     return;
+  }
+  if (in->refetch) {
+    while (!fifo.empty()) {
+      fifo.pop();
+    }
+    out->full = false;
+    out->empty = true;
   }
 
   // if FIFO is not full and icache has new data
