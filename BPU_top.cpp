@@ -12,7 +12,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   if (in->reset) {
     pc_reg = RESET_PC;
     return;
-  } else if (in->refetch && in->back2front_valid) {
+  } else if (in->refetch) {
     pc_reg = in->refetch_address;
   } // else pc_reg should be set by the previous cycle
 
@@ -22,12 +22,15 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   out->PTAB_write_enable = true;
 
   // update branch predictor
-  if (in->back2front_valid) {
-    TAGE_do_update(in->predict_base_pc, in->actual_dir, out->predict_dir);
-    bht_update(in->predict_base_pc, in->actual_dir);
-    if (in->actual_dir == true) {
-      btb_update(in->predict_base_pc, in->refetch_address, in->actual_br_type,
-                 in->actual_dir);
+  for (int i = 0; i < COMMIT_WIDTH; i++) {
+    if (in->back2front_valid[i]) {
+      TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i],
+                     out->predict_dir[i]);
+      bht_update(in->predict_base_pc[i], in->actual_dir[i]);
+      if (in->actual_dir[i] == true) {
+        btb_update(in->predict_base_pc[i], in->refetch_address,
+                   in->actual_br_type[i], in->actual_dir[i]);
+      }
     }
   }
 
@@ -37,9 +40,12 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   bool found_taken_branch = false;
   uint32_t branch_pc = pc_reg;
 
-  for (int i = 0; i < FETCH_WIDTH && !found_taken_branch; i++) {
+  // do TAGE for FETCH_WIDTH instructions
+  for (int i = 0; i < FETCH_WIDTH; i++) {
     uint32_t current_pc = pc_reg + (i * 4);
-    if (TAGE_get_prediction(current_pc)) {
+    out->predict_base_pc[i] = current_pc;
+    out->predict_dir[i] = TAGE_get_prediction(current_pc);
+    if (out->predict_dir[i] && !found_taken_branch) {
       found_taken_branch = true;
       branch_pc = current_pc;
     }
@@ -48,19 +54,17 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   if (found_taken_branch) {
     // only do BTB lookup for taken branches
     uint32_t btb_target = btb_pred(branch_pc);
-    out->predict_dir = true;
     out->predict_next_fetch_address = btb_target;
-    out->predict_base_pc = branch_pc;
+    printf("[BPU_top] base pc: %x, btb_target: %x\n", branch_pc, btb_target);
   } else {
     // no prediction for taken branches, execute sequentially
-    out->predict_dir = false;
     out->predict_next_fetch_address = pc_reg + (FETCH_WIDTH * 4);
-    out->predict_base_pc = pc_reg;
   }
   pc_reg = out->predict_next_fetch_address;
   printf("[BPU_top] icache_fetch_address: %x\n", out->fetch_address);
   printf("[BPU_top] predict_next_fetch_address: %x\n",
          out->predict_next_fetch_address);
-  printf("[BPU_top] predict_base_pc: %x\n", out->predict_base_pc);
-  printf("[BPU_top] predict_dir: %d\n", out->predict_dir);
+  printf("[BPU_top] predict_dir: %d\n",
+         out->predict_dir[0] || out->predict_dir[1] || out->predict_dir[2] ||
+             out->predict_dir[3]);
 }

@@ -180,6 +180,8 @@ void do_GHR_update(bool real_dir) {
 // real_dir == trur <-> taken
 void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
 
+  printf("[TAGE_do_update] PC: %x, real_dir: %d, pred_dir: %d\n", PC, real_dir,
+         pred_dir);
   // 1. update 2-bit useful counter
   // pcpn found
   if (pcpn < TN_MAX) {

@@ -105,7 +105,7 @@ void update_lru(uint32_t idx, int way) {
 uint32_t btb_pred(uint32_t pc) {
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
-
+  // printf("[btb_pred] idx: %x, tag: %x, pc: %x\n", idx, tag, pc);
   // find match in all ways
   for (int way = 0; way < BTB_WAY_NUM; way++) {
     if (btb_valid[way][idx] && btb_tag[way][idx] == tag) {
@@ -129,14 +129,16 @@ uint32_t btb_pred(uint32_t pc) {
       }
     }
   }
-  return -1;
+  printf("[btb_pred] btb miss");
+  return pc + 4; // btb miss
 }
 
 void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
                 bool actualdir) {
+  printf("[btb_update] pc: %x, actualAddr: %x, br_type: %x, actualdir: %d\n",
+         pc, actualAddr, br_type, actualdir);
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
-
   // find match in all ways
   for (int way = 0; way < BTB_WAY_NUM; way++) {
     if (btb_valid[way][idx] && btb_tag[way][idx] == tag) {
@@ -159,7 +161,7 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
       btb_bta[way][idx] = actualAddr;
       btb_br_type[way][idx] = br_type;
       update_lru(idx, way);
-
+      printf("[btb_update] btb allocated\n");
       if (br_type == BR_IDIRECT) {
         tc_update(pc, actualAddr);
       }

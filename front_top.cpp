@@ -13,12 +13,15 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
 
   // set BPU input
   bpu_in.reset = in->reset;
-  bpu_in.back2front_valid = in->back2front_valid;
   bpu_in.refetch = in->refetch;
-  bpu_in.predict_base_pc = in->predict_base_pc;
   bpu_in.refetch_address = in->refetch_address;
-  bpu_in.actual_dir = in->actual_dir;
-  bpu_in.actual_br_type = in->actual_br_type;
+  for (int i = 0; i < COMMIT_WIDTH; i++) {
+    bpu_in.back2front_valid[i] = in->back2front_valid[i];
+    bpu_in.predict_base_pc[i] = in->predict_base_pc[i];
+    bpu_in.refetch_address = in->refetch_address;
+    bpu_in.actual_dir[i] = in->actual_dir[i];
+    bpu_in.actual_br_type[i] = in->actual_br_type[i];
+  }
   bpu_in.icache_read_ready = icache_out.icache_read_ready;
 
   // run BPU
@@ -49,9 +52,11 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   ptab_in.refetch = in->refetch;
   ptab_in.read_enable = in->FIFO_read_enable;
   ptab_in.write_enable = bpu_out.PTAB_write_enable;
-  ptab_in.predict_dir = bpu_out.predict_dir;
+  for (int i = 0; i < FETCH_WIDTH; i++) {
+    ptab_in.predict_dir[i] = bpu_out.predict_dir[i];
+    ptab_in.predict_base_pc[i] = bpu_out.predict_base_pc[i];
+  }
   ptab_in.predict_next_fetch_address = bpu_out.predict_next_fetch_address;
-  ptab_in.predict_base_pc = bpu_out.predict_base_pc;
 
   // run PTAB
   PTAB_top(&ptab_in, &ptab_out);
@@ -60,8 +65,8 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   out->FIFO_valid = fifo_out.FIFO_valid;
   for (int i = 0; i < FETCH_WIDTH; i++) {
     out->instructions[i] = fifo_out.instructions[i];
+    out->predict_dir[i] = ptab_out.predict_dir[i];
+    out->pc[i] = ptab_out.predict_base_pc[i];
   }
-  out->predict_dir = ptab_out.predict_dir;
   out->predict_next_fetch_address = ptab_out.predict_next_fetch_address;
-  out->predict_base_pc = ptab_out.predict_base_pc;
 }

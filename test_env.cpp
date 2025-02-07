@@ -9,17 +9,18 @@
 // to store the front-end prediction result
 struct PredictResult {
   uint32_t instructions[FETCH_WIDTH];
-  bool predict_dir;
+  bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
-  uint32_t predict_base_pc;
+  uint32_t predict_base_pc[FETCH_WIDTH];
 };
 
 // to store the actual execution result
+// should be COMMIT_WIDTH but for simplicity, we use FETCH_WIDTH
 struct ActualResult {
-  bool dir;
-  uint32_t pc;
+  bool dir[FETCH_WIDTH];
+  uint32_t pc[FETCH_WIDTH];
   uint32_t nextpc;
-  uint32_t br_type;
+  uint32_t br_type[FETCH_WIDTH];
 };
 
 static FILE *log_file = nullptr;
@@ -35,10 +36,10 @@ static int read_actual_result(ActualResult &result) {
     if (fscanf(log_file, "%u %x %x %u\n", &dir, &pc, &nextpc, &br_type) != 4) {
       return 1;
     }
-    result.dir = (bool)dir;
-    result.pc = pc;
+    result.dir[i] = (bool)dir;
+    result.pc[i] = pc;
     result.nextpc = nextpc;
-    result.br_type = br_type;
+    result.br_type[i] = br_type;
     if (dir == 1) {
       return 0; // stop reading when first taken branch is found
     }
@@ -81,17 +82,15 @@ void test_env_checker(uint64_t step_count) {
     // save the front-end prediction result
     if (out->FIFO_valid) {
       PredictResult pred_result;
+      ActualResult actual_result;
       for (int i = 0; i < FETCH_WIDTH; i++) {
         pred_result.instructions[i] = out->instructions[i];
+        pred_result.predict_dir[i] = out->predict_dir[i];
+        pred_result.predict_base_pc[i] = out->pc[i];
       }
-      pred_result.predict_dir = out->predict_dir;
       pred_result.predict_next_fetch_address = out->predict_next_fetch_address;
-      pred_result.predict_base_pc = out->predict_base_pc;
       predict_queue.push(pred_result);
       printf("pushing %x\n", out->predict_next_fetch_address);
-
-      // read the actual execution result
-      ActualResult actual_result;
       if (read_actual_result(actual_result) == 0) {
         actual_queue.push(actual_result);
       }
@@ -108,13 +107,24 @@ void test_env_checker(uint64_t step_count) {
 
       // set the feedback signal
       in->reset = false;
-      in->back2front_valid = true;
-      in->refetch = (pred.predict_next_fetch_address != actual.nextpc);
-      in->predict_base_pc = actual.pc;
+      bool first_taken = false;
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        if (first_taken == false) {
+          in->back2front_valid[i] = true;
+          in->predict_base_pc[i] = actual.pc[i];
+          in->predict_dir[i] = pred.predict_dir[i];
+          in->actual_dir[i] = actual.dir[i];
+          in->actual_br_type[i] = actual.br_type[i];
+        } else if (first_taken == true) {
+          in->back2front_valid[i] = false;
+          continue;
+        }
+        if (actual.dir[i] == 1) {
+          first_taken = true;
+        }
+      }
       in->refetch_address = actual.nextpc;
-      in->predict_dir = pred.predict_dir;
-      in->actual_dir = actual.dir;
-      in->actual_br_type = actual.br_type;
+      in->refetch = (pred.predict_next_fetch_address != actual.nextpc);
       in->FIFO_read_enable = true;
       printf("[test_env_checker] refetch: %d,predict_npc: %x,actual_npc: %x\n",
              in->refetch, pred.predict_next_fetch_address, actual.nextpc);
@@ -127,13 +137,15 @@ void test_env_checker(uint64_t step_count) {
       }
     } else {
       in->reset = false;
-      in->back2front_valid = false;
-      in->refetch = false;
-      in->predict_base_pc = 0;
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        in->back2front_valid[i] = false;
+        in->predict_base_pc[i] = 0;
+        in->predict_dir[i] = false;
+        in->actual_dir[i] = false;
+        in->actual_br_type[i] = 0;
+      }
       in->refetch_address = 0;
-      in->predict_dir = false;
-      in->actual_dir = false;
-      in->actual_br_type = 0;
+      in->refetch = false;
       in->FIFO_read_enable = true;
     }
   }

@@ -7,35 +7,35 @@
 struct front_top_in {
   bool reset;
   // from back-end
-  bool back2front_valid;
+  bool back2front_valid[COMMIT_WIDTH];
   bool refetch;
-  uint32_t predict_base_pc;
   uint32_t refetch_address;
-  bool predict_dir;
-  bool actual_dir;
-  uint32_t actual_br_type;
+  uint32_t predict_base_pc[COMMIT_WIDTH];
+  bool predict_dir[COMMIT_WIDTH];
+  bool actual_dir[COMMIT_WIDTH];
+  uint32_t actual_br_type[COMMIT_WIDTH];
   bool FIFO_read_enable;
 };
 
 struct front_top_out {
   // to back-end
   bool FIFO_valid;
+  uint32_t pc[FETCH_WIDTH];
   uint32_t instructions[FETCH_WIDTH];
-  bool predict_dir;
+  bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
-  uint32_t predict_base_pc;
 };
 
 struct BPU_in {
   bool reset;
   // from back-end
-  bool back2front_valid;
+  bool back2front_valid[COMMIT_WIDTH];
   bool refetch;
-  uint32_t predict_base_pc;
   uint32_t refetch_address;
-  bool predict_dir;
-  bool actual_dir;
-  uint32_t actual_br_type;
+  uint32_t predict_base_pc[COMMIT_WIDTH];
+  bool predict_dir[COMMIT_WIDTH];
+  bool actual_dir[COMMIT_WIDTH];
+  uint32_t actual_br_type[COMMIT_WIDTH];
   // from icache
   bool icache_read_ready;
 };
@@ -46,9 +46,9 @@ struct BPU_out {
   uint32_t fetch_address;
   // to PTAB
   bool PTAB_write_enable;
-  bool predict_dir;
+  bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
-  uint32_t predict_base_pc;
+  uint32_t predict_base_pc[FETCH_WIDTH];
 };
 
 struct icache_in {
@@ -88,9 +88,9 @@ struct PTAB_in {
   bool refetch;
   // from BPU
   bool write_enable;
-  bool predict_dir;
+  bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
-  uint32_t predict_base_pc;
+  uint32_t predict_base_pc[FETCH_WIDTH];
   // from back-end
   bool read_enable;
 };
@@ -99,8 +99,8 @@ struct PTAB_out {
   bool full;
   bool empty;
   // to back-end
-  bool predict_dir;
+  bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
-  uint32_t predict_base_pc;
+  uint32_t predict_base_pc[FETCH_WIDTH];
 };
 #endif

@@ -3,7 +3,6 @@
 [test_env_checker] front_top reset done
 [BPU_top] icache_fetch_address: 1008c
 [BPU_top] predict_next_fetch_address: 1009c
-[BPU_top] predict_base_pc: 1008c
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 1008c
 [icache] pmem_address: 10090
@@ -13,7 +12,6 @@
 pushing 1009c
 [BPU_top] icache_fetch_address: 1009c
 [BPU_top] predict_next_fetch_address: 100ac
-[BPU_top] predict_base_pc: 1009c
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 1009c
 [icache] pmem_address: 100a0
@@ -23,7 +21,6 @@ pushing 1009c
 pushing 100ac
 [BPU_top] icache_fetch_address: 100ac
 [BPU_top] predict_next_fetch_address: 100bc
-[BPU_top] predict_base_pc: 100ac
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 100ac
 [icache] pmem_address: 100b0
@@ -33,9 +30,12 @@ pushing 100ac
 pushing 100bc
 popping...
 [test_env_checker] refetch: 0,predict_npc: 1009c,actual_npc: 1009c
+[TAGE_do_update] PC: 1008c, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 10090, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 10094, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 10098, real_dir: 0, pred_dir: 0
 [BPU_top] icache_fetch_address: 100bc
 [BPU_top] predict_next_fetch_address: 100cc
-[BPU_top] predict_base_pc: 100bc
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 100bc
 [icache] pmem_address: 100c0
@@ -47,9 +47,14 @@ popping...
 [test_env_checker] refetch: 1,predict_npc: 100ac,actual_npc: 11dd4
 popping...
 popping...
+[TAGE_do_update] PC: 1009c, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 100a0, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 100a4, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 100a8, real_dir: 1, pred_dir: 0
+[btb_update] pc: 100a8, actualAddr: 11dd4, br_type: 1, actualdir: 1
+[btb_update] btb allocated
 [BPU_top] icache_fetch_address: 11dd4
 [BPU_top] predict_next_fetch_address: 11de4
-[BPU_top] predict_base_pc: 11dd4
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11dd4
 [icache] pmem_address: 11dd8
@@ -59,9 +64,12 @@ popping...
 pushing 11de4
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11de4,actual_npc: 11de4
+[TAGE_do_update] PC: 11dd4, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dd8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11ddc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11de0, real_dir: 0, pred_dir: 0
 [BPU_top] icache_fetch_address: 11de4
 [BPU_top] predict_next_fetch_address: 11df4
-[BPU_top] predict_base_pc: 11de4
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11de4
 [icache] pmem_address: 11de8
@@ -71,9 +79,12 @@ popping...
 pushing 11df4
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11df4,actual_npc: 11df4
+[TAGE_do_update] PC: 11de4, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11de8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dec, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11df0, real_dir: 0, pred_dir: 0
 [BPU_top] icache_fetch_address: 11df4
 [BPU_top] predict_next_fetch_address: 11e04
-[BPU_top] predict_base_pc: 11df4
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df4
 [icache] pmem_address: 11df8
@@ -83,9 +94,12 @@ popping...
 pushing 11e04
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e04,actual_npc: 11e04
+[TAGE_do_update] PC: 11df4, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
 [BPU_top] icache_fetch_address: 11e04
 [BPU_top] predict_next_fetch_address: 11e14
-[BPU_top] predict_base_pc: 11e04
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11e04
 [icache] pmem_address: 11e08
@@ -95,9 +109,13 @@ popping...
 pushing 11e14
 popping...
 [test_env_checker] refetch: 1,predict_npc: 11e14,actual_npc: 11df8
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
+[btb_update] btb allocated
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -107,9 +125,12 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: 11e18
-[BPU_top] predict_base_pc: 11e08
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
@@ -119,9 +140,11 @@ popping...
 pushing 11e18
 popping...
 [test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -131,9 +154,12 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: 11e18
-[BPU_top] predict_base_pc: 11e08
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
@@ -143,9 +169,11 @@ popping...
 pushing 11e18
 popping...
 [test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -155,21 +183,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 14 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -179,21 +213,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 16 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -203,21 +243,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 18 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -227,21 +273,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 20 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -251,21 +303,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 22 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -275,21 +333,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 24 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -299,21 +363,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 26 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -323,21 +393,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 28 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -347,21 +423,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 30 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -371,21 +453,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 32 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -395,21 +483,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 34 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -419,21 +513,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 36 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -443,21 +543,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 38 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -467,21 +573,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 40 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -491,21 +603,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 42 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -515,21 +633,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 44 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -539,21 +663,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 46 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -563,21 +693,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 48 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -587,21 +723,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 50 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -611,21 +753,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 52 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -635,21 +783,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 54 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -659,21 +813,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 56 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -683,21 +843,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 58 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -707,21 +873,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 60 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -731,21 +903,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 62 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -755,21 +933,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 64 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -779,21 +963,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 66 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -803,21 +993,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 68 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -827,21 +1023,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 70 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -851,21 +1053,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 72 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -875,21 +1083,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 74 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -899,21 +1113,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 76 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -923,21 +1143,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 78 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -947,21 +1173,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 80 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -971,21 +1203,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 82 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -995,21 +1233,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 84 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1019,21 +1263,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 86 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1043,21 +1293,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 88 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1067,21 +1323,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 90 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1091,21 +1353,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 92 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1115,21 +1383,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 94 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1139,21 +1413,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 96 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
@@ -1163,21 +1443,27 @@ popping...
 pushing 11e08
 popping...
 [test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
+[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
+[btb_pred] btb miss[BPU_top] base pc: 11e14, btb_target: 11e18
 [BPU_top] icache_fetch_address: 11e08
-[BPU_top] predict_next_fetch_address: ffffffff
-[BPU_top] predict_base_pc: 11e14
+[BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_dir: 1
 [icache] pmem_address: 11e08
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 98 done
-pushing ffffffff
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
+[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
+[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
+[btb_update] pc: 11e0c, actualAddr: 11df8, br_type: 0, actualdir: 1
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
-[BPU_top] predict_base_pc: 11df8
 [BPU_top] predict_dir: 0
 [icache] pmem_address: 11df8
 [icache] pmem_address: 11dfc
