@@ -33,7 +33,8 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   icache_top(&icache_in, &icache_out);
 
   // set FIFO input
-  fifo_in.reset = in->reset || in->refetch;
+  fifo_in.reset = in->reset;
+  fifo_in.refetch = in->refetch;
   fifo_in.read_enable = in->FIFO_read_enable;
   fifo_in.write_enable = icache_out.icache_read_ready;
   for (int i = 0; i < FETCH_WIDTH; i++) {
@@ -44,7 +45,8 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   instruction_FIFO_top(&fifo_in, &fifo_out);
 
   // set PTAB input
-  ptab_in.reset = in->reset || in->refetch;
+  ptab_in.reset = in->reset;
+  ptab_in.refetch = in->refetch;
   ptab_in.read_enable = in->FIFO_read_enable;
   ptab_in.write_enable = bpu_out.PTAB_write_enable;
   ptab_in.predict_dir = bpu_out.predict_dir;

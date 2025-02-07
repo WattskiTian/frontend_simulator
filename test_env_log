@@ -56,9 +56,9 @@ popping...
 [icache] pmem_address: 11ddc
 [icache] pmem_address: 11de0
 [test_env_checker] front_top cycle 5 done
-pushing 100cc
+pushing 11de4
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11de4
+[test_env_checker] refetch: 0,predict_npc: 11de4,actual_npc: 11de4
 [BPU_top] icache_fetch_address: 11de4
 [BPU_top] predict_next_fetch_address: 11df4
 [BPU_top] predict_base_pc: 11de4
@@ -68,9 +68,9 @@ popping...
 [icache] pmem_address: 11dec
 [icache] pmem_address: 11df0
 [test_env_checker] front_top cycle 6 done
-pushing 100cc
+pushing 11df4
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df4
+[test_env_checker] refetch: 0,predict_npc: 11df4,actual_npc: 11df4
 [BPU_top] icache_fetch_address: 11df4
 [BPU_top] predict_next_fetch_address: 11e04
 [BPU_top] predict_base_pc: 11df4
@@ -80,9 +80,9 @@ popping...
 [icache] pmem_address: 11dfc
 [icache] pmem_address: 11e00
 [test_env_checker] front_top cycle 7 done
-pushing 100cc
+pushing 11e04
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e04
+[test_env_checker] refetch: 0,predict_npc: 11e04,actual_npc: 11e04
 [BPU_top] icache_fetch_address: 11e04
 [BPU_top] predict_next_fetch_address: 11e14
 [BPU_top] predict_base_pc: 11e04
@@ -92,9 +92,9 @@ popping...
 [icache] pmem_address: 11e0c
 [icache] pmem_address: 11e10
 [test_env_checker] front_top cycle 8 done
-pushing 100cc
+pushing 11e14
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e14,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -104,9 +104,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 9 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_base_pc: 11e08
@@ -116,9 +116,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 10 done
-pushing 100cc
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -128,9 +128,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 11 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: 11e18
 [BPU_top] predict_base_pc: 11e08
@@ -140,9 +140,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 12 done
-pushing 100cc
+pushing 11e18
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: 11e18,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -152,9 +152,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 13 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -164,9 +164,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 14 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -176,9 +176,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 15 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -188,9 +188,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 16 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -200,9 +200,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 17 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -212,9 +212,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 18 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -224,9 +224,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 19 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -236,9 +236,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 20 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -248,9 +248,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 21 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -260,9 +260,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 22 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -272,9 +272,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 23 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -284,9 +284,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 24 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -296,9 +296,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 25 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -308,9 +308,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 26 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -320,9 +320,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 27 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -332,9 +332,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 28 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -344,9 +344,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 29 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -356,9 +356,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 30 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -368,9 +368,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 31 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -380,9 +380,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 32 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -392,9 +392,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 33 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -404,9 +404,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 34 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -416,9 +416,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 35 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -428,9 +428,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 36 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -440,9 +440,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 37 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -452,9 +452,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 38 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -464,9 +464,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 39 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -476,9 +476,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 40 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -488,9 +488,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 41 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -500,9 +500,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 42 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -512,9 +512,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 43 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -524,9 +524,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 44 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -536,9 +536,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 45 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -548,9 +548,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 46 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -560,9 +560,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 47 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -572,9 +572,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 48 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -584,9 +584,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 49 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -596,9 +596,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 50 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -608,9 +608,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 51 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -620,9 +620,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 52 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -632,9 +632,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 53 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -644,9 +644,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 54 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -656,9 +656,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 55 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -668,9 +668,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 56 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -680,9 +680,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 57 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -692,9 +692,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 58 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -704,9 +704,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 59 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -716,9 +716,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 60 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -728,9 +728,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 61 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -740,9 +740,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 62 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -752,9 +752,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 63 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -764,9 +764,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 64 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -776,9 +776,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 65 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -788,9 +788,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 66 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -800,9 +800,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 67 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -812,9 +812,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 68 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -824,9 +824,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 69 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -836,9 +836,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 70 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -848,9 +848,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 71 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -860,9 +860,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 72 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -872,9 +872,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 73 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -884,9 +884,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 74 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -896,9 +896,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 75 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -908,9 +908,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 76 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -920,9 +920,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 77 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -932,9 +932,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 78 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -944,9 +944,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 79 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -956,9 +956,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 80 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -968,9 +968,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 81 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -980,9 +980,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 82 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -992,9 +992,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 83 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1004,9 +1004,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 84 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1016,9 +1016,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 85 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1028,9 +1028,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 86 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1040,9 +1040,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 87 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1052,9 +1052,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 88 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1064,9 +1064,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 89 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1076,9 +1076,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 90 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1088,9 +1088,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 91 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1100,9 +1100,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 92 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1112,9 +1112,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 93 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1124,9 +1124,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 94 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1136,9 +1136,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 95 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1148,9 +1148,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 96 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1160,9 +1160,9 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 97 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
 [BPU_top] icache_fetch_address: 11e08
 [BPU_top] predict_next_fetch_address: ffffffff
 [BPU_top] predict_base_pc: 11e14
@@ -1172,9 +1172,9 @@ popping...
 [icache] pmem_address: 11e10
 [icache] pmem_address: 11e14
 [test_env_checker] front_top cycle 98 done
-pushing 100cc
+pushing ffffffff
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11df8
+[test_env_checker] refetch: 1,predict_npc: ffffffff,actual_npc: 11df8
 [BPU_top] icache_fetch_address: 11df8
 [BPU_top] predict_next_fetch_address: 11e08
 [BPU_top] predict_base_pc: 11df8
@@ -1184,6 +1184,6 @@ popping...
 [icache] pmem_address: 11e00
 [icache] pmem_address: 11e04
 [test_env_checker] front_top cycle 99 done
-pushing 100cc
+pushing 11e08
 popping...
-[test_env_checker] refetch: 1,predict_npc: 100cc,actual_npc: 11e08
+[test_env_checker] refetch: 0,predict_npc: 11e08,actual_npc: 11e08
