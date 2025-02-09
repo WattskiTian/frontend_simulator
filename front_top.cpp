@@ -21,6 +21,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     bpu_in.refetch_address = in->refetch_address;
     bpu_in.actual_dir[i] = in->actual_dir[i];
     bpu_in.actual_br_type[i] = in->actual_br_type[i];
+    bpu_in.predict_dir[i] = in->predict_dir[i];
   }
   bpu_in.icache_read_ready = icache_out.icache_read_ready;
 

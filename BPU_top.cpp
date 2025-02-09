@@ -25,7 +25,17 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   for (int i = 0; i < COMMIT_WIDTH; i++) {
     if (in->back2front_valid[i]) {
       TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i],
-                     out->predict_dir[i]);
+                     in->predict_dir[i]);
+      printf("now if predict:%d\n",
+             TAGE_get_prediction(in->predict_base_pc[i]));
+      // TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i],
+      //                in->predict_dir[i]);
+      // printf("now if predict:%d\n",
+      //        TAGE_get_prediction(in->predict_base_pc[i]));
+      // TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i],
+      //                in->predict_dir[i]);
+      // printf("now if predict:%d\n",
+      //        TAGE_get_prediction(in->predict_base_pc[i]));
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
       if (in->actual_dir[i] == true) {
         btb_update(in->predict_base_pc[i], in->refetch_address,
@@ -45,6 +55,8 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
     uint32_t current_pc = pc_reg + (i * 4);
     out->predict_base_pc[i] = current_pc;
     out->predict_dir[i] = TAGE_get_prediction(current_pc);
+    printf("[BPU_top] predict_dir[%d]: %d, pc: %x\n", i, out->predict_dir[i],
+           current_pc);
     if (out->predict_dir[i] && !found_taken_branch) {
       found_taken_branch = true;
       branch_pc = current_pc;

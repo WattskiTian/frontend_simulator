@@ -3,9 +3,6 @@
 #include <cstdlib>
 #include <ctime>
 
-/*#define DEBUG true*/
-#define DEBUG false
-
 #define BASE_ENTRY_NUM 2048
 #define GHR_LENGTH 256
 #define TN_MAX 4 // 0-indexed, which means 0,1,2,3
@@ -46,6 +43,7 @@ uint32_t FH[FH_N_MAX][TN_MAX];
 uint32_t ghr_length[TN_MAX] = {8, 13, 32, 119};
 uint32_t fh_length[FH_N_MAX][TN_MAX] = {8, 11, 11, 11, 8, 8, 8, 8, 7, 7, 7, 7};
 
+void show_HR();
 // well designed !
 // x --> y compress
 // 1. old << 1
@@ -97,6 +95,17 @@ bool TAGE_get_prediction(uint32_t PC) {
   for (int i = 0; i < TN_MAX; i++) {
     index[i] = cal_index(PC, i);
   }
+
+  printf("now tag: ");
+  for (int i = 0; i < TN_MAX; i++) {
+    printf("%d ", tag[i]);
+  }
+  printf("\n");
+  printf("now index: ");
+  for (int i = 0; i < TN_MAX; i++) {
+    printf("%d ", index[i]);
+  }
+  printf("\n");
 
   pcpn = TN_MAX;
   altpcpn = TN_MAX;
@@ -175,13 +184,20 @@ void do_GHR_update(bool real_dir) {
     GHR[i] = GHR[i - 1];
   }
   GHR[0] = real_dir;
+  // printf("now GHR: ");
+  // for (int i = 0; i < GHR_LENGTH; i++) {
+  //   printf("%d", GHR[i]);
+  // }
+  // printf("\n");
 }
 
 // real_dir == trur <-> taken
 void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
 
-  printf("[TAGE_do_update] PC: %x, real_dir: %d, pred_dir: %d\n", PC, real_dir,
-         pred_dir);
+  printf("TAGE_do_update(%x, %d, %d);\n", PC, real_dir, pred_dir);
+  if (PC == 0x11e0c) {
+    show_HR();
+  }
   // 1. update 2-bit useful counter
   // pcpn found
   if (pcpn < TN_MAX) {
@@ -298,6 +314,7 @@ void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
   bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
 
   if (u_cnt == 0) {
+    printf("[TAGE_do_update] cleaning useful table\n");
     // reset the msb
     if (u_msb_reset == true) {
       for (int i = 0; i < TN_MAX; i++) {
@@ -329,95 +346,212 @@ void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
 // this is only for TESTING
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
+void show_TAGE() {
+  printf("base \n");
+  for (int i = 0; i < BASE_ENTRY_NUM; i++) {
+    if (base_counter[i] != 0)
+      printf("index %3x base_counter %1x\n", i, base_counter[i]);
+  }
+  for (int i = 0; i < TN_MAX; i++) {
+    printf("T %d\n", i);
+    for (int j = 0; j < TN_ENTRY_NUM; j++) {
+      if (tag_table[i][j] != 0 || cnt_table[i][j] != 0 ||
+          useful_table[i][j] != 0)
+        printf("index %3x tag %2x cnt %1x useful %1x\n", j, tag_table[i][j],
+               cnt_table[i][j], useful_table[i][j]);
+    }
+  }
+}
 
-// using namespace std;
+void show_HR() {
+  for (int i = 0; i < GHR_LENGTH; i++) {
+    printf("%b", GHR[i]);
+  }
+  printf("\n");
+  for (int i = 0; i < FH_N_MAX; i++) {
+    for (int j = 0; j < TN_MAX; j++) {
+      printf("FH%d%d %u\n", i, j, FH[i][j]);
+    }
+  }
+}
+#define DEBUG true
+// #define DEBUG false
+// #define DEBUG_MAIN
+#ifdef DEBUG_MAIN
+using namespace std;
 
-// FILE *log_file;
-// bool log_dir;
-// uint32_t log_pc;
-// uint32_t log_nextpc;
-// uint32_t log_br_type;
-// bool show_details = false;
-// uint64_t line_cnt = 0;
+FILE *log_file;
+bool log_dir;
+uint32_t log_pc;
+uint32_t log_nextpc;
+uint32_t log_br_type;
+bool show_details = false;
+uint64_t line_cnt = 0;
 
-// int readFileData() {
-//     uint32_t num1, num2, num3, num4;
-//     if (fscanf(log_file, "%u %x %x %u\n", &num1, &num2, &num3, &num4) == 4) {
-//         line_cnt++;
-//         log_dir = (bool)num1;
-//         log_pc = num2;
-//         log_nextpc = num3;
-//         log_br_type = num4;
-//         return 0;
-//     } else {
-//         printf("log file END at line %lu\n", line_cnt);
-//         return 1;
-//     }
-// }
+int readFileData() {
+  uint32_t num1, num2, num3, num4;
+  if (fscanf(log_file, "%u %x %x %u\n", &num1, &num2, &num3, &num4) == 4) {
+    line_cnt++;
+    log_dir = (bool)num1;
+    log_pc = num2;
+    log_nextpc = num3;
+    log_br_type = num4;
+    return 0;
+  } else {
+    printf("log file END at line %lu\n", line_cnt);
+    return 1;
+  }
+}
 
-// uint64_t inst_cnt = 0;
-// uint64_t bp_cnt = 0;
-// bool bp_dir;
+uint64_t inst_cnt = 0;
+uint64_t bp_cnt = 0;
+bool bp_dir;
 
-// void show_TAGE() {
-//   printf("base \n");
-//   for (int i = 0; i < BASE_ENTRY_NUM; i++) {
-//     if (base_counter[i] != 0)
-//       printf("index %3x base_counter %1x\n", i, base_counter[i]);
-//   }
-//   for (int i = 0; i < TN_MAX; i++) {
-//     printf("T %d\n", i);
-//     for (int j = 0; j < TN_ENTRY_NUM; j++) {
-//       if (tag_table[i][j] != 0 || cnt_table[i][j] != 0 ||
-//           useful_table[i][j] != 0)
-//         printf("index %3x tag %2x cnt %1x useful %1x\n", j, tag_table[i][j],
-//                cnt_table[i][j], useful_table[i][j]);
-//     }
-//   }
-// }
+int main() {
+  srand(time(0));
+  log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
+  if (log_file == NULL) {
+    printf("log_file open error\n");
+    return 0;
+  }
 
-// void show_HR() {
-//   for (int i = 0; i < GHR_LENGTH; i++) {
-//     printf("%b", GHR[i]);
-//   }
-//   printf("\n");
-//   for (int i = 0; i < FH_N_MAX; i++) {
-//     for (int j = 0; j < TN_MAX; j++) {
-//       printf("FH%d%d %u\n", i, j, FH[i][j]);
-//     }
-//   }
-// }
+  int log_pc_max = DEBUG ? 100 : 1000000;
+  while (log_pc_max--) {
+    int log_eof = readFileData();
+    if (log_eof != 0)
+      break;
 
-// int main() {
-//   srand(time(0));
-//   log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
-//   if (log_file == NULL) {
-//     printf("log_file open error\n");
-//     return 0;
-//   }
+    inst_cnt++;
+    bp_dir = TAGE_get_prediction(log_pc);
+    TAGE_do_update(log_pc, log_dir, bp_dir);
+    if (show_details == true) {
+      printf("TAGE_bp = %d", bp_dir);
+      if (bp_dir == log_dir)
+        printf("HIT%d", log_dir);
+      printf("\n");
+    }
+    if (bp_dir == log_dir)
+      bp_cnt++;
+  }
+  fclose(log_file);
 
-//   int log_pc_max = DEBUG ? 10 : 1000000;
-//   while (log_pc_max--) {
-//     int log_eof = readFileData();
-//     if (log_eof != 0)
-//       break;
-
-//     inst_cnt++;
-//     bp_dir = TAGE_get_prediction(log_pc);
-//     TAGE_do_update(log_pc, log_dir, bp_dir);
-//     if (show_details == true) {
-//       printf("TAGE_bp = %d", bp_dir);
-//       if (bp_dir == log_dir)
-//         printf("HIT%d", log_dir);
-//       printf("\n");
-//     }
-//     if (bp_dir == log_dir)
-//       bp_cnt++;
-//   }
-//   fclose(log_file);
-
-//   double acc = (double)bp_cnt / inst_cnt;
-//   printf("[version tage]     inst_cnt = %lu bp_cnt = %lu ACC = %.3f%%\n",
-//          inst_cnt, bp_cnt, acc * 100);
-//   return 0;
-// }
+  double acc = (double)bp_cnt / inst_cnt;
+  printf("[version tage]     inst_cnt = %lu bp_cnt = %lu ACC = %.3f%%\n",
+         inst_cnt, bp_cnt, acc * 100);
+  return 0;
+}
+#endif
+int main() {
+  srand(7);
+  bool on = 0;
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x1008c));
+  TAGE_do_update(0x1008c, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x10090));
+  TAGE_do_update(0x10090, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x10094));
+  TAGE_do_update(0x10094, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x10098));
+  TAGE_do_update(0x10098, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x1009c));
+  TAGE_do_update(0x1009c, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x100a0));
+  TAGE_do_update(0x100a0, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x100a4));
+  TAGE_do_update(0x100a4, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x100a8));
+  TAGE_do_update(0x100a8, 1, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11dd4));
+  TAGE_do_update(0x11dd4, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11dd8));
+  TAGE_do_update(0x11dd8, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11ddc));
+  TAGE_do_update(0x11ddc, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11de0));
+  TAGE_do_update(0x11de0, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11de4));
+  TAGE_do_update(0x11de4, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11de8));
+  TAGE_do_update(0x11de8, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11dec));
+  TAGE_do_update(0x11dec, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11df0));
+  TAGE_do_update(0x11df0, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11df4));
+  TAGE_do_update(0x11df4, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11df8));
+  TAGE_do_update(0x11df8, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11dfc));
+  TAGE_do_update(0x11dfc, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e00));
+  TAGE_do_update(0x11e00, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e04));
+  TAGE_do_update(0x11e04, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e08));
+  TAGE_do_update(0x11e08, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e0c));
+  TAGE_do_update(0x11e0c, 1, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11df8));
+  TAGE_do_update(0x11df8, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11dfc));
+  TAGE_do_update(0x11dfc, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e00));
+  TAGE_do_update(0x11e00, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e04));
+  TAGE_do_update(0x11e04, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e08));
+  TAGE_do_update(0x11e08, 0, 0);
+  show_TAGE();
+  // if (on)
+  TAGE_get_prediction(0x11e0c);
+  show_TAGE();
+  TAGE_do_update(0x11e0c, 1, 0);
+  show_TAGE();
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11df8));
+  TAGE_do_update(0x11df8, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11dfc));
+  TAGE_do_update(0x11dfc, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e00));
+  TAGE_do_update(0x11e00, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e04));
+  TAGE_do_update(0x11e04, 0, 0);
+  if (on)
+    printf("%d\n", TAGE_get_prediction(0x11e08));
+  TAGE_do_update(0x11e08, 0, 0);
+  show_TAGE();
+  printf("%d\n", TAGE_get_prediction(0x11e0c));
+  show_TAGE();
+  TAGE_do_update(0x11e0c, 1, 1);
+  return 0;
+}

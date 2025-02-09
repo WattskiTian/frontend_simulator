@@ -1,10 +1,13 @@
+#include "demo_tage.h"
 #include "front_IO.h"
 #include "front_module.h"
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
+#include <ctime>
 #include <queue>
 
-#define DELAY_CYCLE 2
+#define DELAY_CYCLE 0
 
 // to store the front-end prediction result
 struct PredictResult {
@@ -55,6 +58,7 @@ void test_env_checker(uint64_t step_count) {
   struct front_top_out *out = &out_tmp;
 
   while (step_count--) {
+    printf("--------------------------------\n");
     // initialize
     if (!initialized) {
       log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
@@ -90,7 +94,7 @@ void test_env_checker(uint64_t step_count) {
       }
       pred_result.predict_next_fetch_address = out->predict_next_fetch_address;
       predict_queue.push(pred_result);
-      printf("pushing %x\n", out->predict_next_fetch_address);
+      // printf("pushing %x\n", out->predict_next_fetch_address);
       if (read_actual_result(actual_result) == 0) {
         actual_queue.push(actual_result);
       }
@@ -103,7 +107,7 @@ void test_env_checker(uint64_t step_count) {
       ActualResult actual = actual_queue.front();
       predict_queue.pop();
       actual_queue.pop();
-      printf("popping...\n");
+      // printf("popping...\n");
 
       // set the feedback signal
       in->reset = false;
@@ -112,6 +116,11 @@ void test_env_checker(uint64_t step_count) {
         if (first_taken == false) {
           in->back2front_valid[i] = true;
           in->predict_base_pc[i] = actual.pc[i];
+          if (actual.pc[i] != pred.predict_base_pc[i]) {
+            printf("pc mismatch: %x != %x\n", actual.pc[i],
+                   pred.predict_base_pc[i]);
+            exit(1);
+          }
           in->predict_dir[i] = pred.predict_dir[i];
           in->actual_dir[i] = actual.dir[i];
           in->actual_br_type[i] = actual.br_type[i];
@@ -132,7 +141,7 @@ void test_env_checker(uint64_t step_count) {
         // empty predict_queue
         while (!predict_queue.empty()) {
           predict_queue.pop();
-          printf("popping...\n");
+          // printf("popping...\n");
         }
       }
     } else {
@@ -152,6 +161,25 @@ void test_env_checker(uint64_t step_count) {
 }
 
 int main() {
-  test_env_checker(100);
+  srand(time(0));
+  // test_env_checker(100);
+  TAGE_do_update(0x11e04, false, false);
+  TAGE_do_update(0x11e08, false, false);
+  TAGE_do_update(0x11e0c, true, false);
+  printf("%d\n", TAGE_get_prediction(0x11e0c));
+  TAGE_do_update(0x11df8, false, false);
+  TAGE_do_update(0x11dfc, false, false);
+  TAGE_do_update(0x11e00, false, false);
+  TAGE_do_update(0x11e04, false, false);
+  TAGE_do_update(0x11e08, false, false);
+  TAGE_do_update(0x11e0c, true, false);
+  printf("%d\n", TAGE_get_prediction(0x11e0c));
+  TAGE_do_update(0x11df8, false, false);
+  TAGE_do_update(0x11dfc, false, false);
+  TAGE_do_update(0x11e00, false, false);
+  TAGE_do_update(0x11e04, false, false);
+  TAGE_do_update(0x11e08, false, false);
+  TAGE_do_update(0x11e0c, true, false);
+  printf("%d\n", TAGE_get_prediction(0x11e0c));
   return 0;
 }

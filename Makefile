@@ -52,7 +52,7 @@ $(GDB_TARGET_TEST_ENV): $(SRC_TEST_ENV)
 	$(CC) -g -w -o $@ $(SRC_TEST_ENV)
 
 tage: $(TARGET_TAGE)
-	./$(TARGET_TAGE) > tage_log
+	./$(TARGET_TAGE) > tage_log2
 
 btb: $(TARGET_BTB)
 	./$(TARGET_BTB) > btb_log
