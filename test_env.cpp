@@ -1,4 +1,3 @@
-#include "demo_tage.h"
 #include "front_IO.h"
 #include "front_module.h"
 #include <cstdint>
@@ -7,7 +6,7 @@
 #include <ctime>
 #include <queue>
 
-#define DELAY_CYCLE 0
+#define DELAY_CYCLE 4
 
 // to store the front-end prediction result
 struct PredictResult {
@@ -15,6 +14,9 @@ struct PredictResult {
   bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
   uint32_t predict_base_pc[FETCH_WIDTH];
+  bool alt_pred[FETCH_WIDTH];
+  uint8_t altpcpn[FETCH_WIDTH];
+  uint8_t pcpn[FETCH_WIDTH];
 };
 
 // to store the actual execution result
@@ -50,6 +52,8 @@ static int read_actual_result(ActualResult &result) {
   return 0;
 }
 
+uint64_t total_predictions = 0;
+uint64_t correct_predictions = 0;
 void test_env_checker(uint64_t step_count) {
 
   struct front_top_in in_tmp;
@@ -58,29 +62,28 @@ void test_env_checker(uint64_t step_count) {
   struct front_top_out *out = &out_tmp;
 
   while (step_count--) {
-    printf("--------------------------------\n");
+    DEBUG_LOG("--------------------------------\n");
     // initialize
     if (!initialized) {
       log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
       if (log_file == NULL) {
-        printf("Error: Cannot open log file\n");
+        DEBUG_LOG("Error: Cannot open log file\n");
         return;
       }
-      printf("[test_env_checker] log file opened\n");
+      DEBUG_LOG("[test_env_checker] log file opened\n");
 
       in->reset = true;
       in->FIFO_read_enable = true;
       front_top(in, out);
-      printf("[test_env_checker] front_top reset done\n");
+      DEBUG_LOG("[test_env_checker] front_top reset done\n");
 
       initialized = true;
       cycle_count = 0;
     } else {
       // run the front-end
       cycle_count++;
-      // input signal was set in the previous cycle
       front_top(in, out);
-      printf("[test_env_checker] front_top cycle %lu done\n", cycle_count);
+      DEBUG_LOG("[test_env_checker] front_top cycle %lu done\n", cycle_count);
     }
 
     // save the front-end prediction result
@@ -91,12 +94,19 @@ void test_env_checker(uint64_t step_count) {
         pred_result.instructions[i] = out->instructions[i];
         pred_result.predict_dir[i] = out->predict_dir[i];
         pred_result.predict_base_pc[i] = out->pc[i];
+        pred_result.alt_pred[i] = out->alt_pred[i];
+        pred_result.altpcpn[i] = out->altpcpn[i];
+        pred_result.pcpn[i] = out->pcpn[i];
       }
       pred_result.predict_next_fetch_address = out->predict_next_fetch_address;
       predict_queue.push(pred_result);
       // printf("pushing %x\n", out->predict_next_fetch_address);
       if (read_actual_result(actual_result) == 0) {
         actual_queue.push(actual_result);
+      } else {
+        // return to main
+        printf("[test_env_checker] end with %lu cycles\n", cycle_count);
+        return;
       }
     }
 
@@ -109,6 +119,11 @@ void test_env_checker(uint64_t step_count) {
       actual_queue.pop();
       // printf("popping...\n");
 
+      total_predictions++;
+      if (pred.predict_next_fetch_address == actual.nextpc) {
+        correct_predictions++;
+      }
+
       // set the feedback signal
       in->reset = false;
       bool first_taken = false;
@@ -117,13 +132,16 @@ void test_env_checker(uint64_t step_count) {
           in->back2front_valid[i] = true;
           in->predict_base_pc[i] = actual.pc[i];
           if (actual.pc[i] != pred.predict_base_pc[i]) {
-            printf("pc mismatch: %x != %x\n", actual.pc[i],
-                   pred.predict_base_pc[i]);
+            DEBUG_LOG("pc mismatch: %x != %x\n", actual.pc[i],
+                      pred.predict_base_pc[i]);
             exit(1);
           }
           in->predict_dir[i] = pred.predict_dir[i];
           in->actual_dir[i] = actual.dir[i];
           in->actual_br_type[i] = actual.br_type[i];
+          in->alt_pred[i] = pred.alt_pred[i];
+          in->altpcpn[i] = pred.altpcpn[i];
+          in->pcpn[i] = pred.pcpn[i];
         } else if (first_taken == true) {
           in->back2front_valid[i] = false;
           continue;
@@ -135,8 +153,9 @@ void test_env_checker(uint64_t step_count) {
       in->refetch_address = actual.nextpc;
       in->refetch = (pred.predict_next_fetch_address != actual.nextpc);
       in->FIFO_read_enable = true;
-      printf("[test_env_checker] refetch: %d,predict_npc: %x,actual_npc: %x\n",
-             in->refetch, pred.predict_next_fetch_address, actual.nextpc);
+      DEBUG_LOG(
+          "[test_env_checker] refetch: %d,predict_npc: %x,actual_npc: %x\n",
+          in->refetch, pred.predict_next_fetch_address, actual.nextpc);
       if (in->refetch) {
         // empty predict_queue
         while (!predict_queue.empty()) {
@@ -152,6 +171,9 @@ void test_env_checker(uint64_t step_count) {
         in->predict_dir[i] = false;
         in->actual_dir[i] = false;
         in->actual_br_type[i] = 0;
+        in->alt_pred[i] = false;
+        in->altpcpn[i] = 0;
+        in->pcpn[i] = 0;
       }
       in->refetch_address = 0;
       in->refetch = false;
@@ -162,24 +184,32 @@ void test_env_checker(uint64_t step_count) {
 
 int main() {
   srand(time(0));
-  // test_env_checker(100);
-  TAGE_do_update(0x11e04, false, false);
-  TAGE_do_update(0x11e08, false, false);
-  TAGE_do_update(0x11e0c, true, false);
-  printf("%d\n", TAGE_get_prediction(0x11e0c));
-  TAGE_do_update(0x11df8, false, false);
-  TAGE_do_update(0x11dfc, false, false);
-  TAGE_do_update(0x11e00, false, false);
-  TAGE_do_update(0x11e04, false, false);
-  TAGE_do_update(0x11e08, false, false);
-  TAGE_do_update(0x11e0c, true, false);
-  printf("%d\n", TAGE_get_prediction(0x11e0c));
-  TAGE_do_update(0x11df8, false, false);
-  TAGE_do_update(0x11dfc, false, false);
-  TAGE_do_update(0x11e00, false, false);
-  TAGE_do_update(0x11e04, false, false);
-  TAGE_do_update(0x11e08, false, false);
-  TAGE_do_update(0x11e0c, true, false);
-  printf("%d\n", TAGE_get_prediction(0x11e0c));
+  test_env_checker(100000);
+  printf("\n=== Branch Prediction Statistics ===\n");
+  printf("Total Predictions: %lu\n", total_predictions);
+  printf("Correct Predictions: %lu\n", correct_predictions);
+  printf("Prediction Accuracy: %.2f%%\n",
+         (total_predictions > 0)
+             ? (correct_predictions * 100.0 / total_predictions)
+             : 0.0);
+  printf("================================\n\n");
+  // TAGE_do_update(0x11e04, false, false);
+  // TAGE_do_update(0x11e08, false, false);
+  // TAGE_do_update(0x11e0c, true, false);
+  // printf("%d\n", TAGE_get_prediction(0x11e0c));
+  // TAGE_do_update(0x11df8, false, false);
+  // TAGE_do_update(0x11dfc, false, false);
+  // TAGE_do_update(0x11e00, false, false);
+  // TAGE_do_update(0x11e04, false, false);
+  // TAGE_do_update(0x11e08, false, false);
+  // TAGE_do_update(0x11e0c, true, false);
+  // printf("%d\n", TAGE_get_prediction(0x11e0c));
+  // TAGE_do_update(0x11df8, false, false);
+  // TAGE_do_update(0x11dfc, false, false);
+  // TAGE_do_update(0x11e00, false, false);
+  // TAGE_do_update(0x11e04, false, false);
+  // TAGE_do_update(0x11e08, false, false);
+  // TAGE_do_update(0x11e0c, true, false);
+  // printf("%d\n", TAGE_get_prediction(0x11e0c));
   return 0;
 }

@@ -1,18 +1,8 @@
-[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
-0
-[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
-0
-[TAGE_do_update] PC: 11df8, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11dfc, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e00, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e04, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e08, real_dir: 0, pred_dir: 0
-[TAGE_do_update] PC: 11e0c, real_dir: 1, pred_dir: 0
-0
+[test_env_checker] end with 25350 cycles
+
+=== Branch Prediction Statistics ===
+Total Predictions: 25345
+Correct Predictions: 25307
+Prediction Accuracy: 99.85%
+================================
+

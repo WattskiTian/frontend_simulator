@@ -1,3 +1,4 @@
+#include "demo_tage.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -24,12 +25,12 @@ uint8_t tag_table[TN_MAX][TN_ENTRY_NUM];
 uint8_t cnt_table[TN_MAX][TN_ENTRY_NUM];
 uint8_t useful_table[TN_MAX][TN_ENTRY_NUM];
 
-uint32_t pcpn; // prediction provider
-uint32_t altpcpn;
-bool base_pred;
-bool pcpn_pred;
-bool alt_pred;
-uint32_t base_idx;
+// uint8_t pcpn; // prediction provider
+// uint8_t altpcpn;
+// bool base_pred;
+// bool pcpn_pred;
+// bool alt_pred;
+// uint32_t base_idx;
 
 uint32_t index[TN_MAX];
 
@@ -75,12 +76,12 @@ uint32_t cal_index(uint32_t PC, int n) {
 }
 
 uint8_t tag[TN_MAX]; // 8-bit tag
-bool TAGE_get_prediction(uint32_t PC) {
+pred_out TAGE_get_prediction(uint32_t PC) {
 
   // base_pred : simple bimodal predictor
   // 2048 entries
-  base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
-  base_pred = base_counter[base_idx] >= 2 ? true : false;
+  uint32_t base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
+  bool base_pred = base_counter[base_idx] >= 2 ? true : false;
 
   ///////////////////////////////////////////////////////////////////////////////////////
   /*----------------------------------TN_TABLE-------------------------------------*/
@@ -96,19 +97,21 @@ bool TAGE_get_prediction(uint32_t PC) {
     index[i] = cal_index(PC, i);
   }
 
-  printf("now tag: ");
-  for (int i = 0; i < TN_MAX; i++) {
-    printf("%d ", tag[i]);
-  }
-  printf("\n");
-  printf("now index: ");
-  for (int i = 0; i < TN_MAX; i++) {
-    printf("%d ", index[i]);
-  }
-  printf("\n");
+  // printf("now tag: ");
+  // for (int i = 0; i < TN_MAX; i++) {
+  //   printf("%d ", tag[i]);
+  // }
+  // printf("\n");
+  // printf("now index: ");
+  // for (int i = 0; i < TN_MAX; i++) {
+  //   printf("%d ", index[i]);
+  // }
+  // printf("\n");
 
-  pcpn = TN_MAX;
-  altpcpn = TN_MAX;
+  uint8_t pcpn = TN_MAX;
+  uint8_t altpcpn = TN_MAX;
+  bool alt_pred = false;
+  bool pcpn_pred = false;
   // Take the longest history entry
   for (int i = TN_MAX - 1; i >= 0; i--) {
     if (tag_table[i][index[i]] == tag[i]) {
@@ -135,14 +138,14 @@ bool TAGE_get_prediction(uint32_t PC) {
 
   if (pcpn >= TN_MAX) { // pcpn not found
     pcpn_pred = base_pred;
-    return base_pred;
+    return {base_pred, alt_pred, pcpn, altpcpn};
   }
   if (cnt_table[pcpn][index[pcpn]] >= 4) {
     pcpn_pred = true;
-    return true;
+    return {true, alt_pred, pcpn, altpcpn};
   }
   pcpn_pred = false;
-  return false;
+  return {false, alt_pred, pcpn, altpcpn};
 }
 
 uint8_t bit_update_2(uint8_t data, bool is_inc) {
@@ -192,12 +195,17 @@ void do_GHR_update(bool real_dir) {
 }
 
 // real_dir == trur <-> taken
-void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
+void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out) {
+  bool pred_dir = pred_out.pred;
+  bool alt_pred = pred_out.altpred;
+  uint8_t pcpn = pred_out.pcpn;
+  uint8_t altpcpn = pred_out.altpcpn;
 
-  printf("TAGE_do_update(%x, %d, %d);\n", PC, real_dir, pred_dir);
-  if (PC == 0x11e0c) {
-    show_HR();
-  }
+  // printf("TAGE_do_update(%x, %d, %d, %d, %d, %d);\n", PC, real_dir, pred_dir,
+  //        alt_pred, pcpn, altpcpn);
+  // if (PC == 0x11e0c) {
+  //   show_HR();
+  // }
   // 1. update 2-bit useful counter
   // pcpn found
   if (pcpn < TN_MAX) {
@@ -225,6 +233,7 @@ void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
   }
   // pcpn not found, update base_counter
   else {
+    uint32_t base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
     if (real_dir == true) {
       base_counter[base_idx] = bit_update_2(base_counter[base_idx], true);
     } else {
@@ -314,7 +323,7 @@ void TAGE_do_update(uint32_t PC, bool real_dir, bool pred_dir) {
   bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
 
   if (u_cnt == 0) {
-    printf("[TAGE_do_update] cleaning useful table\n");
+    // printf("[TAGE_do_update] cleaning useful table\n");
     // reset the msb
     if (u_msb_reset == true) {
       for (int i = 0; i < TN_MAX; i++) {
@@ -441,117 +450,117 @@ int main() {
   return 0;
 }
 #endif
-int main() {
-  srand(7);
-  bool on = 0;
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x1008c));
-  TAGE_do_update(0x1008c, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x10090));
-  TAGE_do_update(0x10090, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x10094));
-  TAGE_do_update(0x10094, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x10098));
-  TAGE_do_update(0x10098, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x1009c));
-  TAGE_do_update(0x1009c, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x100a0));
-  TAGE_do_update(0x100a0, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x100a4));
-  TAGE_do_update(0x100a4, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x100a8));
-  TAGE_do_update(0x100a8, 1, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11dd4));
-  TAGE_do_update(0x11dd4, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11dd8));
-  TAGE_do_update(0x11dd8, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11ddc));
-  TAGE_do_update(0x11ddc, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11de0));
-  TAGE_do_update(0x11de0, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11de4));
-  TAGE_do_update(0x11de4, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11de8));
-  TAGE_do_update(0x11de8, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11dec));
-  TAGE_do_update(0x11dec, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11df0));
-  TAGE_do_update(0x11df0, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11df4));
-  TAGE_do_update(0x11df4, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11df8));
-  TAGE_do_update(0x11df8, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11dfc));
-  TAGE_do_update(0x11dfc, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e00));
-  TAGE_do_update(0x11e00, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e04));
-  TAGE_do_update(0x11e04, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e08));
-  TAGE_do_update(0x11e08, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e0c));
-  TAGE_do_update(0x11e0c, 1, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11df8));
-  TAGE_do_update(0x11df8, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11dfc));
-  TAGE_do_update(0x11dfc, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e00));
-  TAGE_do_update(0x11e00, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e04));
-  TAGE_do_update(0x11e04, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e08));
-  TAGE_do_update(0x11e08, 0, 0);
-  show_TAGE();
-  // if (on)
-  TAGE_get_prediction(0x11e0c);
-  show_TAGE();
-  TAGE_do_update(0x11e0c, 1, 0);
-  show_TAGE();
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11df8));
-  TAGE_do_update(0x11df8, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11dfc));
-  TAGE_do_update(0x11dfc, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e00));
-  TAGE_do_update(0x11e00, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e04));
-  TAGE_do_update(0x11e04, 0, 0);
-  if (on)
-    printf("%d\n", TAGE_get_prediction(0x11e08));
-  TAGE_do_update(0x11e08, 0, 0);
-  show_TAGE();
-  printf("%d\n", TAGE_get_prediction(0x11e0c));
-  show_TAGE();
-  TAGE_do_update(0x11e0c, 1, 1);
-  return 0;
-}
+// int main() {
+//   srand(7);
+//   bool on = 0;
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x1008c));
+//   TAGE_do_update(0x1008c, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x10090));
+//   TAGE_do_update(0x10090, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x10094));
+//   TAGE_do_update(0x10094, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x10098));
+//   TAGE_do_update(0x10098, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x1009c));
+//   TAGE_do_update(0x1009c, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x100a0));
+//   TAGE_do_update(0x100a0, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x100a4));
+//   TAGE_do_update(0x100a4, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x100a8));
+//   TAGE_do_update(0x100a8, 1, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11dd4));
+//   TAGE_do_update(0x11dd4, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11dd8));
+//   TAGE_do_update(0x11dd8, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11ddc));
+//   TAGE_do_update(0x11ddc, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11de0));
+//   TAGE_do_update(0x11de0, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11de4));
+//   TAGE_do_update(0x11de4, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11de8));
+//   TAGE_do_update(0x11de8, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11dec));
+//   TAGE_do_update(0x11dec, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11df0));
+//   TAGE_do_update(0x11df0, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11df4));
+//   TAGE_do_update(0x11df4, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11df8));
+//   TAGE_do_update(0x11df8, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11dfc));
+//   TAGE_do_update(0x11dfc, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e00));
+//   TAGE_do_update(0x11e00, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e04));
+//   TAGE_do_update(0x11e04, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e08));
+//   TAGE_do_update(0x11e08, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e0c));
+//   TAGE_do_update(0x11e0c, 1, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11df8));
+//   TAGE_do_update(0x11df8, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11dfc));
+//   TAGE_do_update(0x11dfc, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e00));
+//   TAGE_do_update(0x11e00, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e04));
+//   TAGE_do_update(0x11e04, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e08));
+//   TAGE_do_update(0x11e08, 0, 0);
+//   show_TAGE();
+//   // if (on)
+//   TAGE_get_prediction(0x11e0c);
+//   show_TAGE();
+//   TAGE_do_update(0x11e0c, 1, 0);
+//   show_TAGE();
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11df8));
+//   TAGE_do_update(0x11df8, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11dfc));
+//   TAGE_do_update(0x11dfc, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e00));
+//   TAGE_do_update(0x11e00, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e04));
+//   TAGE_do_update(0x11e04, 0, 0);
+//   if (on)
+//     printf("%d\n", TAGE_get_prediction(0x11e08));
+//   TAGE_do_update(0x11e08, 0, 0);
+//   show_TAGE();
+//   printf("%d\n", TAGE_get_prediction(0x11e0c));
+//   show_TAGE();
+//   TAGE_do_update(0x11e0c, 1, 1);
+//   return 0;
+// }

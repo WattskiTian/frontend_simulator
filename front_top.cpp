@@ -22,6 +22,9 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     bpu_in.actual_dir[i] = in->actual_dir[i];
     bpu_in.actual_br_type[i] = in->actual_br_type[i];
     bpu_in.predict_dir[i] = in->predict_dir[i];
+    bpu_in.alt_pred[i] = in->alt_pred[i];
+    bpu_in.altpcpn[i] = in->altpcpn[i];
+    bpu_in.pcpn[i] = in->pcpn[i];
   }
   bpu_in.icache_read_ready = icache_out.icache_read_ready;
 
@@ -56,6 +59,9 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   for (int i = 0; i < FETCH_WIDTH; i++) {
     ptab_in.predict_dir[i] = bpu_out.predict_dir[i];
     ptab_in.predict_base_pc[i] = bpu_out.predict_base_pc[i];
+    ptab_in.alt_pred[i] = bpu_out.alt_pred[i];
+    ptab_in.altpcpn[i] = bpu_out.altpcpn[i];
+    ptab_in.pcpn[i] = bpu_out.pcpn[i];
   }
   ptab_in.predict_next_fetch_address = bpu_out.predict_next_fetch_address;
 
@@ -68,6 +74,9 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     out->instructions[i] = fifo_out.instructions[i];
     out->predict_dir[i] = ptab_out.predict_dir[i];
     out->pc[i] = ptab_out.predict_base_pc[i];
+    out->alt_pred[i] = ptab_out.alt_pred[i];
+    out->altpcpn[i] = ptab_out.altpcpn[i];
+    out->pcpn[i] = ptab_out.pcpn[i];
   }
   out->predict_next_fetch_address = ptab_out.predict_next_fetch_address;
 }

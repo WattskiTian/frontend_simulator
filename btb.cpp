@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <sys/types.h>
 
+#include "frontend.h"
+
 #define BTB_ENTRY_NUM 2048
 #define BTB_TAG_LEN 8
 #define BTB_WAY_NUM 4
@@ -129,14 +131,14 @@ uint32_t btb_pred(uint32_t pc) {
       }
     }
   }
-  printf("[btb_pred] btb miss");
+  DEBUG_LOG("[btb_pred] btb miss");
   return pc + 4; // btb miss
 }
 
 void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
                 bool actualdir) {
-  printf("[btb_update] pc: %x, actualAddr: %x, br_type: %x, actualdir: %d\n",
-         pc, actualAddr, br_type, actualdir);
+  DEBUG_LOG("[btb_update] pc: %x, actualAddr: %x, br_type: %x, actualdir: %d\n",
+            pc, actualAddr, br_type, actualdir);
   uint32_t idx = btb_get_idx(pc);
   uint32_t tag = btb_get_tag(pc);
   // find match in all ways
@@ -161,7 +163,7 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
       btb_bta[way][idx] = actualAddr;
       btb_br_type[way][idx] = br_type;
       update_lru(idx, way);
-      printf("[btb_update] btb allocated\n");
+      DEBUG_LOG("[btb_update] btb allocated\n");
       if (br_type == BR_IDIRECT) {
         tc_update(pc, actualAddr);
       }

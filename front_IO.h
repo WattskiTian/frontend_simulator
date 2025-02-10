@@ -14,6 +14,9 @@ struct front_top_in {
   bool predict_dir[COMMIT_WIDTH];
   bool actual_dir[COMMIT_WIDTH];
   uint32_t actual_br_type[COMMIT_WIDTH];
+  bool alt_pred[COMMIT_WIDTH];
+  uint8_t altpcpn[COMMIT_WIDTH];
+  uint8_t pcpn[COMMIT_WIDTH];
   bool FIFO_read_enable;
 };
 
@@ -24,6 +27,9 @@ struct front_top_out {
   uint32_t instructions[FETCH_WIDTH];
   bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
+  bool alt_pred[FETCH_WIDTH];
+  uint8_t altpcpn[FETCH_WIDTH];
+  uint8_t pcpn[FETCH_WIDTH];
 };
 
 struct BPU_in {
@@ -36,6 +42,10 @@ struct BPU_in {
   bool predict_dir[COMMIT_WIDTH];
   bool actual_dir[COMMIT_WIDTH];
   uint32_t actual_br_type[COMMIT_WIDTH];
+  // for TAGE update
+  bool alt_pred[COMMIT_WIDTH];
+  uint8_t altpcpn[COMMIT_WIDTH];
+  uint8_t pcpn[COMMIT_WIDTH];
   // from icache
   bool icache_read_ready;
 };
@@ -49,6 +59,10 @@ struct BPU_out {
   bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
   uint32_t predict_base_pc[FETCH_WIDTH];
+  // for TAGE update
+  bool alt_pred[FETCH_WIDTH];
+  uint8_t altpcpn[FETCH_WIDTH];
+  uint8_t pcpn[FETCH_WIDTH];
 };
 
 struct icache_in {
@@ -91,6 +105,10 @@ struct PTAB_in {
   bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
   uint32_t predict_base_pc[FETCH_WIDTH];
+  // for TAGE update
+  bool alt_pred[FETCH_WIDTH];
+  uint8_t altpcpn[FETCH_WIDTH];
+  uint8_t pcpn[FETCH_WIDTH];
   // from back-end
   bool read_enable;
 };
@@ -102,5 +120,9 @@ struct PTAB_out {
   bool predict_dir[FETCH_WIDTH];
   uint32_t predict_next_fetch_address;
   uint32_t predict_base_pc[FETCH_WIDTH];
+  // for TAGE update
+  bool alt_pred[FETCH_WIDTH];
+  uint8_t altpcpn[FETCH_WIDTH];
+  uint8_t pcpn[FETCH_WIDTH];
 };
 #endif
