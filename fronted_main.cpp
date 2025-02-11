@@ -1,5 +1,5 @@
-#include "btb.h"
-#include "demo_tage.h"
+#include "./BPU/dir_predictor/demo_tage.h"
+#include "./BPU/target_predictor/btb.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -99,7 +99,7 @@ void print_statistics() {
   printf("Fronted:     cnt = %10lu  hit = %10lu  ACC = %7.3f%%\n", inst_cnt,
          fronted_hit, fronted_acc * 100);
 }
-
+#ifdef DEBUG_FRONTED_MAIN
 int main() {
   srand(time(0));
 
@@ -182,3 +182,4 @@ int main() {
   print_statistics();
   return 0;
 }
+#endif

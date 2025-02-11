@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <sys/types.h>
 
-#include "frontend.h"
+#include "../../frontend.h"
 
 #define BTB_ENTRY_NUM 2048
 #define BTB_TAG_LEN 8

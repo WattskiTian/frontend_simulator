@@ -1,6 +1,6 @@
-#include "front_IO.h"
-#include "front_module.h"
-#include "frontend.h"
+#include "../front_IO.h"
+#include "../front_module.h"
+#include "../frontend.h"
 #include <cstdint>
 #include <cstdio>
 // no actual icache, just a simple simulation

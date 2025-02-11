@@ -1,7 +1,7 @@
-#include "btb.h"
-#include "demo_tage.h"
-#include "front_IO.h"
-#include "frontend.h"
+#include "../front_IO.h"
+#include "../frontend.h"
+#include "./dir_predictor/demo_tage.h"
+#include "./target_predictor/btb.h"
 #include <cstdint>
 #include <cstdio>
 

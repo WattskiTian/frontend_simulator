@@ -1,5 +1,5 @@
-#include "front_IO.h"
-#include "front_module.h"
+#include "../front_IO.h"
+#include "../frontend.h"
 #include <array>
 #include <queue>
 

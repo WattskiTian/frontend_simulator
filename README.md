@@ -1,6 +1,6 @@
 # 支持超标量的前端模拟器
 
-C++实现的前端模拟器，支持超标量,IO生成器版本仍在施工中...
+C++实现的前端模拟器，支持超标量, IO生成器版本仍在施工中...
 
 以FETCH_WIDTH=4为例，BPU基本结构图如下：
 
@@ -17,3 +17,47 @@ test_env.cpp为测试环境，可以检查模拟器是否正常工作
 测试环境基本结构如下：
 
 ![test-env-arch](https://github.com/WattskiTian/C_tage-tage_IO/blob/master/test_env.svg)
+
+文件目录：
+
+.
+├── BPU
+│   ├── BPU_arch.svg
+│   ├── BPU_top.cpp
+│   ├── dir_predictor
+│   │   ├── demo_loop.cpp
+│   │   ├── demo_ltage.cpp
+│   │   ├── demo_tage
+│   │   ├── demo_tage.cpp
+│   │   ├── demo_tage.gdb
+│   │   ├── demo_tage.h
+│   │   ├── loop_pred.h
+│   │   ├── tage_IO.cpp
+│   │   ├── tage_types.h
+│   │   ├── utils.cpp
+│   │   └── utils.h
+│   └── target_predictor
+│       ├── BTB
+│       ├── btb.cpp
+│       └── btb.h
+├── Makefile
+├── README.md
+├── fifo
+│   ├── PTAB.cpp
+│   └── instruction_FIFO.cpp
+├── front.svg
+├── front_IO.h
+├── front_end_top.svg
+├── front_module.h
+├── front_top.cpp
+├── fronted_main.cpp
+├── frontend.h
+├── icache
+│   └── icache.cpp
+├── simple_front_log
+├── tage_log
+├── tage_log2
+├── test
+├── test_env.cpp
+├── test_env.svg
+└── test_env_log
