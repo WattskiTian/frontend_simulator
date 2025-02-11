@@ -6,6 +6,8 @@
 #define RESET_PC 0x1008c
 #define PMEM_OFFSET RESET_PC
 
+#define IO_version
+
 #define DEBUG_PRINT 0
 #define DEBUG_LOG(fmt, ...)                                                    \
   do {                                                                         \

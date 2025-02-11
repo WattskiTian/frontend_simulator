@@ -1,25 +1,19 @@
+#include "../../sequential_components/seq_comp.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
-#include <fstream>
 
 /*#define DEBUG true*/
 #define DEBUG false
 
 #include "tage_types.h"
 
-uint32_t u_clear_cnt;
-uint32_t FH[FH_N_MAX][TN_MAX];
-bool GHR[GHR_LENGTH];
-uint8_t base_counter[BASE_ENTRY_NUM];
-uint8_t tag_table[TN_MAX][TN_ENTRY_NUM];
-uint8_t cnt_table[TN_MAX][TN_ENTRY_NUM];
-uint8_t useful_table[TN_MAX][TN_ENTRY_NUM];
-
-const uint32_t ghr_length[TN_MAX] = {8, 13, 32, 119};
-const uint32_t fh_length[FH_N_MAX][TN_MAX] = {8, 11, 11, 11, 8, 8,
-                                              8, 8,  7,  7,  7, 7};
+// only used for tage C_sim
+pred_1_IO IO1;
+pred_2_IO IO2;
+update_IO IO3;
+HR_IO IO4;
 
 void TAGE_update_HR(HR_IO *IO) {
   // update GHR
@@ -139,6 +133,13 @@ void TAGE_do_update(update_IO *IO) {
     IO->tag_ctrl[i] = 0;
     IO->base_ctrl = 0;
     IO->u_clear_ctrl = 0;
+
+    // for training: all to 0
+    IO->useful_wdata[i] = 0;
+    IO->cnt_wdata[i] = 0;
+    IO->tag_wdata[i] = 0;
+    IO->base_wdata = 0;
+    IO->u_clear_cnt_wdata = 0;
   }
   // 1. update 2-bit useful counter
   // pcpn found
@@ -246,7 +247,7 @@ void TAGE_do_update(update_IO *IO) {
   uint32_t row_cnt = (u_clear_cnt >> 11) & (0xfff);
   bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
 
-  IO->u_clear_cnt_wen = 1;
+  /*IO->u_clear_cnt_wen = 1;*/
   IO->u_clear_cnt_wdata = u_clear_cnt;
   if (u_cnt == 0) {
     IO->u_clear_ctrl = 2;            // 0b10, do reset
@@ -257,6 +258,7 @@ void TAGE_do_update(update_IO *IO) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
+#include "tage_IO.h"
 // this is only for C_SIM
 // this is only for C_SIM
 // this is only for C_SIM
@@ -265,7 +267,7 @@ pred_2_IO *pred_IO2;
 update_IO *upd_IO;
 HR_IO *hr_IO;
 
-bool C_TAGE_do_pred(uint32_t pc) {
+pred_out C_TAGE_do_pred(uint32_t pc) {
 
   pred_IO1->pc = pc;
   for (int k = 0; k < FH_N_MAX; k++) {
@@ -285,17 +287,22 @@ bool C_TAGE_do_pred(uint32_t pc) {
 
   TAGE_pred_2(pred_IO2);
 
-  return pred_IO2->pred;
+  pred_out pred_out;
+  pred_out.pred = pred_IO2->pred;
+  pred_out.altpred = pred_IO2->altpred;
+  pred_out.pcpn = pred_IO2->pcpn;
+  pred_out.altpcpn = pred_IO2->altpcpn;
+  return pred_out;
 }
 
-void C_TAGE_do_update(uint32_t pc, bool real_dir, bool pred_dir) {
+void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   // prepare Input
   upd_IO->pc = pc;
   upd_IO->real_dir = real_dir;
-  upd_IO->pred_dir = pred_dir;
-  upd_IO->alt_pred = pred_IO2->altpred;
-  upd_IO->pcpn = pred_IO2->pcpn;
-  upd_IO->altpcpn = pred_IO2->altpcpn;
+  upd_IO->pred_dir = pred_out.pred;
+  upd_IO->alt_pred = pred_out.altpred;
+  upd_IO->pcpn = pred_out.pcpn;
+  upd_IO->altpcpn = pred_out.altpcpn;
   for (int i = 0; i < TN_MAX; i++) {
     upd_IO->useful_read[i] = useful_table[i][pred_IO1->index[i]];
     upd_IO->cnt_read[i] = cnt_table[i][pred_IO1->index[i]];
@@ -336,9 +343,9 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, bool pred_dir) {
       }
     }
   }
-  if (upd_IO->u_clear_cnt_wen) {
-    u_clear_cnt = upd_IO->u_clear_cnt_wdata;
-  }
+  /*if (upd_IO->u_clear_cnt_wen) {*/
+  u_clear_cnt = upd_IO->u_clear_cnt_wdata;
+  /*}*/
 
   // update History regs
   for (int k = 0; k < FH_N_MAX; k++) {
@@ -367,109 +374,256 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, bool pred_dir) {
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
-// this is only for TESTING
-// this is only for TESTING
-// this is only for TESTING
-using namespace std;
+#include "../../IO_train/IO_cvt.h"
+#include "../../IO_train/tage_func.h"
 
-ifstream log_file;
+bool Out1_buf[OUT1_LENGTH];
+bool Out2_buf[OUT2_LENGTH];
+bool Out3_buf[OUT3_LENGTH];
+bool Out4_buf[OUT4_LENGTH];
 
-uint32_t log_pc;
-bool log_bp;
-bool show_details = false;
-
-void log_read() {
-  char pc_str[40];
-  char branch_taken_str[5];
-  log_file.getline(pc_str, 40);
-  log_file.getline(branch_taken_str, 5);
-  log_pc = 0;
-  log_bp = false;
-  for (int i = 0; i < 8; i++) {
-    if (i != 0)
-      log_pc = log_pc << 4;
-    log_pc += pc_str[i] - (pc_str[i] >= 'a' ? ('a' - 10) : '0');
-  }
-  log_bp = branch_taken_str[0] - '0';
-  if (show_details == true)
-    printf("pc = %08x bp = %b ", log_pc, log_bp);
-}
-uint64_t inst_cnt = 0;
-uint64_t bp_cnt = 0;
-bool bp_dir;
-
-void show_TAGE() {
-  printf("base \n");
-  for (int i = 0; i < BASE_ENTRY_NUM; i++) {
-    if (base_counter[i] != 0)
-      printf("index %3x base_counter %1x\n", i, base_counter[i]);
-  }
-  for (int i = 0; i < TN_MAX; i++) {
-    printf("T %d\n", i);
-    for (int j = 0; j < TN_ENTRY_NUM; j++) {
-      if (tag_table[i][j] != 0 || cnt_table[i][j] != 0 ||
-          useful_table[i][j] != 0)
-        printf("index %3x tag %2x cnt %1x useful %1x\n", j, tag_table[i][j],
-               cnt_table[i][j], useful_table[i][j]);
-    }
-  }
+void tage_dummy(dummy_IO *IO) {
+  uint32_t PC = IO->pc;
+  IO->base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
 }
 
-void show_HR() {
-  printf("GHR\n");
-  for (int i = 0; i < GHR_LENGTH; i++) {
-    printf("%b", GHR[i]);
-  }
-  printf("\n");
-  for (int i = 0; i < FH_N_MAX; i++) {
-    for (int j = 0; j < TN_MAX; j++) {
-      printf("FH%d%d %u\n", i, j, FH[i][j]);
-    }
-  }
-}
+bool *tage_get_randin_cal(int func_id, bool *In) {
+  if (func_id == 0) { // dummy test
+    dummy_IO IO_dummy;
+    dummy_In In_dummy;
+    dummy_Out Out_dummy;
+    boolArrayToStruct(In, In_dummy);
+    IO_dummy.pc = In_dummy.pc;
+    tage_dummy(&IO_dummy);
+    Out_dummy.base_idx = IO_dummy.base_idx;
+    structToBoolArray(Out_dummy, Out1_buf);
+    return Out1_buf;
 
-int main() {
-  srand(time(0));
-  // log PC read
-  log_file.open("../../rv-simu/log");
-  int log_pc_max = DEBUG ? 10 : 1000000;
-
-  while (log_pc_max--) {
-    log_read();
-    inst_cnt++;
-
-    pred_1_IO IO1;
-    pred_2_IO IO2;
-    update_IO IO3;
-    HR_IO IO4;
-
+  } else if (func_id == 1) {
     pred_IO1 = &IO1;
-    pred_IO2 = &IO2;
-    upd_IO = &IO3;
-    hr_IO = &IO4;
-
-    bp_dir = C_TAGE_do_pred(log_pc);
-    C_TAGE_do_update(log_pc, log_bp, bp_dir);
-    if (show_details == true) {
-      printf("TAGE_bp = %b", bp_dir);
-      if (bp_dir == log_bp)
-        printf("HIT%b", log_bp);
-      printf("\n");
+    pred_1_In In1;
+    boolArrayToStruct(In, In1);
+    pred_IO1->pc = In1.pc;
+    for (int k = 0; k < FH_N_MAX; k++) {
+      for (int i = 0; i < TN_MAX; i++) {
+        pred_IO1->FH[k][i] = In1.FH[k][i];
+      }
     }
-    if (bp_dir == log_bp)
-      bp_cnt++;
-    /*show_TAGE();*/
-  }
-  log_file.close();
+    TAGE_pred_1(pred_IO1);
+    pred_1_Out Out1;
+    Out1.base_idx = pred_IO1->base_idx;
+    for (int i = 0; i < TN_MAX; i++) {
+      Out1.index[i] = pred_IO1->index[i];
+      Out1.tag_pc[i] = pred_IO1->tag_pc[i];
+    }
+    structToBoolArray(Out1, Out1_buf);
+    return Out1_buf;
 
-  double acc = (double)bp_cnt / inst_cnt;
-  printf("[version: tage_IO] inst_cnt = %lu bp_cnt = %lu ACC = %.3f%%\n",
-         inst_cnt, bp_cnt, acc * 100);
-  /*show_TAGE();*/
-  /*show_HR();*/
-  return 0;
+  } else if (func_id == 2) {
+    pred_IO2 = &IO2;
+    pred_2_In In2;
+    boolArrayToStruct(In, In2);
+    pred_IO2->base_cnt = In2.base_cnt;
+    for (int i = 0; i < TN_MAX; i++) {
+      pred_IO2->tag_pc[i] = In2.tag_pc[i];
+      pred_IO2->tag_read[i] = In2.tag_read[i];
+      pred_IO2->cnt_read[i] = In2.cnt_read[i];
+    }
+    TAGE_pred_2(pred_IO2);
+    pred_2_Out Out2;
+    Out2.pred = pred_IO2->pred;
+    Out2.altpred = pred_IO2->altpred;
+    Out2.pcpn = pred_IO2->pcpn;
+    Out2.altpcpn = pred_IO2->altpcpn;
+    structToBoolArray(Out2, Out2_buf);
+    return Out2_buf;
+
+  } else if (func_id == 3) {
+    upd_IO = &IO3;
+    update_In In3;
+    boolArrayToStruct(In, In3);
+    upd_IO->pc = In3.pc;
+    upd_IO->real_dir = In3.real_dir;
+    upd_IO->pred_dir = In3.pred_dir;
+    upd_IO->alt_pred = In3.alt_pred;
+    upd_IO->pcpn = In3.pcpn;
+    upd_IO->altpcpn = In3.altpcpn;
+    for (int i = 0; i < TN_MAX; i++) {
+      upd_IO->useful_read[i] = In3.useful_read[i];
+      upd_IO->cnt_read[i] = In3.cnt_read[i];
+    }
+    upd_IO->base_read = In3.base_read;
+    upd_IO->lsfr = In3.lsfr;
+    for (int i = 0; i < TN_MAX; i++) {
+      upd_IO->tag_pc[i] = In3.tag_pc[i];
+    }
+    upd_IO->u_clear_cnt_read = In3.u_clear_cnt_read;
+    // do the logic
+    TAGE_do_update(upd_IO);
+    // No need to access sequential components!
+    update_Out Out3;
+    for (int i = 0; i < TN_MAX; i++) {
+      Out3.useful_ctrl[i] = upd_IO->useful_ctrl[i];
+      Out3.useful_wdata[i] = upd_IO->useful_wdata[i];
+      Out3.cnt_ctrl[i] = upd_IO->cnt_ctrl[i];
+      Out3.cnt_wdata[i] = upd_IO->cnt_wdata[i];
+      Out3.tag_ctrl[i] = upd_IO->tag_ctrl[i];
+      Out3.tag_wdata[i] = upd_IO->tag_wdata[i];
+      Out3.base_ctrl = upd_IO->base_ctrl;
+      Out3.base_wdata = upd_IO->base_wdata;
+      Out3.u_clear_ctrl = upd_IO->u_clear_ctrl;
+      Out3.u_clear_idx = upd_IO->u_clear_idx;
+      Out3.u_clear_cnt_wdata = upd_IO->u_clear_cnt_wdata;
+    }
+    structToBoolArray(Out3, Out3_buf);
+    return Out3_buf;
+
+  } else if (func_id == 4) {
+    hr_IO = &IO4;
+    HR_In In4;
+    boolArrayToStruct(In, In4);
+    for (int k = 0; k < FH_N_MAX; k++) {
+      for (int i = 0; i < TN_MAX; i++) {
+        hr_IO->FH_old[k][i] = In4.FH_old[k][i];
+      }
+    }
+    for (int i = 0; i < GHR_LENGTH; i++) {
+      hr_IO->GHR_old[i] = In4.GHR_old[i];
+    }
+    hr_IO->new_history = In4.new_history;
+    // do the logic
+    TAGE_update_HR(hr_IO);
+    // No need to access sequential components!
+    HR_Out Out4;
+    for (int k = 0; k < FH_N_MAX; k++) {
+      for (int i = 0; i < TN_MAX; i++) {
+        Out4.FH_new[k][i] = hr_IO->FH_new[k][i];
+      }
+    }
+    for (int i = 0; i < GHR_LENGTH; i++) {
+      Out4.GHR_new[i] = hr_IO->GHR_new[i];
+    }
+    structToBoolArray(Out4, Out4_buf);
+    return Out4_buf;
+  }
+
+  return Out1_buf;
 }
-///////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
+
+void randbool(int n, bool *a, int zero_length) {
+  int zi = 0;
+  long randint;
+  int i;
+  for (i = 0; i < n - zero_length; i++) {
+    zi = i % 30;
+    if (zi == 0) {
+      randint = rand();
+    }
+    a[i] = bool((randint >> (zi)) % 2);
+  }
+  for (; i < n; i++) {
+    a[i] = 0;
+  }
+}
+
+void randbool2(int n, bool *a, bool *b, int zero_length) {
+  int zi = 0;
+  long randint;
+  int i;
+  for (i = 0; i < n - zero_length; i++) {
+    zi = i % 30;
+    if (zi == 0) {
+      randint = rand();
+    }
+    a[i] = bool((randint >> (zi)) % 2);
+    b[i] = a[i];
+  }
+  for (; i < n; i++) {
+    a[i] = 0;
+    b[i] = 0;
+  }
+}
+
+void randpc(bool *pc) {
+  randbool(30, pc + 2, 0);
+  pc[0] = 0;
+  pc[1] = 0;
+}
+
+void randFH(bool *FH) {
+  int idx = 0;
+  for (int k = 0; k < FH_N_MAX; k++) {
+    for (int i = 0; i < TN_MAX; i++) {
+      // FH[k][i]
+      randbool(32, FH + idx, 32 - fh_length[k][i]);
+      idx += 32;
+    }
+  }
+}
+
+bool In1_buf[IN1_LENGTH];
+bool In2_buf[IN2_LENGTH];
+bool In3_buf[IN3_LENGTH];
+bool In4_buf[IN4_LENGTH];
+
+bool *tage_get_input(int func_id) {
+  if (func_id == 1) {
+    randpc(In1_buf);
+    randFH(In1_buf + 32);
+    return In1_buf;
+
+  } else if (func_id == 2) {
+    bool lsfr;
+    int idx = 0;
+    randbool(8, In2_buf, 6); // base_cnt
+    idx += 8;
+    for (int i = 0; i < TN_MAX; i++) {
+      lsfr = rand() % 2;
+      if (lsfr == 1) {
+        randbool2(8, In2_buf + idx, In2_buf + idx + 32, 0); // tag_pc==tag_read
+        randbool(8, In2_buf + idx + 64, 5);                 // cnt_read
+        idx += 8;
+      } else {
+        randbool(8, In2_buf + idx, 0);      // tag_pc
+        randbool(8, In2_buf + idx + 32, 0); // tag_read
+        randbool(8, In2_buf + idx + 64, 5); // cnt_read
+        idx += 8;
+      }
+    }
+    return In2_buf;
+
+  } else if (func_id == 3) {
+    int idx = 0;
+    randpc(In3_buf);
+    idx += 32;
+    randbool(3, In3_buf + idx, 0);
+    idx += 3;
+    randbool(8, In3_buf + idx, 5); // pcpn
+    idx += 8;
+    randbool(8, In3_buf + idx, 5); // altpcpn
+    idx += 8;
+    for (int i = 0; i < TN_MAX; i++) {
+      randbool(8, In3_buf + idx, 6);      // useful_read
+      randbool(8, In3_buf + idx + 32, 5); // cnt_read
+      idx += 8;
+    }
+    idx += 32;
+    randbool(8, In3_buf + idx, 6); // base_read
+    idx += 8;
+    randbool(8, In3_buf + idx, 0); // lsfr
+    idx += 8;
+    for (int i = 0; i < TN_MAX; i++) {
+      randbool(8, In3_buf + idx, 0); // tag_pc
+      idx += 8;
+    }
+    randbool(32, In3_buf + idx, 0); // u_clear_cnt_read
+    return In3_buf;
+
+  } else if (func_id == 4) {
+    randFH(In4_buf);
+    int idx = 32 * FH_N_MAX * TN_MAX;
+    randbool(GHR_LENGTH + 1, In4_buf + idx, 0); // GHR_old,new_history
+    return In4_buf;
+  }
+  return In1_buf;
+}

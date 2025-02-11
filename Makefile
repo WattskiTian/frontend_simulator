@@ -17,14 +17,17 @@ SRC_DIR_PRED = BPU/dir_predictor
 SRC_TARGET_PRED = BPU/target_predictor
 SRC_ICACHE = icache
 SRC_FIFO = fifo
+SRC_SEQ_COMP = sequential_components
 
 SRC_LTAGE = $(wildcard $(SRC_DIR_PRED)/*.cpp)
 SRC_FRONTED = fronted_main.cpp $(SRC_DIR_PRED)/demo_tage.cpp $(SRC_TARGET_PRED)/btb.cpp
 SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
                $(wildcard $(SRC_ICACHE)/*.cpp) \
                $(wildcard $(SRC_FIFO)/*.cpp) \
-               $(SRC_DIR_PRED)/demo_tage.cpp \
-               $(SRC_TARGET_PRED)/btb.cpp
+			   $(SRC_DIR_PRED)/tage_IO.cpp \
+               $(SRC_TARGET_PRED)/btb.cpp \
+			   $(wildcard $(SRC_SEQ_COMP)/*.cpp) \
+            #    $(SRC_DIR_PRED)/demo_tage.cpp \
 
 .PHONY: all tage tage_gdb clean build ltage ltage_gdb tageIO tageIO_gdb btb fronted test_env test_env_gdb
 

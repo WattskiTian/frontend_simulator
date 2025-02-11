@@ -1,9 +1,14 @@
 #include "../front_IO.h"
 #include "../frontend.h"
-#include "./dir_predictor/demo_tage.h"
 #include "./target_predictor/btb.h"
 #include <cstdint>
 #include <cstdio>
+
+#ifndef IO_version
+#include "./dir_predictor/demo_tage.h"
+#else
+#include "./dir_predictor/tage_IO.h"
+#endif
 
 uint32_t pc_reg;
 
@@ -26,7 +31,11 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
     if (in->back2front_valid[i]) {
       pred_out pred_out = {in->predict_dir[i], in->alt_pred[i], in->pcpn[i],
                            in->altpcpn[i]};
+#ifndef IO_version
       TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
+#else
+      C_TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
+#endif
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
       if (in->actual_dir[i] == true) {
         btb_update(in->predict_base_pc[i], in->refetch_address,
@@ -45,7 +54,11 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   for (int i = 0; i < FETCH_WIDTH; i++) {
     uint32_t current_pc = pc_reg + (i * 4);
     out->predict_base_pc[i] = current_pc;
+#ifndef IO_version
     pred_out pred_out = TAGE_get_prediction(current_pc);
+#else
+    pred_out pred_out = C_TAGE_do_pred(current_pc);
+#endif
     out->predict_dir[i] = pred_out.pred;
     out->alt_pred[i] = pred_out.altpred;
     out->pcpn[i] = pred_out.pcpn;

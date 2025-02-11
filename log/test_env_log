@@ -1,8 +1,0 @@
-[test_env_checker] end with 25350 cycles
-
-=== Branch Prediction Statistics ===
-Total Predictions: 25345
-Correct Predictions: 25307
-Prediction Accuracy: 99.85%
-================================
-

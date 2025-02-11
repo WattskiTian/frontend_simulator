@@ -183,6 +183,11 @@ void test_env_checker(uint64_t step_count) {
 }
 
 int main() {
+#ifdef IO_version
+  printf("[test_env] IO_version ON\n");
+#else
+  printf("[test_env] IO_version OFF\n");
+#endif
   srand(time(0));
   test_env_checker(100000);
   printf("\n=== Branch Prediction Statistics ===\n");
