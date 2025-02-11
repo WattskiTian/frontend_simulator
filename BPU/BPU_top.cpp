@@ -27,10 +27,8 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   out->PTAB_write_enable = true;
 
   // update branch predictor
-  bool group_valid = false;
   for (int i = 0; i < COMMIT_WIDTH; i++) {
     if (in->back2front_valid[i]) {
-      group_valid = true;
       pred_out pred_out = {in->predict_dir[i], in->alt_pred[i], in->pcpn[i],
                            in->altpcpn[i]};
 #ifndef IO_version
@@ -45,11 +43,12 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
       }
     }
   }
-  if (group_valid) {
-    do_GHR_update(in->actual_dir[0]);
-    TAGE_update_FH(in->actual_dir[0]);
+  for (int i = 0; i < COMMIT_WIDTH; i++) {
+    if (in->back2front_valid[i]) {
+      do_GHR_update(in->actual_dir[i]);
+      TAGE_update_FH(in->actual_dir[i]);
+    }
   }
-
   // do branch prediction
   // traverse instructions in fetch_group, find the first TAGE prediction
   // that is taken
