@@ -13,9 +13,18 @@ GDB_TARGET_LTAGE=demo_ltage.gdb
 GDB_TARGET_TAGE_IO=tage_IO.gdb
 GDB_TARGET_TEST_ENV=test.gdb
 
-SRC_LTAGE = BPU/dir_predictor/demo_loop.cpp BPU/dir_predictor/utils.cpp BPU/dir_predictor/demo_ltage.cpp
-SRC_FRONTED = fronted_main.cpp BPU/dir_predictor/demo_tage.cpp BPU/target_predictor/btb.cpp
-SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp icache/icache.cpp fifo/instruction_FIFO.cpp fifo/PTAB.cpp BPU/dir_predictor/demo_tage.cpp BPU/target_predictor/btb.cpp
+SRC_DIR_PRED = BPU/dir_predictor
+SRC_TARGET_PRED = BPU/target_predictor
+SRC_ICACHE = icache
+SRC_FIFO = fifo
+
+SRC_LTAGE = $(wildcard $(SRC_DIR_PRED)/*.cpp)
+SRC_FRONTED = fronted_main.cpp $(SRC_DIR_PRED)/demo_tage.cpp $(SRC_TARGET_PRED)/btb.cpp
+SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
+               $(wildcard $(SRC_ICACHE)/*.cpp) \
+               $(wildcard $(SRC_FIFO)/*.cpp) \
+               $(SRC_DIR_PRED)/demo_tage.cpp \
+               $(SRC_TARGET_PRED)/btb.cpp
 
 .PHONY: all tage tage_gdb clean build ltage ltage_gdb tageIO tageIO_gdb btb fronted test_env test_env_gdb
 
@@ -23,10 +32,10 @@ build: $(TARGET_TAGE) $(TARGET_LTAGE) $(TARGET_TAGE_IO) $(TARGET_BTB) $(TARGET_F
 
 all: $(TARGET_TAGE) $(GDB_TARGET_TAGE) $(TARGET_LTAGE) $(GDB_TARGET_LTAGE) $(TARGET_TAGE_IO) $(GDB_TARGET_TAGE_IO) $(TARGET_BTB) $(TARGET_FRONTED) $(TARGET_TEST_ENV) $(GDB_TARGET_TEST_ENV)
 
-$(TARGET_TAGE): BPU/dir_predictor/demo_tage.cpp
+$(TARGET_TAGE): $(SRC_DIR_PRED)/demo_tage.cpp
 	$(CC) -O3 -w -o $@ $<
 
-$(GDB_TARGET_TAGE): BPU/dir_predictor/demo_tage.cpp
+$(GDB_TARGET_TAGE): $(SRC_DIR_PRED)/demo_tage.cpp
 	$(CC) -g -w -o $@ $<
 
 $(TARGET_LTAGE): $(SRC_LTAGE)
@@ -41,7 +50,7 @@ $(TARGET_TAGE_IO): BPU/dir_predictor/tage_IO.cpp
 $(GDB_TARGET_TAGE_IO): BPU/dir_predictor/tage_IO.cpp
 	$(CC) -g -w -o $@ $<
 
-$(TARGET_BTB): BPU/target_predictor/btb.cpp
+$(TARGET_BTB): $(SRC_TARGET_PRED)/btb.cpp
 	$(CC) -O3 -w -o $@ $<
 
 $(TARGET_FRONTED): $(SRC_FRONTED)
