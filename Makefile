@@ -6,6 +6,8 @@ TARGET_BTB=demo_btb
 TARGET_FRONTED=fronted_pred
 TARGET_TEST_ENV=test
 
+HOME_DIR = /home/watts/Enligtenments-simu/playground/front-end
+
 GDB_TARGET_TAGE=demo_tage.gdb
 GDB_TARGET_LTAGE=demo_ltage.gdb
 GDB_TARGET_TAGE_IO=tage_IO.gdb
@@ -32,7 +34,7 @@ $(TARGET_LTAGE): $(SRC_LTAGE)
 
 $(GDB_TARGET_LTAGE): $(SRC_LTAGE)
 	$(CC) -g -w -o $@ $(SRC_LTAGE)
-	
+
 $(TARGET_TAGE_IO): BPU/dir_predictor/tage_IO.cpp
 	$(CC) -O3 -w -o $@ $<
 
@@ -52,37 +54,37 @@ $(GDB_TARGET_TEST_ENV): $(SRC_TEST_ENV)
 	$(CC) -g -w -o $@ $(SRC_TEST_ENV)
 
 tage: $(TARGET_TAGE)
-	./$(TARGET_TAGE) > tage_log2
+	./$(TARGET_TAGE) > $(HOME_DIR)/log/tage_log
 
 btb: $(TARGET_BTB)
-	./$(TARGET_BTB) > btb_log
+	./$(TARGET_BTB) > $(HOME_DIR)/log/btb_log
 
 fronted: $(TARGET_FRONTED)
-	./$(TARGET_FRONTED) > fronted_log
+	./$(TARGET_FRONTED) > $(HOME_DIR)/log/fronted_log
 
 tage_gdb: $(GDB_TARGET_TAGE)
 	gdb --args ./$(GDB_TARGET_TAGE)
 	
 ltage: $(TARGET_LTAGE)
-	./$(TARGET_LTAGE) > ltage_log
+	./$(TARGET_LTAGE) > $(HOME_DIR)/log/ltage_log
 
 ltage_gdb: $(GDB_TARGET_LTAGE)
 	gdb --args ./$(GDB_TARGET_LTAGE)
 
 tageIO: $(TARGET_TAGE_IO)
-	./$(TARGET_TAGE_IO) > tage_IO_log
-	./$(TARGET_TAGE) >> tage_IO_log
+	./$(TARGET_TAGE_IO) > $(HOME_DIR)/log/tage_IO_log
+	./$(TARGET_TAGE) >> $(HOME_DIR)/log/tage_IO_log
 
 tageIO_gdb: $(GDB_TARGET_TAGE_IO)
 	gdb --args ./$(GDB_TARGET_TAGE_IO)
 
 testenv: $(TARGET_TEST_ENV)
-	./$(TARGET_TEST_ENV) > test_env_log
+	./$(TARGET_TEST_ENV) > $(HOME_DIR)/log/test_env_log
 
 testenv_gdb: $(GDB_TARGET_TEST_ENV)
 	gdb --args ./$(GDB_TARGET_TEST_ENV)
 
 clean:
 	rm -f $(TARGET_TAGE) $(GDB_TARGET_TAGE) $(TARGET_LTAGE) $(GDB_TARGET_LTAGE) $(TARGET_TAGE_IO) $(GDB_TARGET_TAGE_IO) $(TARGET_BTB) $(TARGET_FRONTED) $(TARGET_TEST_ENV) $(GDB_TARGET_TEST_ENV)
-	rm -f ltage_log tage_log loop_log tage_IO_log btb_log fronted_log test_env_log
+	rm -f $(HOME_DIR)/log/ltage_log $(HOME_DIR)/log/tage_log $(HOME_DIR)/log/loop_log $(HOME_DIR)/log/tage_IO_log $(HOME_DIR)/log/btb_log $(HOME_DIR)/log/fronted_log $(HOME_DIR)/log/test_env_log
 
