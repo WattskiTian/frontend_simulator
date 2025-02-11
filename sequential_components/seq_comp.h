@@ -7,7 +7,7 @@
 
 #define BASE_ENTRY_NUM 2048
 /*#define GHR_LENGTH 256*/
-#define GHR_LENGTH 128
+#define GHR_LENGTH 256
 #define TN_MAX 4 // 0-indexed, which means 0,1,2,3
 #define TN_ENTRY_NUM 4096
 #define FH_N_MAX 3 // how many different types of Folded history

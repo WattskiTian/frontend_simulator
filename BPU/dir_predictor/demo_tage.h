@@ -10,5 +10,7 @@ struct pred_out {
 };
 pred_out TAGE_get_prediction(uint32_t PC);
 void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out);
+void do_GHR_update(bool real_dir);
+void TAGE_update_FH(bool real_dir);
 
 #endif // DEMO_TAGE_H

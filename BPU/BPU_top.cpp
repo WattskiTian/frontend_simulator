@@ -27,8 +27,10 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   out->PTAB_write_enable = true;
 
   // update branch predictor
+  bool group_valid = false;
   for (int i = 0; i < COMMIT_WIDTH; i++) {
     if (in->back2front_valid[i]) {
+      group_valid = true;
       pred_out pred_out = {in->predict_dir[i], in->alt_pred[i], in->pcpn[i],
                            in->altpcpn[i]};
 #ifndef IO_version
@@ -42,6 +44,10 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
                    in->actual_br_type[i], in->actual_dir[i]);
       }
     }
+  }
+  if (group_valid) {
+    do_GHR_update(in->actual_dir[0]);
+    TAGE_update_FH(in->actual_dir[0]);
   }
 
   // do branch prediction

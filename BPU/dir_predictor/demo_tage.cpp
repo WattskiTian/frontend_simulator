@@ -201,6 +201,15 @@ void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out) {
   uint8_t pcpn = pred_out.pcpn;
   uint8_t altpcpn = pred_out.altpcpn;
 
+  // get tag for all Tn
+  for (int i = 0; i < TN_MAX; i++) {
+    tag[i] = cal_tag(PC, i);
+  }
+  // get index for all Tn
+  for (int i = 0; i < TN_MAX; i++) {
+    index[i] = cal_index(PC, i);
+  }
+
   // printf("TAGE_do_update(%x, %d, %d, %d, %d, %d);\n", PC, real_dir, pred_dir,
   //        alt_pred, pcpn, altpcpn);
   // if (PC == 0x11e0c) {
@@ -343,9 +352,9 @@ void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out) {
     /*useful_msb_reset = 1 ^ useful_msb_reset; // do flip*/
   }
 
-  // 5. update GHR and compress history
-  do_GHR_update(real_dir);
-  TAGE_update_FH(real_dir);
+  // // 5. update GHR and compress history
+  // do_GHR_update(real_dir);
+  // TAGE_update_FH(real_dir);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

@@ -132,8 +132,8 @@ void test_env_checker(uint64_t step_count) {
           in->back2front_valid[i] = true;
           in->predict_base_pc[i] = actual.pc[i];
           if (actual.pc[i] != pred.predict_base_pc[i]) {
-            DEBUG_LOG("pc mismatch: %x != %x\n", actual.pc[i],
-                      pred.predict_base_pc[i]);
+            printf("pc mismatch: %x != %x\n", actual.pc[i],
+                   pred.predict_base_pc[i]);
             exit(1);
           }
           in->predict_dir[i] = pred.predict_dir[i];
@@ -189,7 +189,7 @@ int main() {
   printf("[test_env] IO_version OFF\n");
 #endif
   srand(time(0));
-  test_env_checker(100000);
+  test_env_checker(1000000);
   printf("\n=== Branch Prediction Statistics ===\n");
   printf("Total Predictions: %lu\n", total_predictions);
   printf("Correct Predictions: %lu\n", correct_predictions);
