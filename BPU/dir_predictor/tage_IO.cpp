@@ -269,6 +269,7 @@ HR_IO *hr_IO;
 
 pred_out C_TAGE_do_pred(uint32_t pc) {
 
+  pred_IO1 = &IO1;
   pred_IO1->pc = pc;
   for (int k = 0; k < FH_N_MAX; k++) {
     for (int i = 0; i < TN_MAX; i++) {
@@ -278,6 +279,7 @@ pred_out C_TAGE_do_pred(uint32_t pc) {
 
   TAGE_pred_1(pred_IO1);
 
+  pred_IO2 = &IO2;
   pred_IO2->base_cnt = base_counter[pred_IO1->base_idx];
   for (int i = 0; i < TN_MAX; i++) {
     pred_IO2->cnt_read[i] = cnt_table[i][pred_IO1->index[i]];
@@ -296,6 +298,7 @@ pred_out C_TAGE_do_pred(uint32_t pc) {
 }
 
 void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
+  upd_IO = &IO3;
   // prepare Input
   upd_IO->pc = pc;
   upd_IO->real_dir = real_dir;
@@ -347,6 +350,7 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   u_clear_cnt = upd_IO->u_clear_cnt_wdata;
   /*}*/
 
+  hr_IO = &IO4;
   // update History regs
   for (int k = 0; k < FH_N_MAX; k++) {
     for (int i = 0; i < TN_MAX; i++) {
