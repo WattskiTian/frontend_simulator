@@ -1,6 +1,6 @@
 # 支持超标量的前端模拟器
 
-C++实现的前端模拟器，支持超标量, IO生成器版本仍在施工中...
+C++实现的前端模拟器，支持超标量，IO生成器版本仍在施工中...
 
 以FETCH_WIDTH=4为例，BPU基本结构图如下：
 
@@ -18,6 +18,10 @@ test_env.cpp为测试环境，可以检查模拟器是否正常工作
 
 ![test-env-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/test_env.svg)
 
+tage_IO部分基本结构:
+
+![tage_IO-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/tageIO.svg)
+
 文件目录：
 
 ```
@@ -33,6 +37,7 @@ test_env.cpp为测试环境，可以检查模拟器是否正常工作
 │   │   ├── demo_tage.h
 │   │   ├── loop_pred.h
 │   │   ├── tage_IO.cpp
+│   │   ├── tage_IO.h
 │   │   ├── tage_types.h
 │   │   ├── utils.cpp
 │   │   └── utils.h
@@ -40,6 +45,10 @@ test_env.cpp为测试环境，可以检查模拟器是否正常工作
 │       ├── BTB
 │       ├── btb.cpp
 │       └── btb.h
+├── IO_train
+│   ├── IO_cvt.cpp
+│   ├── IO_cvt.h
+│   └── tage_func.h
 ├── Makefile
 ├── README.md
 ├── fifo
@@ -54,13 +63,16 @@ test_env.cpp为测试环境，可以检查模拟器是否正常工作
 │   └── icache.cpp
 ├── log
 │   ├── simple_front_log
-│   ├── tage_log
 │   ├── tage_log2
 │   └── test_env_log
+├── sequential_components
+│   ├── seq_comp.cpp
+│   └── seq_comp.h
 ├── svg
 │   ├── BPU_arch.svg
 │   ├── front.svg
 │   ├── front_end_top.svg
+│   ├── tageIO.svg
 │   └── test_env.svg
 ├── test
 └── test_env.cpp
