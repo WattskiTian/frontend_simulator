@@ -24,7 +24,7 @@ SRC_FRONTED = fronted_main.cpp $(SRC_DIR_PRED)/demo_tage.cpp $(SRC_TARGET_PRED)/
 SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
                $(wildcard $(SRC_ICACHE)/*.cpp) \
                $(wildcard $(SRC_FIFO)/*.cpp) \
-               $(SRC_TARGET_PRED)/btb.cpp \
+			   $(wildcard $(SRC_TARGET_PRED)/*.cpp) \
 			   $(SRC_DIR_PRED)/tage_IO.cpp \
 			   $(wildcard $(SRC_SEQ_COMP)/*.cpp) \
             #    $(SRC_DIR_PRED)/demo_tage.cpp \

@@ -3,6 +3,8 @@
 #include <sys/types.h>
 
 #include "../../frontend.h"
+#include "ras.h"
+#include "target_cache.h"
 
 #define BTB_ENTRY_NUM 2048
 #define BTB_TAG_LEN 8
@@ -23,69 +25,15 @@ uint32_t btb_lru[BTB_ENTRY_NUM];
 #define BR_RET 2
 #define BR_IDIRECT 3
 
-// RAS
-#define RAS_ENTRY_NUM 64
-#define RAS_CNT_LEN 8 // cnt for repeated call
-uint32_t ras[RAS_ENTRY_NUM];
-uint32_t ras_cnt[RAS_ENTRY_NUM];
-uint32_t ras_sp;
-
-// TARGET_CAHCE
-#define TC_ENTRY_NUM 2048
-#define BHT_ENTRY_NUM 2048
-#define BHT_LEN 32
-uint32_t bht[BHT_ENTRY_NUM];
-uint32_t target_cache[TC_ENTRY_NUM];
-
-uint32_t tc_pred(uint32_t pc) {
-  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
-  uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
-  return target_cache[tc_idx];
-}
-
-void bht_update(uint32_t pc, bool pc_dir) {
-  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
-  bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
-}
-
-// if needed. firest do tc_update, then update bht
-void tc_update(uint32_t pc, uint32_t actualAddr) {
-  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
-  uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
-  target_cache[tc_idx] = actualAddr;
-}
-
-void ras_push(uint32_t addr) {
-  if (addr == ras[ras_sp]) {
-    ras_cnt[ras_sp]++;
-    return;
-  }
-  ras_sp = (ras_sp + 1) % RAS_ENTRY_NUM;
-  ras[ras_sp] = addr;
-  ras_cnt[ras_sp] = 1;
-}
-
-uint32_t ras_pop() {
-  if (ras_cnt[ras_sp] > 1) {
-    ras_cnt[ras_sp]--;
-    return ras[ras_sp];
-  } else if (ras_cnt[ras_sp] == 1) {
-    ras_cnt[ras_sp] = 0;
-    ras_sp = (ras_sp + RAS_ENTRY_NUM - 1) % RAS_ENTRY_NUM;
-    return ras[ras_sp + 1];
-  } else
-    return -1; // null on top
-}
-
 uint32_t btb_get_tag(uint32_t pc) { return (pc >> BTB_IDX_LEN) & BTB_TAG_MASK; }
 
 uint32_t btb_get_idx(uint32_t pc) { return pc & BTB_IDX_MASK; }
 
 // only for statistic
-uint64_t dir_cnt = 0;
-uint64_t call_cnt = 0;
-uint64_t ret_cnt = 0;
-uint64_t indir_cnt = 0;
+// uint64_t dir_cnt = 0;
+// uint64_t call_cnt = 0;
+// uint64_t ret_cnt = 0;
+// uint64_t indir_cnt = 0;
 
 void update_lru(uint32_t idx, int way) {
   uint32_t current_age = (btb_lru[idx] >> (way * 2)) & 0x3;
@@ -116,17 +64,17 @@ uint32_t btb_pred(uint32_t pc) {
 
       uint32_t br_type = btb_br_type[way][idx];
       if (br_type == BR_DIRECT) {
-        dir_cnt++;
+        // dir_cnt++;
         return btb_bta[way][idx];
       } else if (br_type == BR_CALL) {
-        call_cnt++;
+        // call_cnt++;
         ras_push(pc + 4);
         return btb_bta[way][idx];
       } else if (br_type == BR_RET) {
-        ret_cnt++;
+        // ret_cnt++;
         return ras_pop();
       } else {
-        indir_cnt++;
+        // indir_cnt++;
         return tc_pred(pc);
       }
     }
