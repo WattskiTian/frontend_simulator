@@ -1,5 +1,4 @@
 #include "seq_comp.h"
-
 // stores all the sequential components as GLOBAL variables
 
 uint32_t u_clear_cnt;

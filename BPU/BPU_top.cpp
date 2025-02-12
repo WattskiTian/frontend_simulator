@@ -43,12 +43,20 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
       }
     }
   }
+#ifndef IO_version
   for (int i = 0; i < COMMIT_WIDTH; i++) {
     if (in->back2front_valid[i]) {
       do_GHR_update(in->actual_dir[i]);
       TAGE_update_FH(in->actual_dir[i]);
     }
   }
+#else
+  for (int i = 0; i < COMMIT_WIDTH; i++) {
+    if (in->back2front_valid[i]) {
+      C_TAGE_update_HR(in->actual_dir[i]);
+    }
+  }
+#endif
   // do branch prediction
   // traverse instructions in fetch_group, find the first TAGE prediction
   // that is taken

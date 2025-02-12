@@ -306,14 +306,27 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   upd_IO->alt_pred = pred_out.altpred;
   upd_IO->pcpn = pred_out.pcpn;
   upd_IO->altpcpn = pred_out.altpcpn;
+
+  // now FH is not updated yet!
+  uint32_t index[TN_MAX];
   for (int i = 0; i < TN_MAX; i++) {
-    upd_IO->useful_read[i] = useful_table[i][pred_IO1->index[i]];
-    upd_IO->cnt_read[i] = cnt_table[i][pred_IO1->index[i]];
+    index[i] = FH[0][i] ^ (pc >> 2) & (0xfff); // cal index
   }
-  upd_IO->base_read = base_counter[pred_IO1->base_idx];
-  upd_IO->lsfr = random();
   for (int i = 0; i < TN_MAX; i++) {
-    upd_IO->tag_pc[i] = pred_IO1->tag_pc[i];
+    upd_IO->useful_read[i] = useful_table[i][index[i]];
+    upd_IO->cnt_read[i] = cnt_table[i][index[i]];
+  }
+  uint32_t base_idx = pc % BASE_ENTRY_NUM;
+  upd_IO->base_read = base_counter[base_idx];
+  upd_IO->lsfr = random();
+
+  // now FH is not updated yet!
+  uint32_t tag_pc[TN_MAX];
+  for (int i = 0; i < TN_MAX; i++) {
+    tag_pc[i] = FH[1][i] ^ FH[2][i] ^ (pc >> 2) & (0xff); // cal tag
+  }
+  for (int i = 0; i < TN_MAX; i++) {
+    upd_IO->tag_pc[i] = tag_pc[i];
   }
   upd_IO->u_clear_cnt_read = u_clear_cnt;
 
@@ -323,17 +336,17 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   // access sequential components
   for (int i = 0; i < TN_MAX; i++) {
     if (upd_IO->useful_ctrl[i] != 0) {
-      useful_table[i][pred_IO1->index[i]] = upd_IO->useful_wdata[i];
+      useful_table[i][index[i]] = upd_IO->useful_wdata[i];
     }
     if (upd_IO->cnt_ctrl[i] != 0) {
-      cnt_table[i][pred_IO1->index[i]] = upd_IO->cnt_wdata[i];
+      cnt_table[i][index[i]] = upd_IO->cnt_wdata[i];
     }
     if (upd_IO->tag_ctrl[i] != 0) {
-      tag_table[i][pred_IO1->index[i]] = upd_IO->tag_wdata[i];
+      tag_table[i][index[i]] = upd_IO->tag_wdata[i];
     }
   }
   if (upd_IO->base_ctrl != 0) {
-    base_counter[pred_IO1->base_idx] = upd_IO->base_wdata;
+    base_counter[base_idx] = upd_IO->base_wdata;
   }
   if (upd_IO->u_clear_ctrl != 0) {
     if ((upd_IO->u_clear_ctrl & 0x1) == 1) {
@@ -349,7 +362,9 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   /*if (upd_IO->u_clear_cnt_wen) {*/
   u_clear_cnt = upd_IO->u_clear_cnt_wdata;
   /*}*/
+}
 
+void C_TAGE_update_HR(bool new_history) {
   hr_IO = &IO4;
   // update History regs
   for (int k = 0; k < FH_N_MAX; k++) {
@@ -360,7 +375,7 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   for (int i = 0; i < GHR_LENGTH; i++) {
     hr_IO->GHR_old[i] = GHR[i];
   }
-  hr_IO->new_history = real_dir;
+  hr_IO->new_history = new_history;
 
   // do the logic
   TAGE_update_HR(hr_IO);
@@ -375,6 +390,7 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
     GHR[i] = hr_IO->GHR_new[i];
   }
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 

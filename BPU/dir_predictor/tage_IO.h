@@ -10,5 +10,6 @@ struct pred_out {
 };
 pred_out C_TAGE_do_pred(uint32_t pc);
 void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out);
+void C_TAGE_update_HR(bool new_history);
 
 #endif // TAGE_IO_H
