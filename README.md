@@ -2,6 +2,13 @@
 
 C++实现的前端模拟器，支持超标量，IO生成器版本仍在施工中...
 
+使用方法：
+
+```
+make testenv # 运行测试环境
+make testenv_IO # 运行测试环境（IO版本）
+```
+
 以FETCH_WIDTH=4为例，BPU基本结构图如下：
 
 ![BPU-top-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/BPU_arch.svg)
@@ -29,18 +36,20 @@ tage_IO部分基本结构:
 ├── BPU
 │   ├── BPU_top.cpp
 │   ├── dir_predictor
-│   │   ├── demo_loop.cpp
-│   │   ├── demo_ltage.cpp
 │   │   ├── demo_tage
 │   │   ├── demo_tage.cpp
 │   │   ├── demo_tage.gdb
 │   │   ├── demo_tage.h
-│   │   ├── loop_pred.h
-│   │   ├── tage_IO.cpp
-│   │   ├── tage_IO.h
-│   │   ├── tage_types.h
-│   │   ├── utils.cpp
-│   │   └── utils.h
+│   │   ├── dir_predictor_IO
+│   │   │   ├── tage_IO.cpp
+│   │   │   └── tage_types.h
+│   │   ├── experimential_demo
+│   │   │   ├── demo_loop.cpp
+│   │   │   ├── demo_ltage.cpp
+│   │   │   ├── loop_pred.h
+│   │   │   ├── utils.cpp
+│   │   │   └── utils.h
+│   │   └── tage_IO.h
 │   └── target_predictor
 │       ├── BTB
 │       ├── btb.cpp
@@ -48,7 +57,12 @@ tage_IO部分基本结构:
 │       ├── ras.cpp
 │       ├── ras.h
 │       ├── target_cache.cpp
-│       └── target_cache.h
+│       ├── target_cache.h
+│       └── target_predictor_IO
+│           ├── btb_IO.cpp
+│           ├── ras_IO.cpp
+│           ├── target_cache_IO.cpp
+│           └── target_predictor_types.h
 ├── IO_train
 │   ├── IO_cvt.cpp
 │   ├── IO_cvt.h
@@ -68,6 +82,7 @@ tage_IO部分基本结构:
 ├── log
 │   ├── simple_front_log
 │   ├── tage_log2
+│   ├── test_env_IO_log
 │   └── test_env_log
 ├── sequential_components
 │   ├── seq_comp.cpp
@@ -79,5 +94,6 @@ tage_IO部分基本结构:
 │   ├── tageIO.svg
 │   └── test_env.svg
 ├── test
-└── test_env.cpp
+├── test_env.cpp
+└── test_env_IO
 ```

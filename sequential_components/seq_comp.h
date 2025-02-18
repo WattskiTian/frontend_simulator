@@ -5,6 +5,7 @@
 
 // the defination of all sequential components
 
+/////////////////////TAGE/////////////////////
 #define BASE_ENTRY_NUM 2048
 /*#define GHR_LENGTH 256*/
 #define GHR_LENGTH 256
@@ -23,5 +24,18 @@ extern uint8_t cnt_table[TN_MAX][TN_ENTRY_NUM];
 extern uint8_t useful_table[TN_MAX][TN_ENTRY_NUM];
 extern const uint32_t ghr_length[TN_MAX];
 extern const uint32_t fh_length[FH_N_MAX][TN_MAX];
+
+/////////////////////TAGE/////////////////////
+
+/////////////////////TARGET CACHE/////////////////////
+
+#define TC_ENTRY_NUM 2048
+#define BHT_ENTRY_NUM 2048
+#define BHT_LEN 32
+
+extern uint32_t bht[BHT_ENTRY_NUM];
+extern uint32_t target_cache[TC_ENTRY_NUM];
+
+/////////////////////TARGET CACHE/////////////////////
 
 #endif

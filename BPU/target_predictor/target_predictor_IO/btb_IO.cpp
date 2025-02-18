@@ -6,6 +6,7 @@
 #include "btb.h"
 #include "ras.h"
 #include "target_cache.h"
+#include "target_predictor_types.h"
 
 uint32_t btb_tag[BTB_WAY_NUM][BTB_ENTRY_NUM];
 uint32_t btb_bta[BTB_WAY_NUM][BTB_ENTRY_NUM];
@@ -23,54 +24,52 @@ uint32_t btb_get_idx(uint32_t pc) { return pc & BTB_IDX_MASK; }
 // uint64_t ret_cnt = 0;
 // uint64_t indir_cnt = 0;
 
-void update_lru(uint32_t idx, int way) {
-  uint32_t current_age = (btb_lru[idx] >> (way * 2)) & 0x3;
-
-  // update all older ways, but not exceed 3
-  for (int i = 0; i < BTB_WAY_NUM; i++) {
-    uint32_t age = (btb_lru[idx] >> (i * 2)) & 0x3;
-    if (age < current_age) {
-      uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
-      // clear current age
-      btb_lru[idx] &= ~(0x3 << (i * 2));
-      // set new age
-      btb_lru[idx] |= (new_age << (i * 2));
-    }
-  }
-
-  // set current way to latest
-  btb_lru[idx] &= ~(0x3 << (way * 2));
+void btb_pred1(struct btb_pred1_In *in, struct btb_pred1_Out *out) {
+  out->btb_idx = btb_get_idx(in->pc);
+  out->btb_tag = btb_get_tag(in->pc);
 }
 
-uint32_t btb_pred(uint32_t pc) {
-  uint32_t idx = btb_get_idx(pc);
-  uint32_t tag = btb_get_tag(pc);
-  // printf("[btb_pred] idx: %x, tag: %x, pc: %x\n", idx, tag, pc);
+uint32_t btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
+  // TODO : reset all outputs to prevent previous values
+
   // find match in all ways
   for (int way = 0; way < BTB_WAY_NUM; way++) {
-    if (btb_valid[way][idx] && btb_tag[way][idx] == tag) {
+    if (in->btb_valid_read[way] && in->btb_tag_read[way] == in->btb_tag) {
       // update LRU
-      update_lru(idx, way);
+      out->btb_lru_ctrl = 3; // alloc
+      uint32_t current_age = (in->btb_lru_read >> (way * 2)) & 0x3;
 
-      uint32_t br_type = btb_br_type[way][idx];
+      // update all older ways, but not exceed 3
+      for (int i = 0; i < BTB_WAY_NUM; i++) {
+        uint32_t age = (in->btb_lru_read >> (i * 2)) & 0x3;
+        if (age < current_age) {
+          uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
+          out->btb_lru_wdata = in->btb_lru_read & (~(0x3 << (i * 2)));
+          out->btb_lru_wdata |= (new_age << (i * 2));
+        }
+      }
+      // set current way to latest
+      out->btb_lru_wdata &= ~(0x3 << (way * 2));
+
+      uint8_t br_type = in->btb_br_type_read[way];
       if (br_type == BR_DIRECT) {
         // dir_cnt++;
-        return btb_bta[way][idx];
+        return in->btb_bta_read[way];
       } else if (br_type == BR_CALL) {
         // call_cnt++;
-        ras_push(pc + 4);
-        return btb_bta[way][idx];
+        ras_push(in->pc + 4);
+        return in->btb_bta_read[way];
       } else if (br_type == BR_RET) {
         // ret_cnt++;
         return ras_pop();
       } else {
         // indir_cnt++;
-        return tc_pred(pc);
+        return tc_pred(in->pc);
       }
     }
   }
   DEBUG_LOG("[btb_pred] btb miss");
-  return pc + 4; // btb miss
+  return in->pc + 4; // btb miss
 }
 
 void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,

@@ -4,7 +4,7 @@
 #include <cmath>
 #include <cstdint>
 
-#include "../../sequential_components/seq_comp.h"
+#include "../../../sequential_components/seq_comp.h"
 
 // cal tag + index for pred
 struct pred_1_IO {

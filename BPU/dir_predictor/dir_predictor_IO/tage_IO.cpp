@@ -1,4 +1,4 @@
-#include "../../sequential_components/seq_comp.h"
+#include "../../../sequential_components/seq_comp.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -258,7 +258,7 @@ void TAGE_do_update(update_IO *IO) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
-#include "tage_IO.h"
+#include "../tage_IO.h"
 // this is only for C_SIM
 // this is only for C_SIM
 // this is only for C_SIM
@@ -394,8 +394,8 @@ void C_TAGE_update_HR(bool new_history) {
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../IO_train/IO_cvt.h"
-#include "../../IO_train/tage_func.h"
+#include "../../../IO_train/IO_cvt.h"
+#include "../../../IO_train/tage_func.h"
 
 bool Out1_buf[OUT1_LENGTH];
 bool Out2_buf[OUT2_LENGTH];
