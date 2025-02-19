@@ -32,7 +32,7 @@ SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
 SRC_TEST_ENV_IO = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
                $(wildcard $(SRC_ICACHE)/*.cpp) \
                $(wildcard $(SRC_FIFO)/*.cpp) \
-			   $(wildcard $(SRC_TARGET_PRED)/*.cpp) \
+			   $(wildcard $(SRC_TARGET_PRED)/target_predictor_IO/*.cpp) \
 			   $(wildcard $(SRC_DIR_PRED)/dir_predictor_IO/*.cpp) \
 			   $(wildcard $(SRC_SEQ_COMP)/*.cpp) 
 

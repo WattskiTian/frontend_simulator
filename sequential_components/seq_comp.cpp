@@ -15,6 +15,20 @@ const uint32_t fh_length[FH_N_MAX][TN_MAX] = {8, 11, 11, 11, 8, 8,
                                               8, 8,  7,  7,  7, 7};
 /////////////////////TAGE/////////////////////
 
+/////////////////////BTB/////////////////////
+uint8_t btb_tag[BTB_WAY_NUM][BTB_ENTRY_NUM];
+uint32_t btb_bta[BTB_WAY_NUM][BTB_ENTRY_NUM];
+bool btb_valid[BTB_WAY_NUM][BTB_ENTRY_NUM];
+uint8_t btb_br_type[BTB_WAY_NUM][BTB_ENTRY_NUM];
+uint8_t btb_lru[BTB_ENTRY_NUM];
+/////////////////////BTB/////////////////////
+
+/////////////////////RAS/////////////////////
+uint32_t ras[RAS_ENTRY_NUM];
+uint32_t ras_cnt[RAS_ENTRY_NUM];
+uint32_t ras_sp;
+/////////////////////RAS/////////////////////
+
 /////////////////////TARGET CACHE/////////////////////
 uint32_t bht[BHT_ENTRY_NUM];
 uint32_t target_cache[TC_ENTRY_NUM];

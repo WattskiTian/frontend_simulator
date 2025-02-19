@@ -1,13 +1,14 @@
 #include "../front_IO.h"
 #include "../frontend.h"
-#include "./target_predictor/btb.h"
 #include <cstdint>
 #include <cstdio>
 
 #ifndef IO_version
 #include "./dir_predictor/demo_tage.h"
+#include "./target_predictor/btb.h"
 #else
-#include "./dir_predictor/tage_IO.h"
+#include "./dir_predictor/dir_predictor_IO/tage_IO.h"
+#include "./target_predictor/target_predictor_IO/btb_IO.h"
 #endif
 
 uint32_t pc_reg;
@@ -86,7 +87,11 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 
   if (found_taken_branch) {
     // only do BTB lookup for taken branches
+#ifndef IO_version
     uint32_t btb_target = btb_pred(branch_pc);
+#else
+    uint32_t btb_target = C_btb_pred(branch_pc);
+#endif
     out->predict_next_fetch_address = btb_target;
     DEBUG_LOG("[BPU_top] base pc: %x, btb_target: %x\n", branch_pc, btb_target);
   } else {

@@ -65,7 +65,7 @@ void test_env_checker(uint64_t step_count) {
     DEBUG_LOG("--------------------------------\n");
     // initialize
     if (!initialized) {
-      log_file = fopen("/home/watts/dhrystone/gem5output_rv/fronted_log", "r");
+      log_file = fopen("./log/dhrystone_front_log", "r");
       if (log_file == NULL) {
         DEBUG_LOG("Error: Cannot open log file\n");
         return;

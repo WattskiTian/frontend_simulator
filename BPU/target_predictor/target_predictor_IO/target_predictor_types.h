@@ -1,8 +1,8 @@
 #ifndef TARGET_PREDICTOR_TYPES_H
 #define TARGET_PREDICTOR_TYPES_H
 
-#include "../../sequential_components/seq_comp.h"
-#include "btb.h"
+#include "../../../sequential_components/seq_comp.h"
+#include "btb_IO.h"
 #include <cstdint>
 
 struct btb_pred1_In {
