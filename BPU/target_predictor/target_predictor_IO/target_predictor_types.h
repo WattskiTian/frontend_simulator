@@ -47,12 +47,20 @@ struct ras_push_Out {
   uint32_t ras_wdata;
 };
 
-struct tc_pred_In {
+struct tc_pred1_In {
+  uint32_t pc;
+};
+
+struct tc_pred1_Out {
+  uint32_t bht_idx;
+};
+
+struct tc_pred2_In {
   uint32_t pc;
   uint32_t bht_read;
 };
 
-struct tc_pred_Out {
+struct tc_pred2_Out {
   uint32_t tc_idx;
 };
 

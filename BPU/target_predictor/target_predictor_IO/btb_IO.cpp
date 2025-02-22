@@ -60,21 +60,21 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
   for (int way = 0; way < BTB_WAY_NUM; way++) {
     if (in->btb_valid_read[way] && in->btb_tag_read[way] == in->btb_tag) {
       // // update LRU
-      // out->btb_lru_ctrl = 3; // alloc
-      // uint32_t current_age = (in->btb_lru_read >> (way * 2)) & 0x3;
+      out->btb_lru_ctrl = 3; // alloc
+      uint32_t current_age = (in->btb_lru_read >> (way * 2)) & 0x3;
 
-      // // update all older ways, but not exceed 3
-      // for (int i = 0; i < BTB_WAY_NUM; i++) {
-      //   uint32_t age = (in->btb_lru_read >> (i * 2)) & 0x3;
-      //   if (age < current_age) {
-      //     uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
-      //     out->btb_lru_wdata = in->btb_lru_read & (~(0x3 << (i * 2)));
-      //     out->btb_lru_wdata |= (new_age << (i * 2));
-      //   }
-      // }
-      // // set current way to latest
-      // out->btb_lru_wdata &= ~(0x3 << (way * 2));
-      update_lru(in->btb_idx, way);
+      // update all older ways, but not exceed 3
+      for (int i = 0; i < BTB_WAY_NUM; i++) {
+        uint32_t age = (in->btb_lru_read >> (i * 2)) & 0x3;
+        if (age < current_age) {
+          uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
+          out->btb_lru_wdata = in->btb_lru_read & (~(0x3 << (i * 2)));
+          out->btb_lru_wdata |= (new_age << (i * 2));
+        }
+      }
+      // set current way to latest
+      out->btb_lru_wdata &= ~(0x3 << (way * 2));
+      // update_lru(in->btb_idx, way);
 
       uint8_t br_type = in->btb_br_type_read[way];
       if (br_type == BR_DIRECT) {
@@ -92,7 +92,8 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
         return;
       } else {
         // indir_cnt++;
-        out->btb_pred_addr = tc_pred(in->pc);
+        // out->btb_pred_addr = tc_pred(in->pc);
+        out->btb_pred_addr = C_tc_pred(in->pc);
         return;
       }
     }
@@ -162,19 +163,19 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
   }
 }
 
-struct btb_pred1_In pred1_in;
-struct btb_pred1_Out pred1_out;
-struct btb_pred2_In pred2_in;
-struct btb_pred2_Out pred2_out;
+struct btb_pred1_In btb_pred1_in;
+struct btb_pred1_Out btb_pred1_out;
+struct btb_pred2_In btb_pred2_in;
+struct btb_pred2_Out btb_pred2_out;
 
 uint32_t C_btb_pred(uint32_t pc) {
-  struct btb_pred1_In *in1 = &pred1_in;
+  struct btb_pred1_In *in1 = &btb_pred1_in;
   in1->pc = pc;
-  struct btb_pred1_Out *out1 = &pred1_out;
+  struct btb_pred1_Out *out1 = &btb_pred1_out;
   btb_pred1(in1, out1);
   uint32_t btb_idx = out1->btb_idx;
-  struct btb_pred2_In *in2 = &pred2_in;
-  struct btb_pred2_Out *out2 = &pred2_out;
+  struct btb_pred2_In *in2 = &btb_pred2_in;
+  struct btb_pred2_Out *out2 = &btb_pred2_out;
   in2->pc = pc;
   in2->btb_idx = btb_idx;
   in2->btb_tag = out1->btb_tag;

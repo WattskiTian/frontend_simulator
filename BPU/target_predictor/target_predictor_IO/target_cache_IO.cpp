@@ -9,7 +9,31 @@ uint32_t tc_pred(uint32_t pc) {
   return target_cache[tc_idx];
 }
 
-void C_tc_pred(struct tc_pred_In *in, struct tc_pred_Out *out) {}
+void tc_pred1(struct tc_pred1_In *in, struct tc_pred1_Out *out) {
+  out->bht_idx = in->pc % BHT_ENTRY_NUM;
+}
+
+void tc_pred2(struct tc_pred2_In *in, struct tc_pred2_Out *out) {
+  out->tc_idx = (in->bht_read ^ in->pc) % TC_ENTRY_NUM;
+}
+
+struct tc_pred1_In tc_pred1_in;
+struct tc_pred1_Out tc_pred1_out;
+struct tc_pred2_In tc_pred2_in;
+struct tc_pred2_Out tc_pred2_out;
+
+uint32_t C_tc_pred(uint32_t pc) {
+  struct tc_pred1_In *in1 = &tc_pred1_in;
+  struct tc_pred1_Out *out1 = &tc_pred1_out;
+  in1->pc = pc;
+  tc_pred1(in1, out1);
+  struct tc_pred2_In *in2 = &tc_pred2_in;
+  struct tc_pred2_Out *out2 = &tc_pred2_out;
+  in2->bht_read = bht[out1->bht_idx];
+  in2->pc = pc;
+  tc_pred2(in2, out2);
+  return target_cache[out2->tc_idx];
+}
 
 void bht_update(uint32_t pc, bool pc_dir) {
   uint32_t bht_idx = pc % BHT_ENTRY_NUM;
