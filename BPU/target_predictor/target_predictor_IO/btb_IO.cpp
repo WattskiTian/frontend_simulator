@@ -165,6 +165,127 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
   }
 }
 
+void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
+  // reset all outputs to prevent previous values
+  for (int i = 0; i < BTB_WAY_NUM; i++) {
+    out->btb_valid_ctrl[i] = 0;
+    out->btb_valid_wdata[i] = 0;
+    out->btb_tag_ctrl[i] = 0;
+    out->btb_tag_wdata[i] = 0;
+    out->btb_lru_ctrl = 0;
+    out->btb_lru_wdata = 0;
+    out->btb_br_type_ctrl[i] = 0;
+    out->btb_br_type_wdata[i] = 0;
+    out->btb_bta_ctrl[i] = 0;
+    out->btb_bta_wdata[i] = 0;
+  }
+
+  // find match in all ways
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    if (in->btb_valid_read[way] && in->btb_tag_read[way] == in->btb_tag) {
+      out->btb_bta_ctrl[way] = 3;
+      out->btb_bta_wdata[way] = in->actualAddr;
+      out->btb_br_type_ctrl[way] = 3;
+      out->btb_br_type_wdata[way] = in->br_type;
+
+      update_lru(in->btb_idx, way);
+
+      if (in->br_type == BR_IDIRECT) {
+        tc_update(in->pc, in->actualAddr);
+      }
+      return;
+    }
+  }
+
+  // find empty way
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    if (!in->btb_valid_read[way]) {
+      out->btb_valid_ctrl[way] = 3;
+      out->btb_valid_wdata[way] = true;
+      out->btb_tag_ctrl[way] = 3;
+      out->btb_tag_wdata[way] = in->btb_tag;
+      out->btb_bta_ctrl[way] = 3;
+      out->btb_bta_wdata[way] = in->actualAddr;
+      out->btb_br_type_ctrl[way] = 3;
+      out->btb_br_type_wdata[way] = in->br_type;
+
+      update_lru(in->btb_idx, way);
+
+      if (in->br_type == BR_IDIRECT) {
+        tc_update(in->pc, in->actualAddr);
+      }
+      return;
+    }
+  }
+
+  // all ways are occupied, find LRU way to replace
+  int lru_way = 0;
+  uint32_t max_age = 0;
+  for (int way = 0; way < BTB_WAY_NUM; way++) {
+    uint32_t age = (in->btb_lru_read >> (way * 2)) & 0x3;
+    if (age > max_age) {
+      max_age = age;
+      lru_way = way;
+    }
+  }
+
+  // replace LRU way
+  out->btb_valid_ctrl[lru_way] = 3;
+  out->btb_valid_wdata[lru_way] = true;
+  out->btb_tag_ctrl[lru_way] = 3;
+  out->btb_tag_wdata[lru_way] = in->btb_tag;
+  out->btb_bta_ctrl[lru_way] = 3;
+  out->btb_bta_wdata[lru_way] = in->actualAddr;
+  out->btb_br_type_ctrl[lru_way] = 3;
+  out->btb_br_type_wdata[lru_way] = in->br_type;
+
+  update_lru(in->btb_idx, lru_way);
+
+  if (in->br_type == BR_IDIRECT) {
+    tc_update(in->pc, in->actualAddr);
+  }
+}
+
+struct btb_update_In btb_update_in;
+struct btb_update_Out btb_update_out;
+void C_btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
+                  bool actualdir) {
+  struct btb_update_In *in = &btb_update_in;
+  struct btb_update_Out *out = &btb_update_out;
+  in->pc = pc;
+  in->actualAddr = actualAddr;
+  in->actual_dir = actualdir;
+  in->br_type = br_type;
+  in->btb_idx = btb_get_idx(pc);
+  in->btb_tag = btb_get_tag(pc);
+  for (int i = 0; i < BTB_WAY_NUM; i++) {
+    in->btb_valid_read[i] = btb_valid[i][in->btb_idx];
+    in->btb_tag_read[i] = btb_tag[i][in->btb_idx];
+    in->btb_br_type_read[i] = btb_br_type[i][in->btb_idx];
+    in->btb_bta_read[i] = btb_bta[i][in->btb_idx];
+  }
+  in->btb_lru_read = btb_lru[in->btb_idx];
+  btb_update_IO(in, out);
+  // update registers
+  for (int i = 0; i < BTB_WAY_NUM; i++) {
+    if (out->btb_valid_ctrl[i] != 0) {
+      btb_valid[i][in->btb_idx] = out->btb_valid_wdata[i];
+    }
+    if (out->btb_tag_ctrl[i] != 0) {
+      btb_tag[i][in->btb_idx] = out->btb_tag_wdata[i];
+    }
+    if (out->btb_br_type_ctrl[i] != 0) {
+      btb_br_type[i][in->btb_idx] = out->btb_br_type_wdata[i];
+    }
+    if (out->btb_bta_ctrl[i] != 0) {
+      btb_bta[i][in->btb_idx] = out->btb_bta_wdata[i];
+    }
+  }
+  if (out->btb_lru_ctrl != 0) {
+    btb_lru[in->btb_idx] = out->btb_lru_wdata;
+  }
+}
+
 struct btb_pred1_In btb_pred1_in;
 struct btb_pred1_Out btb_pred1_out;
 struct btb_pred2_In btb_pred2_in;

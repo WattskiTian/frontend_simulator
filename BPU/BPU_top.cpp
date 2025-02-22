@@ -39,8 +39,13 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #endif
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
       if (in->actual_dir[i] == true) {
+#ifndef IO_version
         btb_update(in->predict_base_pc[i], in->refetch_address,
                    in->actual_br_type[i], in->actual_dir[i]);
+#else
+        C_btb_update(in->predict_base_pc[i], in->refetch_address,
+                     in->actual_br_type[i], in->actual_dir[i]);
+#endif
       }
     }
   }

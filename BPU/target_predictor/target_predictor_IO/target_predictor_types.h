@@ -31,6 +31,33 @@ struct btb_pred2_Out {
   uint32_t btb_pred_addr;
 };
 
+struct btb_update_In {
+  uint32_t pc;
+  uint32_t actualAddr;
+  uint32_t br_type;
+  bool actual_dir;
+  uint32_t btb_idx;
+  uint8_t btb_tag;
+  bool btb_valid_read[BTB_WAY_NUM];
+  uint8_t btb_tag_read[BTB_WAY_NUM];
+  uint8_t btb_lru_read;
+  uint8_t btb_br_type_read[BTB_ENTRY_NUM];
+  uint32_t btb_bta_read[BTB_ENTRY_NUM];
+};
+
+struct btb_update_Out {
+  uint8_t btb_valid_ctrl[BTB_WAY_NUM];
+  bool btb_valid_wdata[BTB_WAY_NUM];
+  uint8_t btb_tag_ctrl[BTB_WAY_NUM];
+  uint8_t btb_tag_wdata[BTB_WAY_NUM];
+  uint8_t btb_lru_ctrl;
+  uint8_t btb_lru_wdata;
+  uint8_t btb_br_type_ctrl[BTB_ENTRY_NUM];
+  uint8_t btb_br_type_wdata[BTB_ENTRY_NUM];
+  uint32_t btb_bta_ctrl[BTB_ENTRY_NUM];
+  uint32_t btb_bta_wdata[BTB_ENTRY_NUM];
+};
+
 struct ras_push_In {
   uint32_t addr;
   uint32_t ras_read;
@@ -58,8 +85,6 @@ struct ras_pop_Out {
   uint8_t ras_cnt_wdata;
   uint32_t ras_sp_ctrl;
   uint32_t ras_sp_wdata;
-  uint8_t ras_ctrl;
-  uint32_t ras_wdata;
   uint32_t ras_pop_value;
 };
 
