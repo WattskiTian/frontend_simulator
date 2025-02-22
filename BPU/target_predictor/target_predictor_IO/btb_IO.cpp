@@ -48,6 +48,14 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
   out->btb_lru_wdata = 0;
   out->btb_pred_addr = 0;
 
+  DEBUG_LOG("btb_pred2: pc: %x, btb_idx: %x, btb_tag: %x\n", in->pc,
+            in->btb_idx, in->btb_tag);
+  for (int i = 0; i < BTB_WAY_NUM; i++) {
+    DEBUG_LOG("btb_pred2: btb_valid_read[%d]: %x, btb_tag_read[%d]: %x, "
+              "btb_br_type_read[%d]: %x, btb_bta_read[%d]: %x\n",
+              i, in->btb_valid_read[i], i, in->btb_tag_read[i], i,
+              in->btb_br_type_read[i], i, in->btb_bta_read[i]);
+  }
   // find match in all ways
   for (int way = 0; way < BTB_WAY_NUM; way++) {
     if (in->btb_valid_read[way] && in->btb_tag_read[way] == in->btb_tag) {
@@ -72,21 +80,26 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
       if (br_type == BR_DIRECT) {
         // dir_cnt++;
         out->btb_pred_addr = in->btb_bta_read[way];
+        return;
       } else if (br_type == BR_CALL) {
         // call_cnt++;
         ras_push(in->pc + 4);
         out->btb_pred_addr = in->btb_bta_read[way];
+        return;
       } else if (br_type == BR_RET) {
         // ret_cnt++;
         out->btb_pred_addr = ras_pop();
+        return;
       } else {
         // indir_cnt++;
         out->btb_pred_addr = tc_pred(in->pc);
+        return;
       }
     }
   }
   DEBUG_LOG("[btb_pred] btb miss");
   out->btb_pred_addr = in->pc + 4; // btb miss
+  return;
 }
 
 void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,

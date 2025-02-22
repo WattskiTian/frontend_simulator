@@ -189,6 +189,7 @@ int main() {
   printf("[test_env] IO_version OFF\n");
 #endif
   srand(time(0));
+  // test_env_checker(100);
   test_env_checker(1000000);
   printf("\n=== Branch Prediction Statistics ===\n");
   printf("Total Predictions: %lu\n", total_predictions);
