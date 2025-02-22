@@ -64,3 +64,24 @@ void tc_update(uint32_t pc, uint32_t actualAddr) {
   uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
   target_cache[tc_idx] = actualAddr;
 }
+
+void tc_update_IO(struct tc_update_In *in, struct tc_update_Out *out) {
+  out->tc_idx = (in->bht_read ^ in->pc) % TC_ENTRY_NUM;
+  out->tc_ctrl = 3;
+  out->tc_wdata = in->actualAddr;
+}
+
+struct tc_update_In tc_update_in;
+struct tc_update_Out tc_update_out;
+void C_tc_update(uint32_t pc, uint32_t actualAddr) {
+  struct tc_update_In *in = &tc_update_in;
+  struct tc_update_Out *out = &tc_update_out;
+  in->bht_read = bht[pc % BHT_ENTRY_NUM];
+  in->pc = pc;
+  in->actualAddr = actualAddr;
+  tc_update_IO(in, out);
+  // update registers
+  if (out->tc_ctrl != 0) {
+    target_cache[out->tc_idx] = out->tc_wdata;
+  }
+}

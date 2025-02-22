@@ -191,7 +191,8 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
       update_lru(in->btb_idx, way);
 
       if (in->br_type == BR_IDIRECT) {
-        tc_update(in->pc, in->actualAddr);
+        // tc_update(in->pc, in->actualAddr);
+        C_tc_update(in->pc, in->actualAddr);
       }
       return;
     }
@@ -212,7 +213,8 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
       update_lru(in->btb_idx, way);
 
       if (in->br_type == BR_IDIRECT) {
-        tc_update(in->pc, in->actualAddr);
+        // tc_update(in->pc, in->actualAddr);
+        C_tc_update(in->pc, in->actualAddr);
       }
       return;
     }
@@ -242,7 +244,8 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
   update_lru(in->btb_idx, lru_way);
 
   if (in->br_type == BR_IDIRECT) {
-    tc_update(in->pc, in->actualAddr);
+    // tc_update(in->pc, in->actualAddr);
+    C_tc_update(in->pc, in->actualAddr);
   }
 }
 

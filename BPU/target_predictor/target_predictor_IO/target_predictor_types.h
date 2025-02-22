@@ -117,9 +117,13 @@ struct bht_update_Out {
 
 struct tc_update_In {
   uint32_t pc;
-  uint32_t bht_read;
-  bool actual_dir;
   uint32_t actualAddr;
+  uint32_t bht_read;
 };
 
+struct tc_update_Out {
+  uint8_t tc_ctrl;
+  uint32_t tc_wdata;
+  uint32_t tc_idx;
+};
 #endif
