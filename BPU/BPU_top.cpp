@@ -6,9 +6,11 @@
 #ifndef IO_version
 #include "./dir_predictor/demo_tage.h"
 #include "./target_predictor/btb.h"
+#include "./target_predictor/target_cache.h"
 #else
 #include "./dir_predictor/dir_predictor_IO/tage_IO.h"
 #include "./target_predictor/target_predictor_IO/btb_IO.h"
+#include "./target_predictor/target_predictor_IO/target_cache_IO.h"
 #endif
 
 uint32_t pc_reg;
@@ -37,7 +39,11 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #else
       C_TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
 #endif
+#ifndef IO_version
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
+#else
+      C_bht_update(in->predict_base_pc[i], in->actual_dir[i]);
+#endif
       if (in->actual_dir[i] == true) {
 #ifndef IO_version
         btb_update(in->predict_base_pc[i], in->refetch_address,

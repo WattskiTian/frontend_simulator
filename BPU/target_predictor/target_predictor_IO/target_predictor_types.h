@@ -105,6 +105,16 @@ struct tc_pred2_Out {
   uint32_t tc_idx;
 };
 
+struct bht_update_In {
+  bool pc_dir;
+  uint32_t bht_read;
+};
+
+struct bht_update_Out {
+  uint8_t bht_ctrl;
+  uint8_t bht_wdata;
+};
+
 struct tc_update_In {
   uint32_t pc;
   uint32_t bht_read;

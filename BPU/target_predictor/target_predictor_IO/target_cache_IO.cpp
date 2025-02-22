@@ -40,6 +40,25 @@ void bht_update(uint32_t pc, bool pc_dir) {
   bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
 }
 
+void bht_update_IO(struct bht_update_In *in, struct bht_update_Out *out) {
+  out->bht_ctrl = 3;
+  out->bht_wdata = (in->bht_read << 1) | in->pc_dir;
+}
+
+struct bht_update_In bht_update_in;
+struct bht_update_Out bht_update_out;
+void C_bht_update(uint32_t pc, bool pc_dir) {
+  struct bht_update_In *in = &bht_update_in;
+  struct bht_update_Out *out = &bht_update_out;
+  in->pc_dir = pc_dir;
+  in->bht_read = bht[pc % BHT_ENTRY_NUM];
+  bht_update_IO(in, out);
+  // update registers
+  if (out->bht_ctrl != 0) {
+    bht[pc % BHT_ENTRY_NUM] = out->bht_wdata;
+  }
+}
+
 void tc_update(uint32_t pc, uint32_t actualAddr) {
   uint32_t bht_idx = pc % BHT_ENTRY_NUM;
   uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
