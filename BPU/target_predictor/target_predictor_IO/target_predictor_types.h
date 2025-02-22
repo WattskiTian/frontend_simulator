@@ -39,6 +39,7 @@ struct ras_push_In {
 };
 
 struct ras_push_Out {
+  // ras_reg idx is ras_sp
   uint8_t ras_cnt_ctrl;
   uint8_t ras_cnt_wdata;
   uint32_t ras_sp_ctrl;
