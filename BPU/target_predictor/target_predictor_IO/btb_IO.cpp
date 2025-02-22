@@ -89,7 +89,8 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
         return;
       } else if (br_type == BR_RET) {
         // ret_cnt++;
-        out->btb_pred_addr = ras_pop();
+        // out->btb_pred_addr = ras_pop();
+        out->btb_pred_addr = C_ras_pop();
         return;
       } else {
         // indir_cnt++;

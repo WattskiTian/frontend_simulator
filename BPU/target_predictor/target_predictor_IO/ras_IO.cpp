@@ -65,8 +65,55 @@ uint32_t ras_pop() {
     return ras[ras_sp];
   } else if (ras_cnt[ras_sp] == 1) {
     ras_cnt[ras_sp] = 0;
+    uint32_t ret = ras[ras_sp];
     ras_sp = (ras_sp + RAS_ENTRY_NUM - 1) % RAS_ENTRY_NUM;
-    return ras[ras_sp + 1];
+    return ret;
   } else
     return -1; // null on top
+}
+
+// ctrl : remain/inc/dec/alloc : 0123
+void ras_pop_IO(struct ras_pop_In *in, struct ras_pop_Out *out) {
+  // reset all outputs to prevent previous values
+  out->ras_cnt_ctrl = 0;
+  out->ras_cnt_wdata = 0;
+  out->ras_sp_ctrl = 0;
+  out->ras_sp_wdata = 0;
+  out->ras_pop_value = 0;
+
+  if (in->ras_cnt_read > 1) {
+    out->ras_cnt_ctrl = 2;
+    out->ras_cnt_wdata = in->ras_cnt_read - 1;
+    out->ras_pop_value = in->ras_read;
+    return;
+  }
+  if (in->ras_cnt_read == 1) {
+    out->ras_cnt_ctrl = 2;
+    out->ras_cnt_wdata = 0;
+    out->ras_sp_ctrl = 3;
+    out->ras_sp_wdata = (in->ras_sp_read + RAS_ENTRY_NUM - 1) % RAS_ENTRY_NUM;
+    out->ras_pop_value = in->ras_read;
+    return;
+  }
+  out->ras_pop_value = -1;
+  return;
+}
+
+struct ras_pop_In ras_pop_in;
+struct ras_pop_Out ras_pop_out;
+
+uint32_t C_ras_pop() {
+  struct ras_pop_In *in = &ras_pop_in;
+  struct ras_pop_Out *out = &ras_pop_out;
+  in->ras_read = ras[ras_sp];
+  in->ras_cnt_read = ras_cnt[ras_sp];
+  in->ras_sp_read = ras_sp;
+  ras_pop_IO(in, out);
+  if (out->ras_cnt_ctrl != 0) {
+    ras_cnt[in->ras_sp_read] = out->ras_cnt_wdata;
+  }
+  if (out->ras_sp_ctrl != 0) {
+    ras_sp = out->ras_sp_wdata;
+  }
+  return out->ras_pop_value;
 }

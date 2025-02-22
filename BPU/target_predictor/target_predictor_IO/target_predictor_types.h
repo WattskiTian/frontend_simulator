@@ -39,13 +39,28 @@ struct ras_push_In {
 };
 
 struct ras_push_Out {
-  // ras_reg idx is ras_sp
   uint8_t ras_cnt_ctrl;
   uint8_t ras_cnt_wdata;
   uint32_t ras_sp_ctrl;
   uint32_t ras_sp_wdata;
   uint8_t ras_ctrl;
   uint32_t ras_wdata;
+};
+
+struct ras_pop_In {
+  uint32_t ras_read;
+  uint8_t ras_cnt_read;
+  uint32_t ras_sp_read;
+};
+
+struct ras_pop_Out {
+  uint8_t ras_cnt_ctrl;
+  uint8_t ras_cnt_wdata;
+  uint32_t ras_sp_ctrl;
+  uint32_t ras_sp_wdata;
+  uint8_t ras_ctrl;
+  uint32_t ras_wdata;
+  uint32_t ras_pop_value;
 };
 
 struct tc_pred1_In {
