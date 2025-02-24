@@ -39,7 +39,7 @@ void ras_push_IO(struct ras_push_In *in, struct ras_push_Out *out) {
 struct ras_push_In ras_push_in;
 struct ras_push_Out ras_push_out;
 
-void C_ras_push(uint32_t addr) {
+void C_ras_push_wrapper(uint32_t addr) {
   struct ras_push_In *in = &ras_push_in;
   struct ras_push_Out *out = &ras_push_out;
   in->addr = addr;
@@ -102,7 +102,7 @@ void ras_pop_IO(struct ras_pop_In *in, struct ras_pop_Out *out) {
 struct ras_pop_In ras_pop_in;
 struct ras_pop_Out ras_pop_out;
 
-uint32_t C_ras_pop() {
+uint32_t C_ras_pop_wrapper() {
   struct ras_pop_In *in = &ras_pop_in;
   struct ras_pop_Out *out = &ras_pop_out;
   in->ras_read = ras[ras_sp];

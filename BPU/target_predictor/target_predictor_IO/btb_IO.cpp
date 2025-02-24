@@ -84,18 +84,18 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
       } else if (br_type == BR_CALL) {
         // call_cnt++;
         // ras_push(in->pc + 4);
-        C_ras_push(in->pc + 4);
+        C_ras_push_wrapper(in->pc + 4);
         out->btb_pred_addr = in->btb_bta_read[way];
         return;
       } else if (br_type == BR_RET) {
         // ret_cnt++;
         // out->btb_pred_addr = ras_pop();
-        out->btb_pred_addr = C_ras_pop();
+        out->btb_pred_addr = C_ras_pop_wrapper();
         return;
       } else {
         // indir_cnt++;
         // out->btb_pred_addr = tc_pred(in->pc);
-        out->btb_pred_addr = C_tc_pred(in->pc);
+        out->btb_pred_addr = C_tc_pred_wrapper(in->pc);
         return;
       }
     }
@@ -192,7 +192,7 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
 
       if (in->br_type == BR_IDIRECT) {
         // tc_update(in->pc, in->actualAddr);
-        C_tc_update(in->pc, in->actualAddr);
+        C_tc_update_wrapper(in->pc, in->actualAddr);
       }
       return;
     }
@@ -214,7 +214,7 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
 
       if (in->br_type == BR_IDIRECT) {
         // tc_update(in->pc, in->actualAddr);
-        C_tc_update(in->pc, in->actualAddr);
+        C_tc_update_wrapper(in->pc, in->actualAddr);
       }
       return;
     }
@@ -245,13 +245,13 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
 
   if (in->br_type == BR_IDIRECT) {
     // tc_update(in->pc, in->actualAddr);
-    C_tc_update(in->pc, in->actualAddr);
+    C_tc_update_wrapper(in->pc, in->actualAddr);
   }
 }
 
 struct btb_update_In btb_update_in;
 struct btb_update_Out btb_update_out;
-void C_btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
+void C_btb_update_wrapper(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
                   bool actualdir) {
   struct btb_update_In *in = &btb_update_in;
   struct btb_update_Out *out = &btb_update_out;
@@ -294,7 +294,7 @@ struct btb_pred1_Out btb_pred1_out;
 struct btb_pred2_In btb_pred2_in;
 struct btb_pred2_Out btb_pred2_out;
 
-uint32_t C_btb_pred(uint32_t pc) {
+uint32_t C_btb_pred_wrapper(uint32_t pc) {
   struct btb_pred1_In *in1 = &btb_pred1_in;
   in1->pc = pc;
   struct btb_pred1_Out *out1 = &btb_pred1_out;
@@ -314,10 +314,10 @@ uint32_t C_btb_pred(uint32_t pc) {
   in2->btb_lru_read = btb_lru[btb_idx];
   btb_pred2(in2, out2);
   uint32_t pred_npc = out2->btb_pred_addr;
-  // // update regs
-  // if (out2.btb_lru_ctrl != 0) {
-  //   btb_lru[btb_idx] = out2.btb_lru_wdata;
-  // }
+  // update regs
+  if (out2->btb_lru_ctrl != 0) {
+    btb_lru[btb_idx] = out2->btb_lru_wdata;
+  }
   return pred_npc;
 }
 // using namespace std;

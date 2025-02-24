@@ -3,11 +3,11 @@
 
 #include <cstdint>
 
-uint32_t C_btb_pred(uint32_t pc);
+uint32_t C_btb_pred_wrapper(uint32_t pc);
 void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
-                bool actualdir);
-void C_btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
-                  bool actualdir);
+                        bool actualdir);
+void C_btb_update_wrapper(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
+                         bool actualdir);
 void bht_update(uint32_t pc, bool actualdir);
 
 // extern uint64_t dir_cnt;

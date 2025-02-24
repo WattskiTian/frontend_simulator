@@ -8,8 +8,8 @@ struct pred_out {
   uint8_t pcpn;
   uint8_t altpcpn;
 };
-pred_out C_TAGE_do_pred(uint32_t pc);
-void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out);
-void C_TAGE_update_HR(bool new_history);
+pred_out C_TAGE_do_pred_wrapper(uint32_t pc);
+void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out);
+void C_TAGE_update_HR_wrapper(bool new_history);
 
 #endif // TAGE_IO_H

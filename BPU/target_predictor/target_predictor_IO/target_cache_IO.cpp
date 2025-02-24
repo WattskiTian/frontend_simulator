@@ -22,7 +22,7 @@ struct tc_pred1_Out tc_pred1_out;
 struct tc_pred2_In tc_pred2_in;
 struct tc_pred2_Out tc_pred2_out;
 
-uint32_t C_tc_pred(uint32_t pc) {
+uint32_t C_tc_pred_wrapper(uint32_t pc) {
   struct tc_pred1_In *in1 = &tc_pred1_in;
   struct tc_pred1_Out *out1 = &tc_pred1_out;
   in1->pc = pc;
@@ -47,7 +47,7 @@ void bht_update_IO(struct bht_update_In *in, struct bht_update_Out *out) {
 
 struct bht_update_In bht_update_in;
 struct bht_update_Out bht_update_out;
-void C_bht_update(uint32_t pc, bool pc_dir) {
+void C_bht_update_wrapper(uint32_t pc, bool pc_dir) {
   struct bht_update_In *in = &bht_update_in;
   struct bht_update_Out *out = &bht_update_out;
   in->pc_dir = pc_dir;
@@ -73,7 +73,7 @@ void tc_update_IO(struct tc_update_In *in, struct tc_update_Out *out) {
 
 struct tc_update_In tc_update_in;
 struct tc_update_Out tc_update_out;
-void C_tc_update(uint32_t pc, uint32_t actualAddr) {
+void C_tc_update_wrapper(uint32_t pc, uint32_t actualAddr) {
   struct tc_update_In *in = &tc_update_in;
   struct tc_update_Out *out = &tc_update_out;
   in->bht_read = bht[pc % BHT_ENTRY_NUM];

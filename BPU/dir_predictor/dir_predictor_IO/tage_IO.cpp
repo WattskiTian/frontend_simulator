@@ -267,7 +267,7 @@ pred_2_IO *pred_IO2;
 update_IO *upd_IO;
 HR_IO *hr_IO;
 
-pred_out C_TAGE_do_pred(uint32_t pc) {
+pred_out C_TAGE_do_pred_wrapper(uint32_t pc) {
 
   pred_IO1 = &IO1;
   pred_IO1->pc = pc;
@@ -297,7 +297,7 @@ pred_out C_TAGE_do_pred(uint32_t pc) {
   return pred_out;
 }
 
-void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
+void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
   upd_IO = &IO3;
   // prepare Input
   upd_IO->pc = pc;
@@ -364,7 +364,7 @@ void C_TAGE_do_update(uint32_t pc, bool real_dir, pred_out pred_out) {
   /*}*/
 }
 
-void C_TAGE_update_HR(bool new_history) {
+void C_TAGE_update_HR_wrapper(bool new_history) {
   hr_IO = &IO4;
   // update History regs
   for (int k = 0; k < FH_N_MAX; k++) {

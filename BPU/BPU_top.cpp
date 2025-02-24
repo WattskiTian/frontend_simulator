@@ -37,19 +37,19 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #ifndef IO_version
       TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
 #else
-      C_TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
+      C_TAGE_do_update_wrapper(in->predict_base_pc[i], in->actual_dir[i], pred_out);
 #endif
 #ifndef IO_version
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
 #else
-      C_bht_update(in->predict_base_pc[i], in->actual_dir[i]);
+      C_bht_update_wrapper(in->predict_base_pc[i], in->actual_dir[i]);
 #endif
       if (in->actual_dir[i] == true) {
 #ifndef IO_version
         btb_update(in->predict_base_pc[i], in->refetch_address,
                    in->actual_br_type[i], in->actual_dir[i]);
 #else
-        C_btb_update(in->predict_base_pc[i], in->refetch_address,
+        C_btb_update_wrapper(in->predict_base_pc[i], in->refetch_address,
                      in->actual_br_type[i], in->actual_dir[i]);
 #endif
       }
@@ -65,7 +65,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #else
   for (int i = 0; i < COMMIT_WIDTH; i++) {
     if (in->back2front_valid[i]) {
-      C_TAGE_update_HR(in->actual_dir[i]);
+      C_TAGE_update_HR_wrapper(in->actual_dir[i]);
     }
   }
 #endif
@@ -82,7 +82,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #ifndef IO_version
     pred_out pred_out = TAGE_get_prediction(current_pc);
 #else
-    pred_out pred_out = C_TAGE_do_pred(current_pc);
+    pred_out pred_out = C_TAGE_do_pred_wrapper(current_pc);
 #endif
     out->predict_dir[i] = pred_out.pred;
     out->alt_pred[i] = pred_out.altpred;
@@ -101,7 +101,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #ifndef IO_version
     uint32_t btb_target = btb_pred(branch_pc);
 #else
-    uint32_t btb_target = C_btb_pred(branch_pc);
+    uint32_t btb_target = C_btb_pred_wrapper(branch_pc);
 #endif
     out->predict_next_fetch_address = btb_target;
     DEBUG_LOG("[BPU_top] base pc: %x, btb_target: %x\n", branch_pc, btb_target);
