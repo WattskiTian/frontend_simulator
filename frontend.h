@@ -6,7 +6,7 @@
 #define RESET_PC 0x1008c
 #define PMEM_OFFSET RESET_PC
 
-#define IO_version
+/*#define IO_version*/
 
 #define DEBUG_PRINT 0
 #define DEBUG_LOG(fmt, ...)                                                    \
@@ -15,6 +15,6 @@
       printf(fmt, ##__VA_ARGS__);                                              \
   } while (0)
 
-#define IO_GEN_MODE
+/*#define IO_GEN_MODE*/
 extern int io_gen_cnt;
 #endif

@@ -209,14 +209,16 @@ int main() {
   srand(time(0));
   // test_env_checker(100);
   test_env_checker(1000000);
-  // printf("\n=== Branch Prediction Statistics ===\n");
-  // printf("Total Predictions: %lu\n", total_predictions);
-  // printf("Correct Predictions: %lu\n", correct_predictions);
-  // printf("Prediction Accuracy: %.2f%%\n",
-  //        (total_predictions > 0)
-  //            ? (correct_predictions * 100.0 / total_predictions)
-  //            : 0.0);
-  // printf("================================\n");
+#ifndef IO_GEN_MODE
+  printf("\n=== Branch Prediction Statistics ===\n");
+  printf("Total Predictions: %lu\n", total_predictions);
+  printf("Correct Predictions: %lu\n", correct_predictions);
+  printf("Prediction Accuracy: %.2f%%\n",
+         (total_predictions > 0)
+             ? (correct_predictions * 100.0 / total_predictions)
+             : 0.0);
+  printf("================================\n");
+#endif
   // TAGE_do_update(0x11e04, false, false);
   // TAGE_do_update(0x11e08, false, false);
   // TAGE_do_update(0x11e0c, true, false);

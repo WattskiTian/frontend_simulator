@@ -1,0 +1,7 @@
+[test_env] IO_version OFF
+
+=== Branch Prediction Statistics ===
+Total Predictions: 293856
+Correct Predictions: 286633
+Prediction Accuracy: 97.54%
+================================
