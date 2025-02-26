@@ -11,11 +11,11 @@ make testenv_IO # 运行测试环境（IO版本）
 
 以FETCH_WIDTH=4为例，BPU基本结构图如下：
 
-![BPU-top-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/BPU_arch.svg)
+![BPU-top-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/BPU_arch_2.svg)
 
 前端基本结构图（仅示意，实际信号与此不同）：
 
-![front-end-top-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/front_end_top.svg)
+![front-end-top-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/top2.svg)
 
 test_env.cpp为测试环境，可以检查模拟器是否正常工作
 
@@ -27,7 +27,7 @@ test_env.cpp为测试环境，可以检查模拟器是否正常工作
 
 tage_IO部分基本结构:
 
-![tage_IO-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/tageIO.svg)
+![tage_IO-arch](https://github.com/WattskiTian/frontend_simulator/blob/master/svg/tage_IO.svg)
 
 文件目录：
 
@@ -42,33 +42,39 @@ tage_IO部分基本结构:
 │   │   ├── demo_tage.h
 │   │   ├── dir_predictor_IO
 │   │   │   ├── tage_IO.cpp
+│   │   │   ├── tage_IO.h
 │   │   │   └── tage_types.h
-│   │   ├── experimential_demo
-│   │   │   ├── demo_loop.cpp
-│   │   │   ├── demo_ltage.cpp
-│   │   │   ├── loop_pred.h
-│   │   │   ├── utils.cpp
-│   │   │   └── utils.h
-│   │   └── tage_IO.h
-│   └── target_predictor
-│       ├── BTB
-│       ├── btb.cpp
-│       ├── btb.h
-│       ├── ras.cpp
-│       ├── ras.h
-│       ├── target_cache.cpp
-│       ├── target_cache.h
-│       └── target_predictor_IO
-│           ├── btb_IO.cpp
-│           ├── ras_IO.cpp
-│           ├── target_cache_IO.cpp
-│           └── target_predictor_types.h
+│   │   └── experimential_demo
+│   │       ├── demo_loop.cpp
+│   │       ├── demo_ltage.cpp
+│   │       ├── loop_pred.h
+│   │       ├── utils.cpp
+│   │       └── utils.h
+│   ├── target_predictor
+│   │   ├── BTB
+│   │   ├── btb.cpp
+│   │   ├── btb.h
+│   │   ├── ras.cpp
+│   │   ├── ras.h
+│   │   ├── target_cache.cpp
+│   │   ├── target_cache.h
+│   │   └── target_predictor_IO
+│   │       ├── btb_IO.cpp
+│   │       ├── btb_IO.h
+│   │       ├── ras_IO.cpp
+│   │       ├── ras_IO.h
+│   │       ├── target_cache_IO.cpp
+│   │       ├── target_cache_IO.h
+│   │       └── target_predictor_types.h
+│   ├── train_IO_gen.cpp
+│   └── train_IO_gen.h
 ├── IO_train
 │   ├── IO_cvt.cpp
 │   ├── IO_cvt.h
 │   └── tage_func.h
 ├── Makefile
 ├── README.md
+├── counter.py
 ├── fifo
 │   ├── PTAB.cpp
 │   └── instruction_FIFO.cpp
@@ -80,20 +86,26 @@ tage_IO部分基本结构:
 ├── icache
 │   └── icache.cpp
 ├── log
+│   ├── bench1_trace
+│   ├── dhrystone_front_log
 │   ├── simple_front_log
+│   ├── simple_tail
 │   ├── tage_log2
-│   ├── test_env_IO_log
-│   └── test_env_log
+│   └── test_env_IO_log
+├── randomforest.py
 ├── sequential_components
 │   ├── seq_comp.cpp
 │   └── seq_comp.h
 ├── svg
-│   ├── BPU_arch.svg
+│   ├── BPU_arch_2.svg
 │   ├── front.svg
 │   ├── front_end_top.svg
-│   ├── tageIO.svg
-│   └── test_env.svg
-├── test
+│   ├── tage_IO.svg
+│   ├── test_env.svg
+│   └── top2.svg
 ├── test_env.cpp
-└── test_env_IO
+├── test_env_IO
+└── train_log
+    ├── rf_log_1
+    └── rf_log_2
 ```

@@ -252,7 +252,7 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
 struct btb_update_In btb_update_in;
 struct btb_update_Out btb_update_out;
 void C_btb_update_wrapper(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
-                  bool actualdir) {
+                          bool actualdir) {
   struct btb_update_In *in = &btb_update_in;
   struct btb_update_Out *out = &btb_update_out;
   in->pc = pc;
@@ -312,6 +312,22 @@ uint32_t C_btb_pred_wrapper(uint32_t pc) {
     in2->btb_bta_read[i] = btb_bta[i][btb_idx];
   }
   in2->btb_lru_read = btb_lru[btb_idx];
+
+  // #ifdef IO_GEN_MODE
+  //   if (io_gen_cnt >= 0) {
+  //     printf("btb");
+  //     for (int i = 0; i < BTB_WAY_NUM; i++) {
+  //       printf("%d ", btb_valid[i][btb_idx]);
+  //       printf("%d ", btb_tag[i][btb_idx]);
+  //       printf("%d ", btb_br_type[i][btb_idx]);
+  //       printf("%d ", btb_bta[i][btb_idx]);
+  //     }
+  //     printf("%d ", btb_lru[btb_idx]);
+  //     printf("\n");
+  //     printf("%d %d %d\n", ras_sp, ras[ras_sp], ras_cnt[ras_sp]);
+  //   }
+  // #endif
+
   btb_pred2(in2, out2);
   uint32_t pred_npc = out2->btb_pred_addr;
   // update regs

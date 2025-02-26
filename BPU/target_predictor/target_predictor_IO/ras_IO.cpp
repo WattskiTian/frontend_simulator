@@ -2,6 +2,7 @@
 #include "../../../sequential_components/seq_comp.h"
 #include "target_predictor_types.h"
 #include <cstdint>
+#include <cstdio>
 
 void ras_push(uint32_t addr) {
   if (addr == ras[ras_sp]) {
@@ -29,7 +30,7 @@ void ras_push_IO(struct ras_push_In *in, struct ras_push_Out *out) {
     return;
   }
   out->ras_sp_ctrl = 3;
-  out->ras_sp_wdata = (in->ras_sp_read + 1) % RAS_ENTRY_NUM;
+  out->ras_sp_wdata = ((in->ras_sp_read + 1) % RAS_ENTRY_NUM);
   out->ras_ctrl = 3;
   out->ras_wdata = in->addr;
   out->ras_cnt_ctrl = 3;
@@ -40,6 +41,8 @@ struct ras_push_In ras_push_in;
 struct ras_push_Out ras_push_out;
 
 void C_ras_push_wrapper(uint32_t addr) {
+  // printf("ras_sp=%d\n", ras_sp);
+  ras_sp %= RAS_ENTRY_NUM;
   struct ras_push_In *in = &ras_push_in;
   struct ras_push_Out *out = &ras_push_out;
   in->addr = addr;
@@ -91,7 +94,7 @@ void ras_pop_IO(struct ras_pop_In *in, struct ras_pop_Out *out) {
     out->ras_cnt_ctrl = 2;
     out->ras_cnt_wdata = 0;
     out->ras_sp_ctrl = 3;
-    out->ras_sp_wdata = (in->ras_sp_read + RAS_ENTRY_NUM - 1) % RAS_ENTRY_NUM;
+    out->ras_sp_wdata = ((in->ras_sp_read + RAS_ENTRY_NUM - 1) % RAS_ENTRY_NUM);
     out->ras_pop_value = in->ras_read;
     return;
   }
@@ -103,6 +106,8 @@ struct ras_pop_In ras_pop_in;
 struct ras_pop_Out ras_pop_out;
 
 uint32_t C_ras_pop_wrapper() {
+  // printf("ras_sp=%d\n", ras_sp);
+  ras_sp %= RAS_ENTRY_NUM;
   struct ras_pop_In *in = &ras_pop_in;
   struct ras_pop_Out *out = &ras_pop_out;
   in->ras_read = ras[ras_sp];

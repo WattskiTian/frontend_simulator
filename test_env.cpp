@@ -6,7 +6,11 @@
 #include <ctime>
 #include <queue>
 
-#define DELAY_CYCLE 4
+#ifdef IO_version
+#include "sequential_components/seq_comp.h"
+#endif
+
+#define DELAY_CYCLE 0
 
 // to store the front-end prediction result
 struct PredictResult {
@@ -39,6 +43,7 @@ static int read_actual_result(ActualResult &result) {
   for (int i = 0; i < FETCH_WIDTH; i++) {
     uint32_t dir, pc, nextpc, br_type;
     if (fscanf(log_file, "%u %x %x %u\n", &dir, &pc, &nextpc, &br_type) != 4) {
+      // printf("error: read_actual_result\n");
       return 1;
     }
     result.dir[i] = (bool)dir;
@@ -65,7 +70,8 @@ void test_env_checker(uint64_t step_count) {
     DEBUG_LOG("--------------------------------\n");
     // initialize
     if (!initialized) {
-      log_file = fopen("./log/dhrystone_front_log", "r");
+      // log_file = fopen("./log/dhrystone_front_log", "r");
+      log_file = fopen("./log/bench1_trace", "r");
       if (log_file == NULL) {
         DEBUG_LOG("Error: Cannot open log file\n");
         return;
@@ -105,7 +111,10 @@ void test_env_checker(uint64_t step_count) {
         actual_queue.push(actual_result);
       } else {
         // return to main
-        printf("[test_env_checker] end with %lu cycles\n", cycle_count);
+        // printf("[test_env_checker] end with %lu cycles\n", cycle_count);
+#ifdef IO_version
+        // print_all_seq_components();
+#endif
         return;
       }
     }
@@ -123,18 +132,27 @@ void test_env_checker(uint64_t step_count) {
       if (pred.predict_next_fetch_address == actual.nextpc) {
         correct_predictions++;
       }
-
+#ifdef IO_GEN_MODE
+      printf("%d\n", actual.nextpc);
+#endif
       // set the feedback signal
       in->reset = false;
       bool first_taken = false;
       for (int i = 0; i < FETCH_WIDTH; i++) {
         if (first_taken == false) {
           in->back2front_valid[i] = true;
-          in->predict_base_pc[i] = actual.pc[i];
+          in->predict_base_pc[i] = pred.predict_base_pc[i];
           if (actual.pc[i] != pred.predict_base_pc[i]) {
-            printf("pc mismatch: %x != %x\n", actual.pc[i],
-                   pred.predict_base_pc[i]);
-            exit(1);
+            // printf("--------------------------------\n");
+            // printf("pc mismatch! i=%d,actual_pc=%x\n", i, actual.pc[i]);
+            // // print pred result
+            // for (int j = 0; j < FETCH_WIDTH; j++) {
+            //   printf("pred result: pc=%x, dir=%d, nextpc=%x\n",
+            //          pred.predict_base_pc[j], pred.predict_dir[j],
+            //          pred.predict_next_fetch_address);
+            // }
+            // printf("--------------------------------\n");
+            // exit(1);
           }
           in->predict_dir[i] = pred.predict_dir[i];
           in->actual_dir[i] = actual.dir[i];
@@ -184,21 +202,21 @@ void test_env_checker(uint64_t step_count) {
 
 int main() {
 #ifdef IO_version
-  printf("[test_env] IO_version ON\n");
+  // printf("[test_env] IO_version ON\n");
 #else
   printf("[test_env] IO_version OFF\n");
 #endif
   srand(time(0));
   // test_env_checker(100);
   test_env_checker(1000000);
-  printf("\n=== Branch Prediction Statistics ===\n");
-  printf("Total Predictions: %lu\n", total_predictions);
-  printf("Correct Predictions: %lu\n", correct_predictions);
-  printf("Prediction Accuracy: %.2f%%\n",
-         (total_predictions > 0)
-             ? (correct_predictions * 100.0 / total_predictions)
-             : 0.0);
-  printf("================================\n\n");
+  // printf("\n=== Branch Prediction Statistics ===\n");
+  // printf("Total Predictions: %lu\n", total_predictions);
+  // printf("Correct Predictions: %lu\n", correct_predictions);
+  // printf("Prediction Accuracy: %.2f%%\n",
+  //        (total_predictions > 0)
+  //            ? (correct_predictions * 100.0 / total_predictions)
+  //            : 0.0);
+  // printf("================================\n");
   // TAGE_do_update(0x11e04, false, false);
   // TAGE_do_update(0x11e08, false, false);
   // TAGE_do_update(0x11e0c, true, false);

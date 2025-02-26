@@ -3,14 +3,16 @@
 
 #include <cstdint>
 
+void print_all_seq_components();
+
 // the defination of all sequential components
 
 /////////////////////TAGE/////////////////////
-#define BASE_ENTRY_NUM 2048
+#define BASE_ENTRY_NUM 512
 /*#define GHR_LENGTH 256*/
-#define GHR_LENGTH 256
+#define GHR_LENGTH 128
 #define TN_MAX 4 // 0-indexed, which means 0,1,2,3
-#define TN_ENTRY_NUM 4096
+#define TN_ENTRY_NUM 512
 #define FH_N_MAX 3 // how many different types of Folded history
 /*#define USEFUL_RESET_VAL 262144 // 256K*/
 #define uBitPeriod 2048
@@ -27,7 +29,7 @@ extern const uint32_t fh_length[FH_N_MAX][TN_MAX];
 /////////////////////TAGE/////////////////////
 
 /////////////////////BTB/////////////////////
-#define BTB_ENTRY_NUM 2048
+#define BTB_ENTRY_NUM 32
 #define BTB_TAG_LEN 8
 #define BTB_WAY_NUM 4
 
@@ -48,7 +50,7 @@ extern uint8_t btb_tag[BTB_WAY_NUM][BTB_ENTRY_NUM];
 /////////////////////BTB/////////////////////
 
 /////////////////////RAS/////////////////////
-#define RAS_ENTRY_NUM 64
+#define RAS_ENTRY_NUM 32
 #define RAS_CNT_LEN 8 // cnt for repeated call
 
 extern uint32_t ras[RAS_ENTRY_NUM];
@@ -57,8 +59,8 @@ extern uint32_t ras_sp;
 /////////////////////RAS/////////////////////
 
 /////////////////////TARGET CACHE/////////////////////
-#define TC_ENTRY_NUM 2048
-#define BHT_ENTRY_NUM 2048
+#define TC_ENTRY_NUM 32
+#define BHT_ENTRY_NUM 32
 #define BHT_LEN 32
 
 extern uint32_t bht[BHT_ENTRY_NUM];

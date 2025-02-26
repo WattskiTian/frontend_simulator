@@ -258,6 +258,7 @@ void TAGE_do_update(update_IO *IO) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
+#include "../../../frontend.h"
 #include "./tage_IO.h"
 // this is only for C_SIM
 // this is only for C_SIM
@@ -287,6 +288,21 @@ pred_out C_TAGE_do_pred_wrapper(uint32_t pc) {
     pred_IO2->tag_pc[i] = pred_IO1->tag_pc[i];
   }
 
+  // #ifdef IO_GEN_MODE
+  //   if (io_gen_cnt >= 0) {
+  //     printf("TAGE");
+  //     printf("%d ", base_counter[pred_IO1->base_idx]);
+  //     for (int i = 0; i < TN_MAX; i++) {
+  //       printf("%d ", tag_table[i][pred_IO1->index[i]]);
+  //       printf("%d ", cnt_table[i][pred_IO1->index[i]]);
+  //       printf("%d ", useful_table[i][pred_IO1->index[i]]);
+  //     }
+  //     for (int i = 0; i < GHR_LENGTH; i++) {
+  //       printf("%d ", GHR[i]);
+  //     }
+  //     printf("\n");
+  //   }
+  // #endif
   TAGE_pred_2(pred_IO2);
 
   pred_out pred_out;

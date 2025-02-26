@@ -29,7 +29,7 @@ SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
 			   $(wildcard $(SRC_TARGET_PRED)/*.cpp) \
 			   $(wildcard $(SRC_DIR_PRED)/*.cpp) 
 
-SRC_TEST_ENV_IO = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
+SRC_TEST_ENV_IO = test_env.cpp front_top.cpp BPU/BPU_top.cpp BPU/train_IO_gen.cpp \
                $(wildcard $(SRC_ICACHE)/*.cpp) \
                $(wildcard $(SRC_FIFO)/*.cpp) \
 			   $(wildcard $(SRC_TARGET_PRED)/target_predictor_IO/*.cpp) \
@@ -74,7 +74,7 @@ $(GDB_TARGET_TEST_ENV): $(SRC_TEST_ENV)
 	$(CC) -g -w -o $@ $(SRC_TEST_ENV)
 
 $(TARGET_TEST_ENV_IO): $(SRC_TEST_ENV_IO)
-	$(CC) -DIO_version -O3 -w -o $@ $(SRC_TEST_ENV_IO)
+	$(CC) -DIO_version -w -o $@ $(SRC_TEST_ENV_IO)
 
 $(GDB_TARGET_TEST_ENV_IO): $(SRC_TEST_ENV_IO)
 	$(CC) -DIO_version -g -w -o $@ $(SRC_TEST_ENV_IO)

@@ -1,8 +1,9 @@
 #include "target_cache_IO.h"
+#include "../../../frontend.h"
 #include "../../../sequential_components/seq_comp.h"
 #include "target_predictor_types.h"
 #include <cstdint>
-
+#include <cstdio>
 uint32_t tc_pred(uint32_t pc) {
   uint32_t bht_idx = pc % BHT_ENTRY_NUM;
   uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
@@ -32,6 +33,14 @@ uint32_t C_tc_pred_wrapper(uint32_t pc) {
   in2->bht_read = bht[out1->bht_idx];
   in2->pc = pc;
   tc_pred2(in2, out2);
+  // #ifdef IO_GEN_MODE
+  //   if (io_gen_cnt >= 0) {
+  //     printf("tc");
+  //     printf("%d ", bht[out1->bht_idx]);
+  //     printf("%d ", target_cache[out2->tc_idx]);
+  //     printf("\n");
+  //   }
+  // #endif
   return target_cache[out2->tc_idx];
 }
 

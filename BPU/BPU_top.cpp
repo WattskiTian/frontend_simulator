@@ -11,8 +11,10 @@
 #include "./dir_predictor/dir_predictor_IO/tage_IO.h"
 #include "./target_predictor/target_predictor_IO/btb_IO.h"
 #include "./target_predictor/target_predictor_IO/target_cache_IO.h"
+#include "./train_IO_gen.h"
 #endif
 
+// int io_gen_cnt = 77;
 uint32_t pc_reg;
 
 void BPU_top(struct BPU_in *in, struct BPU_out *out) {
@@ -37,7 +39,8 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #ifndef IO_version
       TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
 #else
-      C_TAGE_do_update_wrapper(in->predict_base_pc[i], in->actual_dir[i], pred_out);
+      C_TAGE_do_update_wrapper(in->predict_base_pc[i], in->actual_dir[i],
+                               pred_out);
 #endif
 #ifndef IO_version
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
@@ -46,11 +49,12 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #endif
       if (in->actual_dir[i] == true) {
 #ifndef IO_version
+#TODO : add refetch commit dealing logic here
         btb_update(in->predict_base_pc[i], in->refetch_address,
                    in->actual_br_type[i], in->actual_dir[i]);
 #else
         C_btb_update_wrapper(in->predict_base_pc[i], in->refetch_address,
-                     in->actual_br_type[i], in->actual_dir[i]);
+                             in->actual_br_type[i], in->actual_dir[i]);
 #endif
       }
     }
@@ -74,6 +78,16 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   // that is taken
   bool found_taken_branch = false;
   uint32_t branch_pc = pc_reg;
+
+#ifdef IO_GEN_MODE
+  // io_gen_cnt--;
+  // if (io_gen_cnt >= 0) {
+  for (int i = 0; i < FETCH_WIDTH; i++) {
+    print_IO_data(pc_reg + (i * 4));
+  }
+  printf("\n");
+  // }
+#endif
 
   // do TAGE for FETCH_WIDTH instructions
   for (int i = 0; i < FETCH_WIDTH; i++) {
