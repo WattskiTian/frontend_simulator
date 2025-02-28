@@ -14,7 +14,7 @@
 #include "./train_IO_gen.h"
 #endif
 
-// int io_gen_cnt = 77;
+// int io_gen_cnt = 10;
 uint32_t pc_reg;
 
 void BPU_top(struct BPU_in *in, struct BPU_out *out) {
@@ -82,10 +82,10 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #ifdef IO_GEN_MODE
   // io_gen_cnt--;
   // if (io_gen_cnt >= 0) {
-  for (int i = 0; i < FETCH_WIDTH; i++) {
-    print_IO_data(pc_reg + (i * 4));
-  }
+#ifdef IO_version
+  print_IO_data(pc_reg);
   printf("\n");
+#endif
   // }
 #endif
 

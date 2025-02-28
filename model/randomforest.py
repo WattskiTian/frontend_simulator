@@ -79,6 +79,6 @@ def train_random_forest(filename):
 
 # example usage
 if __name__ == "__main__":
-    filename = "./log/test_env_IO_log"
+    filename = "../log/test_env_IO_log"
     model = train_random_forest(filename)
 

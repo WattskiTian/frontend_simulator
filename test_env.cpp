@@ -1,9 +1,11 @@
 #include "front_IO.h"
 #include "front_module.h"
+#include <bitset>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 #include <queue>
 
 #ifdef IO_version
@@ -70,8 +72,8 @@ void test_env_checker(uint64_t step_count) {
     DEBUG_LOG("--------------------------------\n");
     // initialize
     if (!initialized) {
-      // log_file = fopen("./log/dhrystone_front_log", "r");
-      log_file = fopen("./log/bench1_trace", "r");
+      // log_file = fopen("./bench1_trace", "r");
+      log_file = fopen("./log/dhrystone_front_log", "r");
       if (log_file == NULL) {
         DEBUG_LOG("Error: Cannot open log file\n");
         return;
@@ -133,7 +135,8 @@ void test_env_checker(uint64_t step_count) {
         correct_predictions++;
       }
 #ifdef IO_GEN_MODE
-      printf("%d\n", actual.nextpc);
+      // printf("%d\n", actual.nextpc);
+      std::cout << std::bitset<32>(actual.nextpc) << std::endl;
 #endif
       // set the feedback signal
       in->reset = false;
