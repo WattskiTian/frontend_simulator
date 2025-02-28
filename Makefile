@@ -7,7 +7,7 @@ TARGET_FRONTED=fronted_pred
 TARGET_TEST_ENV=test
 TARGET_TEST_ENV_IO=test_env_IO
 
-HOME_DIR = /home/watts/Enligtenments-simu/playground/front-end
+HOME_DIR = $(shell pwd)
 
 GDB_TARGET_TAGE=demo_tage.gdb
 GDB_TARGET_LTAGE=demo_ltage.gdb
