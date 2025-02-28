@@ -61,6 +61,11 @@ static int read_actual_result(ActualResult &result) {
 
 uint64_t total_predictions = 0;
 uint64_t correct_predictions = 0;
+uint64_t branch_cnt = 0;
+uint64_t correct_branch_cnt = 0;
+uint64_t total_insts = 0;
+uint64_t tage_hits = 0;
+
 void test_env_checker(uint64_t step_count) {
 
   struct front_top_in in_tmp;
@@ -72,8 +77,8 @@ void test_env_checker(uint64_t step_count) {
     DEBUG_LOG("--------------------------------\n");
     // initialize
     if (!initialized) {
-      // log_file = fopen("./bench1_trace", "r");
-      log_file = fopen("./log/dhrystone_front_log", "r");
+      log_file = fopen("./log/bench1_trace", "r");
+      // log_file = fopen("./log/dhrystone_front_log", "r");
       if (log_file == NULL) {
         DEBUG_LOG("Error: Cannot open log file\n");
         return;
@@ -133,6 +138,22 @@ void test_env_checker(uint64_t step_count) {
       total_predictions++;
       if (pred.predict_next_fetch_address == actual.nextpc) {
         correct_predictions++;
+      }
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        total_insts++;
+        if (actual.dir[i] == 1) {
+          branch_cnt++;
+          if (pred.predict_dir[i] == 1) {
+            tage_hits++;
+            if (pred.predict_next_fetch_address == actual.nextpc) {
+              correct_branch_cnt++;
+            }
+          }
+          break;
+        }
+        if (pred.predict_dir[i] == 0) {
+          tage_hits++;
+        }
       }
 #ifdef IO_GEN_MODE
       // printf("%d\n", actual.nextpc);
@@ -205,7 +226,9 @@ void test_env_checker(uint64_t step_count) {
 
 int main() {
 #ifdef IO_version
-  // printf("[test_env] IO_version ON\n");
+#ifndef IO_GEN_MODE
+  printf("[test_env] IO_version ON\n");
+#endif
 #else
   printf("[test_env] IO_version OFF\n");
 #endif
@@ -220,6 +243,14 @@ int main() {
          (total_predictions > 0)
              ? (correct_predictions * 100.0 / total_predictions)
              : 0.0);
+  printf("Total Insts: %lu\n", total_insts);
+  printf("TAGE Hits: %lu\n", tage_hits);
+  printf("TAGE Hit Rate: %.2f%%\n",
+         (total_insts > 0) ? (tage_hits * 100.0 / total_insts) : 0.0);
+  printf("Branch Count: %lu\n", branch_cnt);
+  printf("Correct Branch Count: %lu\n", correct_branch_cnt);
+  printf("Branch Prediction Accuracy: %.2f%%\n",
+         (branch_cnt > 0) ? (correct_branch_cnt * 100.0 / branch_cnt) : 0.0);
   printf("================================\n");
 #endif
   // TAGE_do_update(0x11e04, false, false);
