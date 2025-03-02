@@ -3,10 +3,10 @@
 
 #define FETCH_WIDTH 4
 #define COMMIT_WIDTH 4
-#define RESET_PC 0x1008c
+#define RESET_PC 0x10a24
 #define PMEM_OFFSET RESET_PC
 
-// #define IO_version
+#define IO_version
 
 #define DEBUG_PRINT 0
 #define DEBUG_LOG(fmt, ...)                                                    \
@@ -16,5 +16,6 @@
   } while (0)
 
 // #define IO_GEN_MODE
+#define MISS_MODE
 extern int io_gen_cnt;
 #endif

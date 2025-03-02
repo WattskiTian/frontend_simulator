@@ -21,10 +21,12 @@ uint32_t btb_get_idx(uint32_t pc) { return pc & BTB_IDX_MASK; }
 void update_lru(uint32_t idx, int way) {
   uint32_t current_age = (btb_lru[idx] >> (way * 2)) & 0x3;
 
-  // update all older ways, but not exceed 3
+  // update all younger ways, but not exceed 3
   for (int i = 0; i < BTB_WAY_NUM; i++) {
+    if (i == way)
+      continue;
     uint32_t age = (btb_lru[idx] >> (i * 2)) & 0x3;
-    if (age < current_age) {
+    if (age <= current_age) {
       uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
       // clear current age
       btb_lru[idx] &= ~(0x3 << (i * 2));
@@ -65,8 +67,10 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
 
       // update all older ways, but not exceed 3
       for (int i = 0; i < BTB_WAY_NUM; i++) {
+        if (i == way)
+          continue;
         uint32_t age = (in->btb_lru_read >> (i * 2)) & 0x3;
-        if (age < current_age) {
+        if (age <= current_age) {
           uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
           out->btb_lru_wdata = in->btb_lru_read & (~(0x3 << (i * 2)));
           out->btb_lru_wdata |= (new_age << (i * 2));

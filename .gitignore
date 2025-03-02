@@ -1,3 +1,4 @@
 log/test_env_IO_log
 model/*.txt
 model/*.joblib
+model/*log

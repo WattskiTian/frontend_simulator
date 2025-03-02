@@ -34,6 +34,47 @@ struct ActualResult {
   uint32_t br_type[FETCH_WIDTH];
 };
 
+#ifdef IO_version
+void classify_IO_data(PredictResult pred, ActualResult actual) {
+  if (pred.predict_base_pc[0] + 4 * FETCH_WIDTH == actual.nextpc) {
+    std::cout << std::bitset<5>(0) << std::endl;
+    return;
+  }
+  for (int i = 0; i < FETCH_WIDTH; i++) {
+    for (int j = 0; j < BTB_WAY_NUM; j++) {
+      if (btb_bta[j][pred.predict_base_pc[i] & BTB_IDX_MASK] == actual.nextpc) {
+        int idx = i * 4 + j + 1;
+        std::cout << std::bitset<5>(idx) << std::endl;
+        return;
+      }
+    }
+  }
+  if (ras[ras_sp % RAS_ENTRY_NUM] == actual.nextpc) {
+    std::cout << std::bitset<5>(20) << std::endl;
+    return;
+  }
+  std::cout << std::bitset<5>(31) << std::endl;
+}
+#endif
+
+#ifdef MISS_MODE
+void show_MISS(PredictResult pred, ActualResult actual) {
+  if (pred.predict_next_fetch_address != actual.nextpc) {
+    // printf btb bta
+    for (int i = 0; i < FETCH_WIDTH; i++) {
+      printf("_%d ", pred.predict_dir[i]);
+      printf("%d_", btb_lru[pred.predict_base_pc[i] & BTB_IDX_MASK]);
+      for (int j = 0; j < BTB_WAY_NUM; j++) {
+        printf("%x ", btb_bta[j][pred.predict_base_pc[i] & BTB_IDX_MASK]);
+      }
+    }
+    // printf ras
+    printf("%x ", ras[ras_sp % RAS_ENTRY_NUM]);
+    printf("\n%x\n", actual.nextpc);
+  }
+}
+#endif
+
 static FILE *log_file = nullptr;
 static std::queue<PredictResult> predict_queue;
 static std::queue<ActualResult> actual_queue;
@@ -65,6 +106,7 @@ uint64_t branch_cnt = 0;
 uint64_t correct_branch_cnt = 0;
 uint64_t total_insts = 0;
 uint64_t tage_hits = 0;
+uint64_t seq_hits = 0;
 
 void test_env_checker(uint64_t step_count) {
 
@@ -139,6 +181,9 @@ void test_env_checker(uint64_t step_count) {
       if (pred.predict_next_fetch_address == actual.nextpc) {
         correct_predictions++;
       }
+      if (pred.predict_base_pc[0] + 4 * FETCH_WIDTH == actual.nextpc) {
+        seq_hits++;
+      }
       for (int i = 0; i < FETCH_WIDTH; i++) {
         total_insts++;
         if (actual.dir[i] == 1) {
@@ -155,9 +200,15 @@ void test_env_checker(uint64_t step_count) {
           tage_hits++;
         }
       }
+#ifdef IO_version
 #ifdef IO_GEN_MODE
-      // printf("%d\n", actual.nextpc);
-      std::cout << std::bitset<32>(actual.nextpc) << std::endl;
+      // printf("%08x\n", actual.nextpc);
+      // std::cout << std::bitset<32>(actual.nextpc) << std::endl;
+      classify_IO_data(pred, actual);
+#endif
+#ifdef MISS_MODE
+      show_MISS(pred, actual);
+#endif
 #endif
       // set the feedback signal
       in->reset = false;
@@ -243,6 +294,7 @@ int main() {
          (total_predictions > 0)
              ? (correct_predictions * 100.0 / total_predictions)
              : 0.0);
+  printf("Seq Hits: %lu\n", seq_hits);
   printf("Total Insts: %lu\n", total_insts);
   printf("TAGE Hits: %lu\n", tage_hits);
   printf("TAGE Hit Rate: %.2f%%\n",
