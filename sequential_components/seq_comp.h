@@ -33,7 +33,7 @@ extern const uint32_t fh_length[FH_N_MAX][TN_MAX];
 #define BTB_TAG_LEN 8
 #define BTB_WAY_NUM 4
 
-#define BTB_IDX_LEN 11 // log2(BTB_ENTRY_NUM)
+#define BTB_IDX_LEN 5 // log2(BTB_ENTRY_NUM)
 #define BTB_IDX_MASK (BTB_ENTRY_NUM - 1)
 #define BTB_TAG_MASK ((1 << BTB_TAG_LEN) - 1)
 
