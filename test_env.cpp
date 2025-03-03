@@ -12,6 +12,8 @@
 #include "sequential_components/seq_comp.h"
 #endif
 
+std::vector<std::string> file_list; // 存储文件路径的列表
+int current_file_index = 0;         // 当前处理的文件的索引
 #define DELAY_CYCLE 0
 
 // to store the front-end prediction result
@@ -109,6 +111,179 @@ uint64_t tage_hits = 0;
 uint64_t seq_hits = 0;
 
 void test_env_checker(uint64_t step_count) {
+  struct front_top_in in_tmp;
+  struct front_top_out out_tmp;
+  struct front_top_in *in = &in_tmp;
+  struct front_top_out *out = &out_tmp;
+
+  while (step_count--) {
+    DEBUG_LOG("--------------------------------\n");
+    // 初始化或重置
+    if (!initialized) {
+      if (current_file_index >= file_list.size()) {
+        return; // 所有文件处理完毕
+      }
+      log_file = fopen(file_list[current_file_index].c_str(), "r");
+      if (log_file == NULL) {
+        printf("Error: Cannot open file %s\n",
+               file_list[current_file_index].c_str());
+        return;
+      }
+      DEBUG_LOG("[test_env_checker] log file %s opened\n",
+                file_list[current_file_index].c_str());
+
+      in->reset = true;
+      in->FIFO_read_enable = true;
+      front_top(in, out);
+      DEBUG_LOG("[test_env_checker] front_top reset done\n");
+
+      initialized = true;
+      cycle_count = 0;
+    } else {
+      // 运行前端模块
+      cycle_count++;
+      front_top(in, out);
+      DEBUG_LOG("[test_env_checker] front_top cycle %lu done\n", cycle_count);
+    }
+
+    // 保存预测结果并读取实际结果
+    if (out->FIFO_valid) {
+      PredictResult pred_result;
+      ActualResult actual_result;
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        pred_result.instructions[i] = out->instructions[i];
+        pred_result.predict_dir[i] = out->predict_dir[i];
+        pred_result.predict_base_pc[i] = out->pc[i];
+        pred_result.alt_pred[i] = out->alt_pred[i];
+        pred_result.altpcpn[i] = out->altpcpn[i];
+        pred_result.pcpn[i] = out->pcpn[i];
+      }
+      pred_result.predict_next_fetch_address = out->predict_next_fetch_address;
+
+      if (read_actual_result(actual_result) == 0) {
+        // 文件未结束，正常推送预测和实际结果
+        predict_queue.push(pred_result);
+        actual_queue.push(actual_result);
+      } else {
+        // 文件结束，关闭当前文件并切换到下一个文件
+        fclose(log_file);
+        current_file_index++;
+        if (current_file_index < file_list.size()) {
+          log_file = fopen(file_list[current_file_index].c_str(), "r");
+          if (log_file == NULL) {
+            printf("Error: Cannot open file %s\n",
+                   file_list[current_file_index].c_str());
+            return;
+          }
+          // 重置状态并清空队列
+          initialized = false;
+          while (!predict_queue.empty()) {
+            predict_queue.pop();
+          }
+          while (!actual_queue.empty()) {
+            actual_queue.pop();
+          }
+        } else {
+          // 所有文件处理完毕，返回
+#ifdef IO_version
+          // print_all_seq_components();
+#endif
+          return;
+        }
+      }
+    }
+
+    // 在 DELAY_CYCLE 后比较结果
+    if (cycle_count > DELAY_CYCLE && !predict_queue.empty() &&
+        !actual_queue.empty()) {
+      PredictResult pred = predict_queue.front();
+      ActualResult actual = actual_queue.front();
+      predict_queue.pop();
+      actual_queue.pop();
+
+      total_predictions++;
+      if (pred.predict_next_fetch_address == actual.nextpc) {
+        correct_predictions++;
+      }
+      if (pred.predict_base_pc[0] + 4 * FETCH_WIDTH == actual.nextpc) {
+        seq_hits++;
+      }
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        total_insts++;
+        if (actual.dir[i] == 1) {
+          branch_cnt++;
+          if (pred.predict_dir[i] == 1) {
+            tage_hits++;
+            if (pred.predict_next_fetch_address == actual.nextpc) {
+              correct_branch_cnt++;
+            }
+          }
+          break;
+        }
+        if (pred.predict_dir[i] == 0) {
+          tage_hits++;
+        }
+      }
+#ifdef IO_version
+#ifdef IO_GEN_MODE
+      classify_IO_data(pred, actual);
+#endif
+#ifdef MISS_MODE
+      show_MISS(pred, actual);
+#endif
+#endif
+      // 设置反馈信号
+      in->reset = false;
+      bool first_taken = false;
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        if (first_taken == false) {
+          in->back2front_valid[i] = true;
+          in->predict_base_pc[i] = pred.predict_base_pc[i];
+          in->predict_dir[i] = pred.predict_dir[i];
+          in->actual_dir[i] = actual.dir[i];
+          in->actual_br_type[i] = actual.br_type[i];
+          in->alt_pred[i] = pred.alt_pred[i];
+          in->altpcpn[i] = pred.altpcpn[i];
+          in->pcpn[i] = pred.pcpn[i];
+        } else {
+          in->back2front_valid[i] = false;
+          continue;
+        }
+        if (actual.dir[i] == 1) {
+          first_taken = true;
+        }
+      }
+      in->refetch_address = actual.nextpc;
+      in->refetch = (pred.predict_next_fetch_address != actual.nextpc);
+      in->FIFO_read_enable = true;
+      DEBUG_LOG(
+          "[test_env_checker] refetch: %d,predict_npc: %x,actual_npc: %x\n",
+          in->refetch, pred.predict_next_fetch_address, actual.nextpc);
+      if (in->refetch) {
+        while (!predict_queue.empty()) {
+          predict_queue.pop();
+        }
+      }
+    } else {
+      in->reset = false;
+      for (int i = 0; i < FETCH_WIDTH; i++) {
+        in->back2front_valid[i] = false;
+        in->predict_base_pc[i] = 0;
+        in->predict_dir[i] = false;
+        in->actual_dir[i] = false;
+        in->actual_br_type[i] = 0;
+        in->alt_pred[i] = false;
+        in->altpcpn[i] = 0;
+        in->pcpn[i] = 0;
+      }
+      in->refetch_address = 0;
+      in->refetch = false;
+      in->FIFO_read_enable = true;
+    }
+  }
+}
+
+void sigle_test_env_checker(uint64_t step_count) {
 
   struct front_top_in in_tmp;
   struct front_top_out out_tmp;
@@ -275,7 +450,7 @@ void test_env_checker(uint64_t step_count) {
   }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 #ifdef IO_version
 #ifndef IO_GEN_MODE
   printf("[test_env] IO_version ON\n");
@@ -283,10 +458,21 @@ int main() {
 #else
   printf("[test_env] IO_version OFF\n");
 #endif
+
+  // 解析命令行参数
+  if (argc < 2) {
+    printf("Usage: %s file1 file2 file3 ...\n", argv[0]);
+    return 1;
+  }
+  for (int i = 1; i < argc; i++) {
+    file_list.push_back(argv[i]);
+  }
+
   srand(time(0));
-  // test_env_checker(100);
   test_env_checker(1000000);
+
 #ifndef IO_GEN_MODE
+  // 输出统计信息
   printf("\n=== Branch Prediction Statistics ===\n");
   printf("Total Predictions: %lu\n", total_predictions);
   printf("Correct Predictions: %lu\n", correct_predictions);
@@ -305,23 +491,5 @@ int main() {
          (branch_cnt > 0) ? (correct_branch_cnt * 100.0 / branch_cnt) : 0.0);
   printf("================================\n");
 #endif
-  // TAGE_do_update(0x11e04, false, false);
-  // TAGE_do_update(0x11e08, false, false);
-  // TAGE_do_update(0x11e0c, true, false);
-  // printf("%d\n", TAGE_get_prediction(0x11e0c));
-  // TAGE_do_update(0x11df8, false, false);
-  // TAGE_do_update(0x11dfc, false, false);
-  // TAGE_do_update(0x11e00, false, false);
-  // TAGE_do_update(0x11e04, false, false);
-  // TAGE_do_update(0x11e08, false, false);
-  // TAGE_do_update(0x11e0c, true, false);
-  // printf("%d\n", TAGE_get_prediction(0x11e0c));
-  // TAGE_do_update(0x11df8, false, false);
-  // TAGE_do_update(0x11dfc, false, false);
-  // TAGE_do_update(0x11e00, false, false);
-  // TAGE_do_update(0x11e04, false, false);
-  // TAGE_do_update(0x11e08, false, false);
-  // TAGE_do_update(0x11e0c, true, false);
-  // printf("%d\n", TAGE_get_prediction(0x11e0c));
   return 0;
 }
