@@ -2,13 +2,13 @@
 
 === Branch Prediction Statistics ===
 Total Predictions: 574494
-Correct Predictions: 567129
+Correct Predictions: 567161
 Prediction Accuracy: 98.72%
 Seq Hits: 360099
 Total Insts: 2000015
-TAGE Hits: 1993024
+TAGE Hits: 1993032
 TAGE Hit Rate: 99.65%
 Branch Count: 222001
-Correct Branch Count: 216859
-Branch Prediction Accuracy: 97.68%
+Correct Branch Count: 216866
+Branch Prediction Accuracy: 97.69%
 ================================

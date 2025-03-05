@@ -34,6 +34,7 @@ struct ActualResult {
   uint32_t pc[FETCH_WIDTH];
   uint32_t nextpc;
   uint32_t br_type[FETCH_WIDTH];
+  uint32_t target[FETCH_WIDTH];
 };
 
 #ifdef IO_version
@@ -94,6 +95,7 @@ static int read_actual_result(ActualResult &result) {
     result.dir[i] = (bool)dir;
     result.pc[i] = pc;
     result.nextpc = nextpc;
+    result.target[i] = nextpc;
     result.br_type[i] = br_type;
     if (dir == 1) {
       return 0; // stop reading when first taken branch is found
@@ -242,6 +244,7 @@ void test_env_checker(uint64_t step_count) {
           in->predict_dir[i] = pred.predict_dir[i];
           in->actual_dir[i] = actual.dir[i];
           in->actual_br_type[i] = actual.br_type[i];
+          in->actual_target[i] = actual.target[i];
           in->alt_pred[i] = pred.alt_pred[i];
           in->altpcpn[i] = pred.altpcpn[i];
           in->pcpn[i] = pred.pcpn[i];
@@ -272,6 +275,7 @@ void test_env_checker(uint64_t step_count) {
         in->predict_dir[i] = false;
         in->actual_dir[i] = false;
         in->actual_br_type[i] = 0;
+        in->actual_target[i] = 0;
         in->alt_pred[i] = false;
         in->altpcpn[i] = 0;
         in->pcpn[i] = 0;
@@ -407,6 +411,7 @@ void sigle_test_env_checker(uint64_t step_count) {
           in->predict_dir[i] = pred.predict_dir[i];
           in->actual_dir[i] = actual.dir[i];
           in->actual_br_type[i] = actual.br_type[i];
+          in->actual_target[i] = actual.target[i];
           in->alt_pred[i] = pred.alt_pred[i];
           in->altpcpn[i] = pred.altpcpn[i];
           in->pcpn[i] = pred.pcpn[i];
@@ -439,6 +444,7 @@ void sigle_test_env_checker(uint64_t step_count) {
         in->predict_dir[i] = false;
         in->actual_dir[i] = false;
         in->actual_br_type[i] = 0;
+        in->actual_target[i] = 0;
         in->alt_pred[i] = false;
         in->altpcpn[i] = 0;
         in->pcpn[i] = 0;
