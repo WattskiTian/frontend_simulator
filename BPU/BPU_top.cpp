@@ -83,8 +83,8 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   // io_gen_cnt--;
   // if (io_gen_cnt >= 0) {
 #ifdef IO_version
-  print_IO_data(pc_reg);
-  printf("\n");
+  // print_IO_data(pc_reg);
+  // printf("\n");
 #endif
   // }
 #endif

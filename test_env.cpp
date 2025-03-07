@@ -9,6 +9,7 @@
 #include <queue>
 
 #ifdef IO_version
+#include "BPU/train_IO_gen.h"
 #include "sequential_components/seq_comp.h"
 #endif
 
@@ -228,7 +229,10 @@ void test_env_checker(uint64_t step_count) {
       }
 #ifdef IO_version
 #ifdef IO_GEN_MODE
-      classify_IO_data(pred, actual);
+      // classify_IO_data(pred, actual);
+      print_IO_data(pred.predict_base_pc[0]);
+      printf("\n");
+      std::cout << std::bitset<32>(actual.nextpc) << std::endl;
 #endif
 #ifdef MISS_MODE
       show_MISS(pred, actual);
