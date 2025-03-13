@@ -119,7 +119,7 @@ void test_env_checker(uint64_t step_count) {
   struct front_top_in *in = &in_tmp;
   struct front_top_out *out = &out_tmp;
 
-  while (step_count--) {
+  while (true) {
     DEBUG_LOG("--------------------------------\n");
     // 初始化或重置
     if (!initialized) {
@@ -187,9 +187,6 @@ void test_env_checker(uint64_t step_count) {
           }
         } else {
           // 所有文件处理完毕，返回
-#ifdef IO_version
-          // print_all_seq_components();
-#endif
           return;
         }
       }
