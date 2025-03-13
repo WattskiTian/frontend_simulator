@@ -1,5 +1,7 @@
 #include "../front_IO.h"
 #include "../frontend.h"
+#include <assert.h>
+#include <cstdio>
 #include <queue>
 
 struct PTAB_entry {
@@ -15,10 +17,11 @@ struct PTAB_entry {
 // the FIFO control of PTAB is the same as instruction FIFO !
 // the FIFO control of PTAB is the same as instruction FIFO !
 // the FIFO control of PTAB is the same as instruction FIFO !
-static std::queue<PTAB_entry> ptab;
+std::queue<PTAB_entry> ptab;
 
 void PTAB_top(struct PTAB_in *in, struct PTAB_out *out) {
   if (in->reset) {
+    DEBUG_LOG("[PTAB] reset\n");
     while (!ptab.empty()) {
       ptab.pop();
     }
@@ -41,10 +44,14 @@ void PTAB_top(struct PTAB_in *in, struct PTAB_out *out) {
     }
     entry.predict_next_fetch_address = in->predict_next_fetch_address;
     ptab.push(entry);
+    DEBUG_LOG("[PTAB] ptab pushing, size: %lu\n", ptab.size());
   }
 
   // output prediction
   if (in->read_enable) {
+    if (ptab.empty()) {
+      assert(0);
+    }
     for (int i = 0; i < FETCH_WIDTH; i++) {
       out->predict_dir[i] = ptab.front().predict_dir[i];
       out->predict_base_pc[i] = ptab.front().predict_base_pc[i];
@@ -54,5 +61,6 @@ void PTAB_top(struct PTAB_in *in, struct PTAB_out *out) {
     }
     out->predict_next_fetch_address = ptab.front().predict_next_fetch_address;
     ptab.pop();
+    DEBUG_LOG("[PTAB] ptab popping, size: %lu\n", ptab.size());
   }
 }

@@ -6,10 +6,6 @@
 uint32_t icache_tag[ICACHE_WAY_NUM][1 << ICACHE_INDEX_WIDTH];
 uint32_t icache_valid[ICACHE_WAY_NUM][1 << ICACHE_INDEX_WIDTH];
 
-// Cache statistics
-int cache_access;
-int cache_miss;
-
 // Cache entry structure
 struct cache_entry {
   uint32_t instructions[FETCH_WIDTH];
@@ -30,7 +26,6 @@ void icache_evict(uint32_t addr) {
 }
 
 int icache_read(uint32_t addr) {
-  cache_access++;
   uint32_t tag;
   int i;
 
@@ -43,9 +38,10 @@ int icache_read(uint32_t addr) {
 
   if (i == ICACHE_WAY_NUM) {
     icache_evict(addr);
-    cache_miss++;
+    DEBUG_LOG("[icache] miss\n");
     return MISS_LATENCY;
   }
+  DEBUG_LOG("[icache] hit\n");
 
   return HIT_LATENCY;
 }

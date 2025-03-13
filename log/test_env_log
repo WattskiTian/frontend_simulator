@@ -1,14 +1,14 @@
 [test_env] IO_version OFF
 
 === Branch Prediction Statistics ===
-Total Predictions: 148205
-Correct Predictions: 144854
-Prediction Accuracy: 97.74%
-Seq Hits: 95350
-Total Insts: 503398
-TAGE Hits: 500198
-TAGE Hit Rate: 99.36%
-Branch Count: 55456
-Correct Branch Count: 53001
-Branch Prediction Accuracy: 95.57%
+Total Predictions: 148192
+Correct Predictions: 144857
+Prediction Accuracy: 97.75%
+Seq Hits: 95345
+Total Insts: 503359
+TAGE Hits: 500171
+TAGE Hit Rate: 99.37%
+Branch Count: 55447
+Correct Branch Count: 53008
+Branch Prediction Accuracy: 95.60%
 ================================

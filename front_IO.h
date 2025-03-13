@@ -24,7 +24,6 @@ struct front_top_in {
 struct front_top_out {
   // to back-end
   bool FIFO_valid;
-  bool FIFO_empty;
   uint32_t pc[FETCH_WIDTH];
   uint32_t instructions[FETCH_WIDTH];
   bool predict_dir[FETCH_WIDTH];

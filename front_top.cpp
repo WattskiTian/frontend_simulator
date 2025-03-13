@@ -3,18 +3,18 @@
 #include "front_module.h"
 #include <cstdio>
 
-bool fifo_full_reg;
+bool fifo_full_reg = 0;
 extern uint8_t icache_state;
 
 void front_top(struct front_top_in *in, struct front_top_out *out) {
-  static struct BPU_in bpu_in;
-  static struct BPU_out bpu_out;
-  static struct icache_in icache_in;
-  static struct icache_out icache_out;
-  static struct instruction_FIFO_in fifo_in;
-  static struct instruction_FIFO_out fifo_out;
-  static struct PTAB_in ptab_in;
-  static struct PTAB_out ptab_out;
+  struct BPU_in bpu_in;
+  struct BPU_out bpu_out;
+  struct icache_in icache_in;
+  struct icache_out icache_out;
+  struct instruction_FIFO_in fifo_in;
+  struct instruction_FIFO_out fifo_out;
+  struct PTAB_in ptab_in;
+  struct PTAB_out ptab_out;
 
   // set BPU input
   bpu_in.reset = in->reset;
@@ -62,7 +62,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   // set PTAB input
   ptab_in.reset = in->reset;
   ptab_in.refetch = in->refetch;
-  ptab_in.read_enable = in->FIFO_read_enable;
+  ptab_in.read_enable = fifo_out.FIFO_valid; // just in simulator
   ptab_in.write_enable = bpu_out.PTAB_write_enable;
   for (int i = 0; i < FETCH_WIDTH; i++) {
     ptab_in.predict_dir[i] = bpu_out.predict_dir[i];
@@ -87,5 +87,4 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     out->pcpn[i] = ptab_out.pcpn[i];
   }
   out->predict_next_fetch_address = ptab_out.predict_next_fetch_address;
-  out->FIFO_empty = fifo_out.empty;
 }

@@ -2,6 +2,7 @@
 #include "../frontend.h"
 #include <array>
 #include <assert.h>
+#include <cstdio>
 #include <queue>
 
 #define FIFO_SIZE 80000
@@ -10,17 +11,19 @@ struct FIFO_entry {
   std::array<uint32_t, FETCH_WIDTH> instructions;
 };
 
-static std::queue<FIFO_entry> fifo;
+std::queue<FIFO_entry> fifo;
 
 void instruction_FIFO_top(struct instruction_FIFO_in *in,
                           struct instruction_FIFO_out *out) {
   // clear FIFO
   if (in->reset) {
+    DEBUG_LOG("[FIFO] reset\n");
     while (!fifo.empty()) {
       fifo.pop();
     }
     out->full = false;
     out->empty = true;
+    out->FIFO_valid = false;
     return;
   }
   if (in->refetch) {
@@ -29,6 +32,7 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
     }
     out->full = false;
     out->empty = true;
+    out->FIFO_valid = false;
   }
 
   if (fifo.size() >= FIFO_SIZE && in->write_enable) {
@@ -42,10 +46,7 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
       entry.instructions[i] = in->fetch_group[i];
     }
     fifo.push(entry);
-  }
-
-  if (fifo.empty() && in->read_enable) {
-    assert(0);
+    DEBUG_LOG("[FIFO] fifo pushing, size: %lu\n", fifo.size());
   }
 
   // output data
@@ -54,6 +55,7 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
       out->instructions[i] = fifo.front().instructions[i];
     }
     fifo.pop();
+    DEBUG_LOG("[FIFO] fifo popping, size: %lu\n", fifo.size());
     out->FIFO_valid = true;
   } else {
     out->FIFO_valid = false;
@@ -61,4 +63,5 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
 
   out->empty = fifo.empty();
   out->full = fifo.size() == FIFO_SIZE;
+  // DEBUG_LOG("[FIFO] fifo size: %lu\n", fifo.size());
 }
