@@ -108,13 +108,13 @@ testenv: $(TARGET_TEST_ENV)
 	./$(TARGET_TEST_ENV) ./log/bench1_trace ./log/dhrystone_front_log > $(HOME_DIR)/log/test_env_log
 
 testenv_gdb: $(GDB_TARGET_TEST_ENV)
-	gdb --args ./$(GDB_TARGET_TEST_ENV)
+	gdb --args ./$(GDB_TARGET_TEST_ENV) ./log/bench1_trace ./log/dhrystone_front_log
 
 testenv_IO: $(TARGET_TEST_ENV_IO)
 	./$(TARGET_TEST_ENV_IO) ./log/bench1_trace ./log/dhrystone_front_log > $(HOME_DIR)/log/test_env_IO_log
 
 testenv_IO_gdb: $(GDB_TARGET_TEST_ENV_IO)
-	gdb --args ./$(GDB_TARGET_TEST_ENV_IO)
+	gdb --args ./$(GDB_TARGET_TEST_ENV_IO) ./log/bench1_trace ./log/dhrystone_front_log
 
 clean:
 	rm -f $(TARGET_TAGE) $(GDB_TARGET_TAGE) $(TARGET_LTAGE) $(GDB_TARGET_LTAGE) $(TARGET_TAGE_IO) $(GDB_TARGET_TAGE_IO) $(TARGET_BTB) $(TARGET_FRONTED) $(TARGET_TEST_ENV) $(GDB_TARGET_TEST_ENV) $(TARGET_TEST_ENV_IO) $(GDB_TARGET_TEST_ENV_IO)

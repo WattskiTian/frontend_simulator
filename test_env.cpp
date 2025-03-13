@@ -262,7 +262,7 @@ void test_env_checker(uint64_t step_count) {
       }
       in->refetch_address = actual.nextpc;
       in->refetch = (pred.predict_next_fetch_address != actual.nextpc);
-      in->FIFO_read_enable = true;
+      in->FIFO_read_enable = !out->FIFO_empty;
       DEBUG_LOG(
           "[test_env_checker] refetch: %d,predict_npc: %x,actual_npc: %x\n",
           in->refetch, pred.predict_next_fetch_address, actual.nextpc);
@@ -286,7 +286,7 @@ void test_env_checker(uint64_t step_count) {
       }
       in->refetch_address = 0;
       in->refetch = false;
-      in->FIFO_read_enable = true;
+      in->FIFO_read_enable = !out->FIFO_empty;
     }
   }
 }

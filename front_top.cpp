@@ -1,8 +1,10 @@
+#include "./icache/icache.h"
 #include "front_IO.h"
 #include "front_module.h"
 #include <cstdio>
 
 bool fifo_full_reg;
+extern uint8_t icache_state;
 
 void front_top(struct front_top_in *in, struct front_top_out *out) {
   static struct BPU_in bpu_in;
@@ -30,7 +32,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     bpu_in.altpcpn[i] = in->altpcpn[i];
     bpu_in.pcpn[i] = in->pcpn[i];
   }
-  bpu_in.icache_read_ready = icache_out.icache_read_ready;
+  bpu_in.icache_read_ready = icache_state == ICACHE_IDLE;
   bpu_in.fifo_full = fifo_full_reg;
 
   // run BPU
@@ -48,7 +50,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
   fifo_in.reset = in->reset;
   fifo_in.refetch = in->refetch;
   fifo_in.read_enable = in->FIFO_read_enable;
-  fifo_in.write_enable = icache_out.icache_read_ready;
+  fifo_in.write_enable = icache_out.fetch_group_valid;
   for (int i = 0; i < FETCH_WIDTH; i++) {
     fifo_in.fetch_group[i] = icache_out.fetch_group[i];
   }
@@ -85,4 +87,5 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     out->pcpn[i] = ptab_out.pcpn[i];
   }
   out->predict_next_fetch_address = ptab_out.predict_next_fetch_address;
+  out->FIFO_empty = fifo_out.empty;
 }

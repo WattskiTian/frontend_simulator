@@ -31,9 +31,10 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
     out->empty = true;
   }
 
-  if (fifo.size() >= FIFO_SIZE) {
+  if (fifo.size() >= FIFO_SIZE && in->write_enable) {
     assert(0);
   }
+
   // if FIFO is not full and icache has new data
   if (fifo.size() < FIFO_SIZE && in->write_enable) {
     FIFO_entry entry;
@@ -41,6 +42,10 @@ void instruction_FIFO_top(struct instruction_FIFO_in *in,
       entry.instructions[i] = in->fetch_group[i];
     }
     fifo.push(entry);
+  }
+
+  if (fifo.empty() && in->read_enable) {
+    assert(0);
   }
 
   // output data

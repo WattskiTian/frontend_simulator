@@ -24,6 +24,7 @@ struct front_top_in {
 struct front_top_out {
   // to back-end
   bool FIFO_valid;
+  bool FIFO_empty;
   uint32_t pc[FETCH_WIDTH];
   uint32_t instructions[FETCH_WIDTH];
   bool predict_dir[FETCH_WIDTH];
@@ -81,6 +82,7 @@ struct icache_out {
   bool icache_read_ready;
   // to instruction FIFO
   uint32_t fetch_group[FETCH_WIDTH];
+  bool fetch_group_valid;
 };
 
 struct instruction_FIFO_in {
