@@ -38,20 +38,19 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #ifndef IO_version
       TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
       bht_update(in->predict_base_pc[i], in->actual_dir[i]);
+      if (in->actual_dir[i] == true) {
+        btb_update(in->predict_base_pc[i], in->actual_target[i],
+                   in->actual_br_type[i], in->actual_dir[i]);
+      }
 #else
       C_TAGE_do_update_wrapper(in->predict_base_pc[i], in->actual_dir[i],
                                pred_out);
       C_bht_update_wrapper(in->predict_base_pc[i], in->actual_dir[i]);
-#endif
       if (in->actual_dir[i] == true) {
-#ifndef IO_version
-        btb_update(in->predict_base_pc[i], in->actual_target[i],
-                   in->actual_br_type[i], in->actual_dir[i]);
-#else
         C_btb_update_wrapper(in->predict_base_pc[i], in->actual_target[i],
                              in->actual_br_type[i], in->actual_dir[i]);
-#endif
       }
+#endif
     }
   }
 #ifndef IO_version
