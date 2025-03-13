@@ -1,6 +1,9 @@
 #include "front_IO.h"
 #include "front_module.h"
 #include <cstdio>
+
+bool fifo_full_reg;
+
 void front_top(struct front_top_in *in, struct front_top_out *out) {
   static struct BPU_in bpu_in;
   static struct BPU_out bpu_out;
@@ -28,6 +31,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
     bpu_in.pcpn[i] = in->pcpn[i];
   }
   bpu_in.icache_read_ready = icache_out.icache_read_ready;
+  bpu_in.fifo_full = fifo_full_reg;
 
   // run BPU
   BPU_top(&bpu_in, &bpu_out);
@@ -51,6 +55,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
 
   // run FIFO
   instruction_FIFO_top(&fifo_in, &fifo_out);
+  fifo_full_reg = fifo_out.full;
 
   // set PTAB input
   ptab_in.reset = in->reset;

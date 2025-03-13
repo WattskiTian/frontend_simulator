@@ -50,6 +50,8 @@ struct BPU_in {
   uint8_t pcpn[COMMIT_WIDTH];
   // from icache
   bool icache_read_ready;
+  // from fifo
+  bool fifo_full;
 };
 
 struct BPU_out {
