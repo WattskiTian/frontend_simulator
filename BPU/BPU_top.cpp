@@ -14,7 +14,6 @@
 #include "./train_IO_gen.h"
 #endif
 
-// int io_gen_cnt = 10;
 uint32_t pc_reg;
 
 void BPU_top(struct BPU_in *in, struct BPU_out *out) {
@@ -38,13 +37,10 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
                            in->altpcpn[i]};
 #ifndef IO_version
       TAGE_do_update(in->predict_base_pc[i], in->actual_dir[i], pred_out);
+      bht_update(in->predict_base_pc[i], in->actual_dir[i]);
 #else
       C_TAGE_do_update_wrapper(in->predict_base_pc[i], in->actual_dir[i],
                                pred_out);
-#endif
-#ifndef IO_version
-      bht_update(in->predict_base_pc[i], in->actual_dir[i]);
-#else
       C_bht_update_wrapper(in->predict_base_pc[i], in->actual_dir[i]);
 #endif
       if (in->actual_dir[i] == true) {
@@ -78,16 +74,6 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   // that is taken
   bool found_taken_branch = false;
   uint32_t branch_pc = pc_reg;
-
-#ifdef IO_GEN_MODE
-  // io_gen_cnt--;
-  // if (io_gen_cnt >= 0) {
-#ifdef IO_version
-  // print_IO_data(pc_reg);
-  // printf("\n");
-#endif
-  // }
-#endif
 
   // do TAGE for FETCH_WIDTH instructions
   for (int i = 0; i < FETCH_WIDTH; i++) {

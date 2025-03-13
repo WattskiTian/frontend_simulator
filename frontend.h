@@ -17,5 +17,4 @@
 
 // #define IO_GEN_MODE
 // #define MISS_MODE
-extern int io_gen_cnt;
 #endif
