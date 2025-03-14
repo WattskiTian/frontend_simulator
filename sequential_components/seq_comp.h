@@ -8,11 +8,13 @@ void print_all_seq_components();
 // the defination of all sequential components
 
 /////////////////////TAGE/////////////////////
+#define TAGE_INDEX_LEN 9
+#define TAGE_INDEX_MASK ((1 << TAGE_INDEX_LEN) - 1)
 #define BASE_ENTRY_NUM 512
 /*#define GHR_LENGTH 256*/
 #define GHR_LENGTH 128
 #define TN_MAX 4 // 0-indexed, which means 0,1,2,3
-#define TN_ENTRY_NUM 512
+#define TN_ENTRY_NUM (1 << TAGE_INDEX_LEN)
 #define FH_N_MAX 3 // how many different types of Folded history
 /*#define USEFUL_RESET_VAL 262144 // 256K*/
 #define uBitPeriod 2048

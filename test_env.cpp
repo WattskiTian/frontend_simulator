@@ -15,7 +15,7 @@
 
 std::vector<std::string> file_list; // 存储文件路径的列表
 int current_file_index = 0;         // 当前处理的文件的索引
-#define DELAY_CYCLE 4
+#define DELAY_CYCLE 0
 
 // to store the front-end prediction result
 struct PredictResult {

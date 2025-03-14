@@ -1,4 +1,5 @@
 #include "../../../sequential_components/seq_comp.h"
+#include <cassert>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -39,10 +40,11 @@ void TAGE_pred_1(pred_1_IO *IO) {
   uint32_t PC = IO->pc;
   IO->base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
   for (int i = 0; i < TN_MAX; i++) {
-    IO->tag_pc[i] = IO->FH[1][i] ^ IO->FH[2][i] ^ (PC >> 2) & (0xff); // cal tag
+    IO->tag_pc[i] =
+        (IO->FH[1][i] ^ IO->FH[2][i] ^ (PC >> 2)) & (0xff); // cal tag
   }
   for (int i = 0; i < TN_MAX; i++) {
-    IO->index[i] = IO->FH[0][i] ^ (PC >> 2) & (0xfff); // cal index
+    IO->index[i] = ((IO->FH[0][i] ^ (PC >> 2))) & TAGE_INDEX_MASK; // cal index
   }
 }
 
@@ -244,7 +246,7 @@ void TAGE_do_update(update_IO *IO) {
   // of least significant bits are reset.
   uint32_t u_clear_cnt = IO->u_clear_cnt_read + 1;
   uint32_t u_cnt = u_clear_cnt & (0x7ff);
-  uint32_t row_cnt = (u_clear_cnt >> 11) & (0xfff);
+  uint32_t row_cnt = (u_clear_cnt >> 11) & TAGE_INDEX_MASK;
   bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
 
   /*IO->u_clear_cnt_wen = 1;*/
@@ -326,9 +328,10 @@ void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
   // now FH is not updated yet!
   uint32_t index[TN_MAX];
   for (int i = 0; i < TN_MAX; i++) {
-    index[i] = FH[0][i] ^ (pc >> 2) & (0xfff); // cal index
+    index[i] = (FH[0][i] ^ (pc >> 2)) & TAGE_INDEX_MASK; // cal index
   }
   for (int i = 0; i < TN_MAX; i++) {
+    assert(index[i] < TN_ENTRY_NUM);
     upd_IO->useful_read[i] = useful_table[i][index[i]];
     upd_IO->cnt_read[i] = cnt_table[i][index[i]];
   }
