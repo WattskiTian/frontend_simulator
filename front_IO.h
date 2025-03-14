@@ -71,6 +71,7 @@ struct BPU_out {
 
 struct icache_in {
   bool reset;
+  bool refetch;
   // from BPU
   bool icache_read_valid;
   uint32_t fetch_address;

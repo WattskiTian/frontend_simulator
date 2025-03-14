@@ -26,9 +26,12 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
   } // else pc_reg should be set by the previous cycle
 
   // send fetch request to icache
-  out->icache_read_valid = !in->fifo_full && in->icache_read_ready;
+  // if refetch is true, icache will be set to IDLE
+  out->icache_read_valid =
+      (!in->fifo_full && in->icache_read_ready) || in->refetch;
   out->fetch_address = pc_reg;
-  out->PTAB_write_enable = !in->fifo_full && in->icache_read_ready;
+  out->PTAB_write_enable =
+      (!in->fifo_full && in->icache_read_ready) || in->refetch;
 
   // update branch predictor
   for (int i = 0; i < COMMIT_WIDTH; i++) {
@@ -69,7 +72,7 @@ void BPU_top(struct BPU_in *in, struct BPU_out *out) {
 #endif
 
   // stall BPU
-  if (in->fifo_full || !in->icache_read_ready) {
+  if ((in->fifo_full || !in->icache_read_ready) && !in->refetch) {
     return;
   }
 

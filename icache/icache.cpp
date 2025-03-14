@@ -63,6 +63,10 @@ void icache_top(struct icache_in *in, struct icache_out *out) {
     return;
   }
 
+  if (in->refetch) {
+    icache_state = ICACHE_IDLE;
+  }
+
   if (icache_state == ICACHE_IDLE) {
     if (in->icache_read_valid) {
       icache_state = ICACHE_WAITING;

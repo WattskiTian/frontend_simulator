@@ -40,6 +40,7 @@ void front_top(struct front_top_in *in, struct front_top_out *out) {
 
   // set icache input
   icache_in.reset = in->reset;
+  icache_in.refetch = in->refetch;
   icache_in.icache_read_valid = bpu_out.icache_read_valid;
   icache_in.fetch_address = bpu_out.fetch_address;
 
