@@ -70,6 +70,19 @@ void icache_top(struct icache_in *in, struct icache_out *out) {
       out->icache_read_ready = false;
       out->fetch_group_valid = false;
       latency_reg++;
+      // dealing with no latency case
+      if (latency_delay_required == 0) {
+        latency_delay_required = 0;
+        latency_reg = 0;
+        icache_state = ICACHE_IDLE;
+        out->icache_read_ready = true;
+        out->fetch_group_valid = true;
+        for (int i = 0; i < FETCH_WIDTH; i++) {
+          uint32_t pmem_address = in->fetch_address + (i * 4);
+          DEBUG_LOG("[icache] pmem_address: %x\n", pmem_address);
+          out->fetch_group[i] = pmem_address;
+        }
+      }
       return;
     }
   } else if (icache_state == ICACHE_WAITING) {

@@ -20,7 +20,7 @@
 
 // Latency configuration
 #define HIT_LATENCY 3
-#define MISS_LATENCY 100
+#define MISS_LATENCY 10
 
 // Cache state definitions
 #define ICACHE_IDLE 0

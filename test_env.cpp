@@ -480,12 +480,14 @@ int main(int argc, char *argv[]) {
 #ifndef IO_GEN_MODE
   // 输出统计信息
   printf("\n=== Branch Prediction Statistics ===\n");
+  printf("Total cycles: %lu\n", cycle_count);
   printf("Total Predictions: %lu\n", total_predictions);
   printf("Correct Predictions: %lu\n", correct_predictions);
   printf("Prediction Accuracy: %.2f%%\n",
          (total_predictions > 0)
              ? (correct_predictions * 100.0 / total_predictions)
              : 0.0);
+  printf("===detail information===\n");
   printf("Seq Hits: %lu\n", seq_hits);
   printf("Total Insts: %lu\n", total_insts);
   printf("TAGE Hits: %lu\n", tage_hits);
