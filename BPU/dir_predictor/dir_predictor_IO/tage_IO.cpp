@@ -426,7 +426,11 @@ void tage_dummy(dummy_IO *IO) {
   IO->base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
 }
 
-bool *tage_get_randin_cal(int func_id, bool *In) {
+bool *tage_get_randin_cal(bool *In, int func_id, bool *output_bits,
+                          int now_trainning_bit) {
+
+  output_bits[0] = 0; // now only one output bit
+
   if (func_id == 0) { // dummy test
     dummy_IO IO_dummy;
     dummy_In In_dummy;
@@ -439,7 +443,7 @@ bool *tage_get_randin_cal(int func_id, bool *In) {
     return Out1_buf;
 
   } else if (func_id == 1) {
-    pred_IO1 = &IO1;
+    pred_1_IO *pred_IO1 = new pred_1_IO();
     pred_1_In In1;
     boolArrayToStruct(In, In1);
     pred_IO1->pc = In1.pc;
@@ -455,8 +459,10 @@ bool *tage_get_randin_cal(int func_id, bool *In) {
       Out1.index[i] = pred_IO1->index[i];
       Out1.tag_pc[i] = pred_IO1->tag_pc[i];
     }
-    structToBoolArray(Out1, Out1_buf);
-    return Out1_buf;
+    bool Out_buf[OUT1_LENGTH];
+    structToBoolArray(Out1, Out_buf);
+    output_bits[0] = Out_buf[now_trainning_bit]; // now only one output bit
+    return output_bits;
 
   } else if (func_id == 2) {
     pred_IO2 = &IO2;

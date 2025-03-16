@@ -1,7 +1,8 @@
 #ifndef _TAGE_FUNC_H_
 #define _TAGE_FUNC_H_
 
-bool *tage_get_randin_cal(int func_id, bool *In);
+bool *tage_get_randin_cal(bool *In, int func_id, bool *output_bits,
+                          int now_trainning_bit);
 bool *tage_get_input(int func_id);
 
 #define IN1_LENGTH 416
