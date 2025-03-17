@@ -95,6 +95,9 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
         // ret_cnt++;
         // out->btb_pred_addr = ras_pop();
         out->btb_pred_addr = C_ras_pop_wrapper();
+        if (out->btb_pred_addr == -1) {
+          out->btb_pred_addr = in->pc + 4;
+        }
         return;
       } else {
         // indir_cnt++;

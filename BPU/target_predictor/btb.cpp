@@ -64,7 +64,11 @@ uint32_t btb_pred(uint32_t pc) {
         return btb_bta[way][idx];
       } else if (br_type == BR_RET) {
         // ret_cnt++;
-        return ras_pop();
+        uint32_t ret_pc = ras_pop();
+        if (ret_pc == -1) {
+          return pc + 4;
+        }
+        return ret_pc;
       } else {
         // indir_cnt++;
         return tc_pred(pc);
