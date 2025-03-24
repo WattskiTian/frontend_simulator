@@ -342,7 +342,7 @@ void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
   // now FH is not updated yet!
   uint32_t tag_pc[TN_MAX];
   for (int i = 0; i < TN_MAX; i++) {
-    tag_pc[i] = FH[1][i] ^ FH[2][i] ^ (pc >> 2) & (0xff); // cal tag
+    tag_pc[i] = (FH[1][i] ^ FH[2][i] ^ (pc >> 2)) & (0xff); // cal tag
   }
   for (int i = 0; i < TN_MAX; i++) {
     upd_IO->tag_pc[i] = tag_pc[i];

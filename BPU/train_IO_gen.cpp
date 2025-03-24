@@ -16,7 +16,7 @@ void print_IO_data(uint32_t base_pc) {
 
     uint32_t tmp_tage_idx[TN_MAX];
     for (int i = 0; i < TN_MAX; i++) {
-      tmp_tage_idx[i] = FH[0][i] ^ (pc >> 2) & (0xfff);
+      tmp_tage_idx[i] = (FH[0][i] ^ (pc >> 2)) & TAGE_INDEX_MASK;
     }
     for (int i = 0; i < TN_MAX; i++) {
       // printf("%d ", tag_table[i][tmp_tage_idx[i]]);
@@ -26,18 +26,20 @@ void print_IO_data(uint32_t base_pc) {
       std::cout << std::bitset<3>(cnt_table[i][tmp_tage_idx[i]]);
       std::cout << std::bitset<2>(useful_table[i][tmp_tage_idx[i]]);
     }
+    uint32_t btb_idx = (pc >> 2) & BTB_IDX_MASK;
     for (int i = 0; i < BTB_WAY_NUM; i++) {
       // printf("%d ", btb_valid[i][pc & BTB_IDX_MASK]);
       // printf("%d ", btb_tag[i][pc & BTB_IDX_MASK]);
       // printf("%d ", btb_br_type[i][pc & BTB_IDX_MASK]);
       // printf("%d ", btb_bta[i][pc & BTB_IDX_MASK]);
-      std::cout << std::bitset<1>(btb_valid[i][pc & BTB_IDX_MASK]);
-      std::cout << std::bitset<8>(btb_tag[i][pc & BTB_IDX_MASK]);
-      std::cout << std::bitset<2>(btb_br_type[i][pc & BTB_IDX_MASK]);
-      std::cout << std::bitset<32>(btb_bta[i][pc & BTB_IDX_MASK]);
+      std::cout << std::bitset<1>(btb_valid[i][btb_idx]);
+      std::cout << std::bitset<8>(btb_tag[i][btb_idx]);
+      std::cout << std::bitset<2>(btb_br_type[i][btb_idx]);
+      std::cout << std::bitset<32>(btb_bta[i][btb_idx]);
     }
-    std::cout << std::bitset<2>(btb_lru[pc & BTB_IDX_MASK]);
-    std::cout << std::bitset<32>(bht[pc % BHT_ENTRY_NUM]);
+    std::cout << std::bitset<2>(btb_lru[btb_idx]);
+    uint32_t bht_idx = (pc >> 2) % BHT_ENTRY_NUM;
+    std::cout << std::bitset<32>(bht[bht_idx]);
     // printf("%d ", target_cache[(pc ^ bht[pc % BHT_ENTRY_NUM]) %
     // TC_ENTRY_NUM]);
     std::cout << std::bitset<32>(
