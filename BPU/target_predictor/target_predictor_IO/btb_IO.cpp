@@ -9,9 +9,11 @@
 #include "target_cache_IO.h"
 #include "target_predictor_types.h"
 
-uint32_t btb_get_tag(uint32_t pc) { return (pc >> BTB_IDX_LEN) & BTB_TAG_MASK; }
+uint32_t btb_get_tag(uint32_t pc) {
+  return (pc >> (BTB_IDX_LEN + 2)) & BTB_TAG_MASK;
+}
 
-uint32_t btb_get_idx(uint32_t pc) { return pc & BTB_IDX_MASK; }
+uint32_t btb_get_idx(uint32_t pc) { return (pc >> 2) & BTB_IDX_MASK; }
 
 // only for statistic
 // uint64_t dir_cnt = 0;

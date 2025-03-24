@@ -5,13 +5,13 @@
 #include <cstdint>
 #include <cstdio>
 uint32_t tc_pred(uint32_t pc) {
-  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
+  uint32_t bht_idx = (pc >> 2) % BHT_ENTRY_NUM;
   uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
   return target_cache[tc_idx];
 }
 
 void tc_pred1(struct tc_pred1_In *in, struct tc_pred1_Out *out) {
-  out->bht_idx = in->pc % BHT_ENTRY_NUM;
+  out->bht_idx = (in->pc >> 2) % BHT_ENTRY_NUM;
 }
 
 void tc_pred2(struct tc_pred2_In *in, struct tc_pred2_Out *out) {
@@ -45,7 +45,7 @@ uint32_t C_tc_pred_wrapper(uint32_t pc) {
 }
 
 void bht_update(uint32_t pc, bool pc_dir) {
-  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
+  uint32_t bht_idx = (pc >> 2) % BHT_ENTRY_NUM;
   bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
 }
 
@@ -60,16 +60,16 @@ void C_bht_update_wrapper(uint32_t pc, bool pc_dir) {
   struct bht_update_In *in = &bht_update_in;
   struct bht_update_Out *out = &bht_update_out;
   in->pc_dir = pc_dir;
-  in->bht_read = bht[pc % BHT_ENTRY_NUM];
+  in->bht_read = bht[(pc >> 2) % BHT_ENTRY_NUM];
   bht_update_IO(in, out);
   // update registers
   if (out->bht_ctrl != 0) {
-    bht[pc % BHT_ENTRY_NUM] = out->bht_wdata;
+    bht[(pc >> 2) % BHT_ENTRY_NUM] = out->bht_wdata;
   }
 }
 
 void tc_update(uint32_t pc, uint32_t actualAddr) {
-  uint32_t bht_idx = pc % BHT_ENTRY_NUM;
+  uint32_t bht_idx = (pc >> 2) % BHT_ENTRY_NUM;
   uint32_t tc_idx = (bht[bht_idx] ^ pc) % TC_ENTRY_NUM;
   target_cache[tc_idx] = actualAddr;
 }
@@ -85,7 +85,7 @@ struct tc_update_Out tc_update_out;
 void C_tc_update_wrapper(uint32_t pc, uint32_t actualAddr) {
   struct tc_update_In *in = &tc_update_in;
   struct tc_update_Out *out = &tc_update_out;
-  in->bht_read = bht[pc % BHT_ENTRY_NUM];
+  in->bht_read = bht[(pc >> 2) % BHT_ENTRY_NUM];
   in->pc = pc;
   in->actualAddr = actualAddr;
   tc_update_IO(in, out);
