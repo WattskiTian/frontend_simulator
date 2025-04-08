@@ -31,6 +31,15 @@ struct btb_pred2_Out {
   uint32_t btb_pred_addr;
 };
 
+struct update_lru_In {
+  int way;
+  uint8_t btb_lru_read;
+};
+
+struct update_lru_Out {
+  uint8_t btb_lru_wdata;
+};
+
 struct btb_update_In {
   uint32_t pc;
   uint32_t actualAddr;

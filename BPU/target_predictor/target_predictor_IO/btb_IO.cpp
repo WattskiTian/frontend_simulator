@@ -41,6 +41,20 @@ void update_lru(uint32_t idx, int way) {
   btb_lru[idx] &= ~(0x3 << (way * 2));
 }
 
+void update_lru_IO(struct update_lru_In *in, struct update_lru_Out *out) {
+  out->btb_lru_wdata = 0;
+  uint32_t current_age = (in->btb_lru_read >> (in->way * 2)) & 0x3;
+  for (int i = 0; i < BTB_WAY_NUM; i++) {
+    if (i == in->way)
+      continue;
+    uint32_t age = (in->btb_lru_read >> (i * 2)) & 0x3;
+    if (age <= current_age) {
+      uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
+      out->btb_lru_wdata |= (new_age << (i * 2));
+    }
+  }
+}
+
 void btb_pred1(struct btb_pred1_In *in, struct btb_pred1_Out *out) {
   out->btb_idx = btb_get_idx(in->pc);
   out->btb_tag = btb_get_tag(in->pc);
