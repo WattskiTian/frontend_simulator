@@ -1,4 +1,5 @@
 #include "../../../sequential_components/seq_comp.h"
+#include "../config_dir.h"
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -245,14 +246,14 @@ void TAGE_do_update(update_IO *IO) {
   // most significant bits of the u counters is reset to zero, then whole column
   // of least significant bits are reset.
   uint32_t u_clear_cnt = IO->u_clear_cnt_read + 1;
-  uint32_t u_cnt = u_clear_cnt & (0x7ff);
-  uint32_t row_cnt = (u_clear_cnt >> 11) & TAGE_INDEX_MASK;
-  bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
+  uint32_t u_cnt = u_clear_cnt & U_CNT_MASK;
+  uint32_t row_cnt = (u_clear_cnt >> U_CNT_LEN) & TAGE_INDEX_MASK;
+  bool u_msb_reset = ((u_clear_cnt) >> U_MSB_OFFSET) & HIGH_MASK;
 
   /*IO->u_clear_cnt_wen = 1;*/
   IO->u_clear_cnt_wdata = u_clear_cnt;
   if (u_cnt == 0) {
-    IO->u_clear_ctrl = 2;            // 0b10, do reset
+    IO->u_clear_ctrl = LOW_MASK;     // 0b10, do reset
     IO->u_clear_ctrl |= u_msb_reset; // msb or lsb
     IO->u_clear_idx = row_cnt;
   }

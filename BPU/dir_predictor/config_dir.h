@@ -2,10 +2,12 @@
 #define CONFIG_DIR_H
 
 // TAGE CONFIGS
-#define TAGE_INDEX_LEN 12
+#define TAGE_INDEX_LEN 9
 #define TN_ENTRY_NUM (1 << TAGE_INDEX_LEN)
 #define TAGE_INDEX_MASK (TN_ENTRY_NUM - 1)
-#define BASE_ENTRY_NUM 4096
+#define TAGE_TAG_LEN 8
+#define TAGE_TAG_MASK ((1 << TAGE_TAG_LEN) - 1)
+#define BASE_ENTRY_NUM 512
 #define GHR_LENGTH 256
 #define TN_MAX 4   // 0-indexed, which means 0,1,2,3
 #define FH_N_MAX 3 // how many different types of Folded history
