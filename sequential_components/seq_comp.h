@@ -8,18 +8,7 @@ void print_all_seq_components();
 // the defination of all sequential components
 
 /////////////////////TAGE/////////////////////
-#define TAGE_INDEX_LEN 9
-#define TN_ENTRY_NUM (1 << TAGE_INDEX_LEN)
-#define TAGE_INDEX_MASK (TN_ENTRY_NUM - 1)
-#define BASE_ENTRY_NUM 512
-#define GHR_LENGTH 128
-#define TN_MAX 4   // 0-indexed, which means 0,1,2,3
-#define FH_N_MAX 3 // how many different types of Folded history
-
-#define U_CNT_LEN 11
-#define U_CNT_MASK ((1 << U_CNT_LEN) - 1)
-#define U_MSB_OFFSET (U_CNT_LEN + TAGE_INDEX_LEN)
-
+#include "../BPU/dir_predictor/config_dir.h"
 extern uint32_t u_clear_cnt;
 extern uint32_t FH[FH_N_MAX][TN_MAX];
 extern bool GHR[GHR_LENGTH];

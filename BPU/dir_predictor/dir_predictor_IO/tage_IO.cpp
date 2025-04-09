@@ -11,12 +11,6 @@
 
 #include "tage_types.h"
 
-// only used for tage C_sim
-pred_1_IO IO1;
-pred_2_IO IO2;
-update_IO IO3;
-HR_IO IO4;
-
 void TAGE_update_HR(HR_IO *IO) {
   // update GHR
   for (int i = GHR_LENGTH - 1; i > 0; i--) {
@@ -37,15 +31,22 @@ void TAGE_update_HR(HR_IO *IO) {
   }
 }
 
+uint8_t tage_cal_tag(uint32_t FH1, uint32_t FH2, uint32_t PC) {
+  return (FH1 ^ FH2 ^ (PC >> 2)) & TAGE_TAG_MASK;
+}
+
+uint32_t tage_cal_index(uint32_t FH0, uint32_t PC) {
+  return (FH0 ^ (PC >> 2)) & TAGE_INDEX_MASK;
+}
+
 void TAGE_pred_1(pred_1_IO *IO) {
   uint32_t PC = IO->pc;
   IO->base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
   for (int i = 0; i < TN_MAX; i++) {
-    IO->tag_pc[i] =
-        (IO->FH[1][i] ^ IO->FH[2][i] ^ (PC >> 2)) & (0xff); // cal tag
+    IO->tag_pc[i] = tage_cal_tag(IO->FH[1][i], IO->FH[2][i], PC);
   }
   for (int i = 0; i < TN_MAX; i++) {
-    IO->index[i] = ((IO->FH[0][i] ^ (PC >> 2))) & TAGE_INDEX_MASK; // cal index
+    IO->index[i] = tage_cal_index(IO->FH[0][i], PC);
   }
 }
 
@@ -261,19 +262,11 @@ void TAGE_do_update(update_IO *IO) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
-#include "../../../frontend.h"
 #include "./tage_IO.h"
-// this is only for C_SIM
-// this is only for C_SIM
-// this is only for C_SIM
-pred_1_IO *pred_IO1;
-pred_2_IO *pred_IO2;
-update_IO *upd_IO;
-HR_IO *hr_IO;
 
 pred_out C_TAGE_do_pred_wrapper(uint32_t pc) {
 
-  pred_IO1 = &IO1;
+  pred_1_IO *pred_IO1 = new pred_1_IO();
   pred_IO1->pc = pc;
   for (int k = 0; k < FH_N_MAX; k++) {
     for (int i = 0; i < TN_MAX; i++) {
@@ -283,7 +276,7 @@ pred_out C_TAGE_do_pred_wrapper(uint32_t pc) {
 
   TAGE_pred_1(pred_IO1);
 
-  pred_IO2 = &IO2;
+  pred_2_IO *pred_IO2 = new pred_2_IO();
   pred_IO2->base_cnt = base_counter[pred_IO1->base_idx];
   for (int i = 0; i < TN_MAX; i++) {
     pred_IO2->cnt_read[i] = cnt_table[i][pred_IO1->index[i]];
@@ -291,21 +284,6 @@ pred_out C_TAGE_do_pred_wrapper(uint32_t pc) {
     pred_IO2->tag_pc[i] = pred_IO1->tag_pc[i];
   }
 
-  // #ifdef IO_GEN_MODE
-  //   if (io_gen_cnt >= 0) {
-  //     printf("TAGE");
-  //     printf("%d ", base_counter[pred_IO1->base_idx]);
-  //     for (int i = 0; i < TN_MAX; i++) {
-  //       printf("%d ", tag_table[i][pred_IO1->index[i]]);
-  //       printf("%d ", cnt_table[i][pred_IO1->index[i]]);
-  //       printf("%d ", useful_table[i][pred_IO1->index[i]]);
-  //     }
-  //     for (int i = 0; i < GHR_LENGTH; i++) {
-  //       printf("%d ", GHR[i]);
-  //     }
-  //     printf("\n");
-  //   }
-  // #endif
   TAGE_pred_2(pred_IO2);
 
   pred_out pred_out;
@@ -313,11 +291,13 @@ pred_out C_TAGE_do_pred_wrapper(uint32_t pc) {
   pred_out.altpred = pred_IO2->altpred;
   pred_out.pcpn = pred_IO2->pcpn;
   pred_out.altpcpn = pred_IO2->altpcpn;
+  delete pred_IO1;
+  delete pred_IO2;
   return pred_out;
 }
 
 void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
-  upd_IO = &IO3;
+  update_IO *upd_IO = new update_IO();
   // prepare Input
   upd_IO->pc = pc;
   upd_IO->real_dir = real_dir;
@@ -329,7 +309,7 @@ void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
   // now FH is not updated yet!
   uint32_t index[TN_MAX];
   for (int i = 0; i < TN_MAX; i++) {
-    index[i] = (FH[0][i] ^ (pc >> 2)) & TAGE_INDEX_MASK; // cal index
+    index[i] = tage_cal_index(FH[0][i], pc);
   }
   for (int i = 0; i < TN_MAX; i++) {
     assert(index[i] < TN_ENTRY_NUM);
@@ -343,7 +323,7 @@ void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
   // now FH is not updated yet!
   uint32_t tag_pc[TN_MAX];
   for (int i = 0; i < TN_MAX; i++) {
-    tag_pc[i] = (FH[1][i] ^ FH[2][i] ^ (pc >> 2)) & (0xff); // cal tag
+    tag_pc[i] = tage_cal_tag(FH[1][i], FH[2][i], pc);
   }
   for (int i = 0; i < TN_MAX; i++) {
     upd_IO->tag_pc[i] = tag_pc[i];
@@ -371,21 +351,22 @@ void C_TAGE_do_update_wrapper(uint32_t pc, bool real_dir, pred_out pred_out) {
   if (upd_IO->u_clear_ctrl != 0) {
     if ((upd_IO->u_clear_ctrl & 0x1) == 1) {
       for (int i = 0; i < TN_MAX; i++) {
-        useful_table[i][upd_IO->u_clear_idx] &= 0x1;
+        useful_table[i][upd_IO->u_clear_idx] &= HIGH_MASK;
       }
     } else {
       for (int i = 0; i < TN_MAX; i++) {
-        useful_table[i][upd_IO->u_clear_idx] &= 0x2;
+        useful_table[i][upd_IO->u_clear_idx] &= LOW_MASK;
       }
     }
   }
   /*if (upd_IO->u_clear_cnt_wen) {*/
   u_clear_cnt = upd_IO->u_clear_cnt_wdata;
+  delete upd_IO;
   /*}*/
 }
 
 void C_TAGE_update_HR_wrapper(bool new_history) {
-  hr_IO = &IO4;
+  HR_IO *hr_IO = new HR_IO();
   // update History regs
   for (int k = 0; k < FH_N_MAX; k++) {
     for (int i = 0; i < TN_MAX; i++) {
@@ -409,267 +390,5 @@ void C_TAGE_update_HR_wrapper(bool new_history) {
   for (int i = 0; i < GHR_LENGTH; i++) {
     GHR[i] = hr_IO->GHR_new[i];
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
-
-#include "../../../IO_train/IO_cvt.h"
-#include "../../../IO_train/tage_func.h"
-
-bool Out1_buf[OUT1_LENGTH];
-bool Out2_buf[OUT2_LENGTH];
-bool Out3_buf[OUT3_LENGTH];
-bool Out4_buf[OUT4_LENGTH];
-
-void tage_dummy(dummy_IO *IO) {
-  uint32_t PC = IO->pc;
-  IO->base_idx = PC % BASE_ENTRY_NUM; // PC[x:0]
-}
-
-bool *tage_get_randin_cal(bool *In, int func_id, bool *output_bits,
-                          int now_trainning_bit) {
-
-  output_bits[0] = 0; // now only one output bit
-
-  if (func_id == 0) { // dummy test
-    dummy_IO IO_dummy;
-    dummy_In In_dummy;
-    dummy_Out Out_dummy;
-    boolArrayToStruct(In, In_dummy);
-    IO_dummy.pc = In_dummy.pc;
-    tage_dummy(&IO_dummy);
-    Out_dummy.base_idx = IO_dummy.base_idx;
-    structToBoolArray(Out_dummy, Out1_buf);
-    return Out1_buf;
-
-  } else if (func_id == 1) {
-    pred_1_IO *pred_IO1 = new pred_1_IO();
-    pred_1_In In1;
-    boolArrayToStruct(In, In1);
-    pred_IO1->pc = In1.pc;
-    for (int k = 0; k < FH_N_MAX; k++) {
-      for (int i = 0; i < TN_MAX; i++) {
-        pred_IO1->FH[k][i] = In1.FH[k][i];
-      }
-    }
-    TAGE_pred_1(pred_IO1);
-    pred_1_Out Out1;
-    Out1.base_idx = pred_IO1->base_idx;
-    for (int i = 0; i < TN_MAX; i++) {
-      Out1.index[i] = pred_IO1->index[i];
-      Out1.tag_pc[i] = pred_IO1->tag_pc[i];
-    }
-    bool Out_buf[OUT1_LENGTH];
-    structToBoolArray(Out1, Out_buf);
-    output_bits[0] = Out_buf[now_trainning_bit]; // now only one output bit
-    return output_bits;
-
-  } else if (func_id == 2) {
-    pred_IO2 = &IO2;
-    pred_2_In In2;
-    boolArrayToStruct(In, In2);
-    pred_IO2->base_cnt = In2.base_cnt;
-    for (int i = 0; i < TN_MAX; i++) {
-      pred_IO2->tag_pc[i] = In2.tag_pc[i];
-      pred_IO2->tag_read[i] = In2.tag_read[i];
-      pred_IO2->cnt_read[i] = In2.cnt_read[i];
-    }
-    TAGE_pred_2(pred_IO2);
-    pred_2_Out Out2;
-    Out2.pred = pred_IO2->pred;
-    Out2.altpred = pred_IO2->altpred;
-    Out2.pcpn = pred_IO2->pcpn;
-    Out2.altpcpn = pred_IO2->altpcpn;
-    structToBoolArray(Out2, Out2_buf);
-    return Out2_buf;
-
-  } else if (func_id == 3) {
-    upd_IO = &IO3;
-    update_In In3;
-    boolArrayToStruct(In, In3);
-    upd_IO->pc = In3.pc;
-    upd_IO->real_dir = In3.real_dir;
-    upd_IO->pred_dir = In3.pred_dir;
-    upd_IO->alt_pred = In3.alt_pred;
-    upd_IO->pcpn = In3.pcpn;
-    upd_IO->altpcpn = In3.altpcpn;
-    for (int i = 0; i < TN_MAX; i++) {
-      upd_IO->useful_read[i] = In3.useful_read[i];
-      upd_IO->cnt_read[i] = In3.cnt_read[i];
-    }
-    upd_IO->base_read = In3.base_read;
-    upd_IO->lsfr = In3.lsfr;
-    for (int i = 0; i < TN_MAX; i++) {
-      upd_IO->tag_pc[i] = In3.tag_pc[i];
-    }
-    upd_IO->u_clear_cnt_read = In3.u_clear_cnt_read;
-    // do the logic
-    TAGE_do_update(upd_IO);
-    // No need to access sequential components!
-    update_Out Out3;
-    for (int i = 0; i < TN_MAX; i++) {
-      Out3.useful_ctrl[i] = upd_IO->useful_ctrl[i];
-      Out3.useful_wdata[i] = upd_IO->useful_wdata[i];
-      Out3.cnt_ctrl[i] = upd_IO->cnt_ctrl[i];
-      Out3.cnt_wdata[i] = upd_IO->cnt_wdata[i];
-      Out3.tag_ctrl[i] = upd_IO->tag_ctrl[i];
-      Out3.tag_wdata[i] = upd_IO->tag_wdata[i];
-      Out3.base_ctrl = upd_IO->base_ctrl;
-      Out3.base_wdata = upd_IO->base_wdata;
-      Out3.u_clear_ctrl = upd_IO->u_clear_ctrl;
-      Out3.u_clear_idx = upd_IO->u_clear_idx;
-      Out3.u_clear_cnt_wdata = upd_IO->u_clear_cnt_wdata;
-    }
-    structToBoolArray(Out3, Out3_buf);
-    return Out3_buf;
-
-  } else if (func_id == 4) {
-    hr_IO = &IO4;
-    HR_In In4;
-    boolArrayToStruct(In, In4);
-    for (int k = 0; k < FH_N_MAX; k++) {
-      for (int i = 0; i < TN_MAX; i++) {
-        hr_IO->FH_old[k][i] = In4.FH_old[k][i];
-      }
-    }
-    for (int i = 0; i < GHR_LENGTH; i++) {
-      hr_IO->GHR_old[i] = In4.GHR_old[i];
-    }
-    hr_IO->new_history = In4.new_history;
-    // do the logic
-    TAGE_update_HR(hr_IO);
-    // No need to access sequential components!
-    HR_Out Out4;
-    for (int k = 0; k < FH_N_MAX; k++) {
-      for (int i = 0; i < TN_MAX; i++) {
-        Out4.FH_new[k][i] = hr_IO->FH_new[k][i];
-      }
-    }
-    for (int i = 0; i < GHR_LENGTH; i++) {
-      Out4.GHR_new[i] = hr_IO->GHR_new[i];
-    }
-    structToBoolArray(Out4, Out4_buf);
-    return Out4_buf;
-  }
-
-  return Out1_buf;
-}
-
-void randbool(int n, bool *a, int zero_length) {
-  int zi = 0;
-  long randint;
-  int i;
-  for (i = 0; i < n - zero_length; i++) {
-    zi = i % 30;
-    if (zi == 0) {
-      randint = rand();
-    }
-    a[i] = bool((randint >> (zi)) % 2);
-  }
-  for (; i < n; i++) {
-    a[i] = 0;
-  }
-}
-
-void randbool2(int n, bool *a, bool *b, int zero_length) {
-  int zi = 0;
-  long randint;
-  int i;
-  for (i = 0; i < n - zero_length; i++) {
-    zi = i % 30;
-    if (zi == 0) {
-      randint = rand();
-    }
-    a[i] = bool((randint >> (zi)) % 2);
-    b[i] = a[i];
-  }
-  for (; i < n; i++) {
-    a[i] = 0;
-    b[i] = 0;
-  }
-}
-
-void randpc(bool *pc) {
-  randbool(30, pc + 2, 0);
-  pc[0] = 0;
-  pc[1] = 0;
-}
-
-void randFH(bool *FH) {
-  int idx = 0;
-  for (int k = 0; k < FH_N_MAX; k++) {
-    for (int i = 0; i < TN_MAX; i++) {
-      // FH[k][i]
-      randbool(32, FH + idx, 32 - fh_length[k][i]);
-      idx += 32;
-    }
-  }
-}
-
-bool In1_buf[IN1_LENGTH];
-bool In2_buf[IN2_LENGTH];
-bool In3_buf[IN3_LENGTH];
-bool In4_buf[IN4_LENGTH];
-
-bool *tage_get_input(int func_id) {
-  if (func_id == 1) {
-    randpc(In1_buf);
-    randFH(In1_buf + 32);
-    return In1_buf;
-
-  } else if (func_id == 2) {
-    bool lsfr;
-    int idx = 0;
-    randbool(8, In2_buf, 6); // base_cnt
-    idx += 8;
-    for (int i = 0; i < TN_MAX; i++) {
-      lsfr = rand() % 2;
-      if (lsfr == 1) {
-        randbool2(8, In2_buf + idx, In2_buf + idx + 32, 0); // tag_pc==tag_read
-        randbool(8, In2_buf + idx + 64, 5);                 // cnt_read
-        idx += 8;
-      } else {
-        randbool(8, In2_buf + idx, 0);      // tag_pc
-        randbool(8, In2_buf + idx + 32, 0); // tag_read
-        randbool(8, In2_buf + idx + 64, 5); // cnt_read
-        idx += 8;
-      }
-    }
-    return In2_buf;
-
-  } else if (func_id == 3) {
-    int idx = 0;
-    randpc(In3_buf);
-    idx += 32;
-    randbool(3, In3_buf + idx, 0);
-    idx += 3;
-    randbool(8, In3_buf + idx, 5); // pcpn
-    idx += 8;
-    randbool(8, In3_buf + idx, 5); // altpcpn
-    idx += 8;
-    for (int i = 0; i < TN_MAX; i++) {
-      randbool(8, In3_buf + idx, 6);      // useful_read
-      randbool(8, In3_buf + idx + 32, 5); // cnt_read
-      idx += 8;
-    }
-    idx += 32;
-    randbool(8, In3_buf + idx, 6); // base_read
-    idx += 8;
-    randbool(8, In3_buf + idx, 0); // lsfr
-    idx += 8;
-    for (int i = 0; i < TN_MAX; i++) {
-      randbool(8, In3_buf + idx, 0); // tag_pc
-      idx += 8;
-    }
-    randbool(32, In3_buf + idx, 0); // u_clear_cnt_read
-    return In3_buf;
-
-  } else if (func_id == 4) {
-    randFH(In4_buf);
-    int idx = 32 * FH_N_MAX * TN_MAX;
-    randbool(GHR_LENGTH + 1, In4_buf + idx, 0); // GHR_old,new_history
-    return In4_buf;
-  }
-  return In1_buf;
+  delete hr_IO;
 }
