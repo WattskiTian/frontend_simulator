@@ -1,8 +1,7 @@
 #include <cstdint>
 #include <cstdio>
-#include <sys/types.h>
 
-#include "../../frontend.h"
+#include "../../../frontend.h"
 #include "btb.h"
 #include "ras.h"
 #include "target_cache.h"
@@ -26,24 +25,24 @@ uint32_t btb_get_idx(uint32_t pc) { return (pc >> 2) & BTB_IDX_MASK; }
 // uint64_t indir_cnt = 0;
 
 void update_lru(uint32_t idx, int way) {
-  uint32_t current_age = (btb_lru[idx] >> (way * 2)) & 0x3;
+  uint32_t current_age = (btb_lru[idx] >> (way * LRU_LEN)) & LRU_MASK;
 
-  // update all younger ways, but not exceed 3
+  // update all younger ways, but not exceed LRU_MASK
   for (int i = 0; i < BTB_WAY_NUM; i++) {
     if (i == way)
       continue;
-    uint32_t age = (btb_lru[idx] >> (i * 2)) & 0x3;
+    uint32_t age = (btb_lru[idx] >> (i * LRU_LEN)) & LRU_MASK;
     if (age <= current_age) {
-      uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
+      uint32_t new_age = (age == LRU_MASK ? LRU_MASK : age + 1) & LRU_MASK;
       // clear current age
-      btb_lru[idx] &= ~(0x3 << (i * 2));
+      btb_lru[idx] &= ~(LRU_MASK << (i * LRU_LEN));
       // set new age
-      btb_lru[idx] |= (new_age << (i * 2));
+      btb_lru[idx] |= (new_age << (i * LRU_LEN));
     }
   }
 
   // set current way to latest
-  btb_lru[idx] &= ~(0x3 << (way * 2));
+  btb_lru[idx] &= ~(LRU_MASK << (way * LRU_LEN));
 }
 
 uint32_t btb_pred(uint32_t pc) {
@@ -121,7 +120,7 @@ void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
   int lru_way = 0;
   uint32_t max_age = 0;
   for (int way = 0; way < BTB_WAY_NUM; way++) {
-    uint32_t age = (btb_lru[idx] >> (way * 2)) & 0x3;
+    uint32_t age = (btb_lru[idx] >> (way * LRU_LEN)) & LRU_MASK;
     if (age > max_age) {
       max_age = age;
       lru_way = way;

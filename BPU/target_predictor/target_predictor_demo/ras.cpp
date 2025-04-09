@@ -1,8 +1,5 @@
 #include "ras.h"
 
-#define RAS_ENTRY_NUM 64
-#define RAS_CNT_LEN 8 // cnt for repeated call
-
 static uint32_t ras[RAS_ENTRY_NUM];
 static uint32_t ras_cnt[RAS_ENTRY_NUM];
 static uint32_t ras_sp;

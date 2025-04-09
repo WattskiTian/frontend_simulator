@@ -26,7 +26,7 @@ SRC_FRONTED = fronted_main.cpp $(SRC_DIR_PRED)/demo_tage.cpp $(SRC_TARGET_PRED)/
 SRC_TEST_ENV = test_env.cpp front_top.cpp BPU/BPU_top.cpp \
                $(wildcard $(SRC_ICACHE)/*.cpp) \
                $(wildcard $(SRC_FIFO)/*.cpp) \
-			   $(wildcard $(SRC_TARGET_PRED)/*.cpp) \
+			   $(wildcard $(SRC_TARGET_PRED)/target_predictor_demo/*.cpp) \
 			   $(wildcard $(SRC_DIR_PRED)/dir_predictor_demo/*.cpp) 
 
 SRC_TEST_ENV_IO = test_env.cpp front_top.cpp BPU/BPU_top.cpp BPU/train_IO_gen.cpp \

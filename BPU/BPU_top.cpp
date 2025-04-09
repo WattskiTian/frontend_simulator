@@ -5,8 +5,8 @@
 
 #ifndef IO_version
 #include "./dir_predictor/dir_predictor_demo/demo_tage.h"
-#include "./target_predictor/btb.h"
-#include "./target_predictor/target_cache.h"
+#include "./target_predictor/target_predictor_demo/btb.h"
+#include "./target_predictor/target_predictor_demo/target_cache.h"
 #else
 #include "./dir_predictor/dir_predictor_IO/tage_IO.h"
 #include "./target_predictor/target_predictor_IO/btb_IO.h"
