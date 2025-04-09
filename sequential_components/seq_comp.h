@@ -9,15 +9,16 @@ void print_all_seq_components();
 
 /////////////////////TAGE/////////////////////
 #define TAGE_INDEX_LEN 9
-#define TAGE_INDEX_MASK ((1 << TAGE_INDEX_LEN) - 1)
-#define BASE_ENTRY_NUM 512
-/*#define GHR_LENGTH 256*/
-#define GHR_LENGTH 128
-#define TN_MAX 4 // 0-indexed, which means 0,1,2,3
 #define TN_ENTRY_NUM (1 << TAGE_INDEX_LEN)
+#define TAGE_INDEX_MASK (TN_ENTRY_NUM - 1)
+#define BASE_ENTRY_NUM 512
+#define GHR_LENGTH 128
+#define TN_MAX 4   // 0-indexed, which means 0,1,2,3
 #define FH_N_MAX 3 // how many different types of Folded history
-/*#define USEFUL_RESET_VAL 262144 // 256K*/
-#define uBitPeriod 2048
+
+#define U_CNT_LEN 11
+#define U_CNT_MASK ((1 << U_CNT_LEN) - 1)
+#define U_MSB_OFFSET (U_CNT_LEN + TAGE_INDEX_LEN)
 
 extern uint32_t u_clear_cnt;
 extern uint32_t FH[FH_N_MAX][TN_MAX];
@@ -31,11 +32,12 @@ extern const uint32_t fh_length[FH_N_MAX][TN_MAX];
 /////////////////////TAGE/////////////////////
 
 /////////////////////BTB/////////////////////
-#define BTB_ENTRY_NUM 32
+
+#define BTB_IDX_LEN 5
+#define BTB_ENTRY_NUM (1 << BTB_IDX_LEN)
 #define BTB_TAG_LEN 8
 #define BTB_WAY_NUM 4
 
-#define BTB_IDX_LEN 5 // log2(BTB_ENTRY_NUM)
 #define BTB_IDX_MASK (BTB_ENTRY_NUM - 1)
 #define BTB_TAG_MASK ((1 << BTB_TAG_LEN) - 1)
 

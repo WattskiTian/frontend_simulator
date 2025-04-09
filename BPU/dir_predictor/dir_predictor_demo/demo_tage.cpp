@@ -1,15 +1,9 @@
 #include "demo_tage.h"
+#include "../config_dir.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
-
-#define BASE_ENTRY_NUM 2048
-#define GHR_LENGTH 256
-#define TN_MAX 4 // 0-indexed, which means 0,1,2,3
-#define TN_ENTRY_NUM 4096
-#define FH_N_MAX 3              // how many different types of Folded history
-#define USEFUL_RESET_VAL 262144 // 256K
 
 uint32_t useful_reset_cnt = 0;
 bool useful_msb_reset = true;
@@ -327,9 +321,9 @@ void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out) {
   // of least significant bits are reset.
   useful_reset_cnt++;
   uint32_t u_clear_cnt = useful_reset_cnt;
-  uint32_t u_cnt = u_clear_cnt & (0x7ff);
-  uint32_t row_cnt = (u_clear_cnt >> 11) & (0xfff);
-  bool u_msb_reset = ((u_clear_cnt) >> 23) & (0x1);
+  uint32_t u_cnt = u_clear_cnt & U_CNT_MASK;
+  uint32_t row_cnt = (u_clear_cnt >> U_CNT_LEN) & TAGE_INDEX_MASK;
+  bool u_msb_reset = ((u_clear_cnt) >> U_MSB_OFFSET) & HIGH_MASK;
 
   if (u_cnt == 0) {
     // printf("[TAGE_do_update] cleaning useful table\n");
@@ -337,7 +331,7 @@ void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out) {
     if (u_msb_reset == true) {
       for (int i = 0; i < TN_MAX; i++) {
         /*for (int j = 0; j < TN_ENTRY_NUM; j++) {*/
-        useful_table[i][row_cnt] &= 0x1;
+        useful_table[i][row_cnt] &= HIGH_MASK;
         /*}*/
       }
     }
@@ -345,7 +339,7 @@ void TAGE_do_update(uint32_t PC, bool real_dir, pred_out pred_out) {
     else {
       for (int i = 0; i < TN_MAX; i++) {
         /*for (int j = 0; j < TN_ENTRY_NUM; j++) {*/
-        useful_table[i][row_cnt] &= 0x2;
+        useful_table[i][row_cnt] &= LOW_MASK;
         /*}*/
       }
     }

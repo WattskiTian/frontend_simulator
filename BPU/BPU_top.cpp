@@ -4,7 +4,7 @@
 #include <cstdio>
 
 #ifndef IO_version
-#include "./dir_predictor/demo_tage.h"
+#include "./dir_predictor/dir_predictor_demo/demo_tage.h"
 #include "./target_predictor/btb.h"
 #include "./target_predictor/target_cache.h"
 #else
