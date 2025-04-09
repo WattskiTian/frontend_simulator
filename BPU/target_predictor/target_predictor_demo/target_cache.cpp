@@ -18,7 +18,7 @@ uint32_t tc_pred(uint32_t pc) {
 
 void bht_update(uint32_t pc, bool pc_dir) {
   uint32_t bht_idx = bht_cal_idx(pc);
-  bht[bht_idx] = (bht[bht_idx] << 1) | pc_dir;
+  bht[bht_idx] = ((bht[bht_idx] << 1) | pc_dir) & BHT_MASK;
 }
 
 void tc_update(uint32_t pc, uint32_t actualAddr) {

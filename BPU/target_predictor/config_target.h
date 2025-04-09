@@ -19,12 +19,19 @@
 #define LRU_MASK ((1 << LRU_LEN) - 1)
 
 // RAS CONFIGS
-#define RAS_ENTRY_NUM 64
+#define RAS_IDX_LEN 6
+#define RAS_ENTRY_NUM (1 << RAS_IDX_LEN)
+#define RAS_IDX_MASK (RAS_ENTRY_NUM - 1)
 #define RAS_CNT_LEN 8 // cnt for repeated call
 
 // TARGET CACHE CONFIGS
-#define TC_ENTRY_NUM 128
-#define BHT_ENTRY_NUM 128
-#define BHT_LEN 32
+#define TC_IDX_LEN 7
+#define TC_ENTRY_NUM (1 << TC_IDX_LEN)
+#define TC_IDX_MASK (TC_ENTRY_NUM - 1)
+#define BHT_IDX_LEN 7
+#define BHT_ENTRY_NUM (1 << BHT_IDX_LEN)
+#define BHT_IDX_MASK (BHT_ENTRY_NUM - 1)
+#define BHT_LEN 16
+#define BHT_MASK ((1 << BHT_LEN) - 1)
 
 #endif // _CONFIG_TARGET_H_

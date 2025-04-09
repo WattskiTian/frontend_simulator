@@ -1,6 +1,5 @@
 #include <cstdint>
 #include <cstdio>
-#include <sys/types.h>
 
 #include "../../../frontend.h"
 #include "../../../sequential_components/seq_comp.h"
@@ -21,36 +20,36 @@ uint32_t btb_get_idx(uint32_t pc) { return (pc >> 2) & BTB_IDX_MASK; }
 // uint64_t ret_cnt = 0;
 // uint64_t indir_cnt = 0;
 void update_lru(uint32_t idx, int way) {
-  uint32_t current_age = (btb_lru[idx] >> (way * 2)) & 0x3;
+  uint32_t current_age = (btb_lru[idx] >> (way * LRU_LEN)) & LRU_MASK;
 
   // update all younger ways, but not exceed 3
   for (int i = 0; i < BTB_WAY_NUM; i++) {
     if (i == way)
       continue;
-    uint32_t age = (btb_lru[idx] >> (i * 2)) & 0x3;
+    uint32_t age = (btb_lru[idx] >> (i * LRU_LEN)) & LRU_MASK;
     if (age <= current_age) {
-      uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
+      uint32_t new_age = (age == LRU_MASK ? LRU_MASK : age + 1) & LRU_MASK;
       // clear current age
-      btb_lru[idx] &= ~(0x3 << (i * 2));
+      btb_lru[idx] &= ~(LRU_MASK << (i * LRU_LEN));
       // set new age
-      btb_lru[idx] |= (new_age << (i * 2));
+      btb_lru[idx] |= (new_age << (i * LRU_LEN));
     }
   }
 
   // set current way to latest
-  btb_lru[idx] &= ~(0x3 << (way * 2));
+  btb_lru[idx] &= ~(LRU_MASK << (way * LRU_LEN));
 }
 
 void update_lru_IO(struct update_lru_In *in, struct update_lru_Out *out) {
   out->btb_lru_wdata = 0;
-  uint32_t current_age = (in->btb_lru_read >> (in->way * 2)) & 0x3;
+  uint32_t current_age = (in->btb_lru_read >> (in->way * LRU_LEN)) & LRU_MASK;
   for (int i = 0; i < BTB_WAY_NUM; i++) {
     if (i == in->way)
       continue;
-    uint32_t age = (in->btb_lru_read >> (i * 2)) & 0x3;
+    uint32_t age = (in->btb_lru_read >> (i * LRU_LEN)) & LRU_MASK;
     if (age <= current_age) {
-      uint32_t new_age = (age == 3 ? 3 : age + 1) & 0x3;
-      out->btb_lru_wdata |= (new_age << (i * 2));
+      uint32_t new_age = (age == LRU_MASK ? LRU_MASK : age + 1) & LRU_MASK;
+      out->btb_lru_wdata |= (new_age << (i * LRU_LEN));
     }
   }
 }
@@ -128,66 +127,6 @@ void btb_pred2(struct btb_pred2_In *in, struct btb_pred2_Out *out) {
   return;
 }
 
-void btb_update(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
-                bool actualdir) {
-  DEBUG_LOG("[btb_update] pc: %x, actualAddr: %x, br_type: %x, actualdir: %d\n",
-            pc, actualAddr, br_type, actualdir);
-  uint32_t idx = btb_get_idx(pc);
-  uint32_t tag = btb_get_tag(pc);
-  // find match in all ways
-  for (int way = 0; way < BTB_WAY_NUM; way++) {
-    if (btb_valid[way][idx] && btb_tag[way][idx] == tag) {
-      btb_bta[way][idx] = actualAddr;
-      btb_br_type[way][idx] = br_type;
-
-      update_lru(idx, way);
-
-      if (br_type == BR_IDIRECT) {
-        tc_update(pc, actualAddr);
-      }
-      return;
-    }
-  }
-
-  // find empty way
-  for (int way = 0; way < BTB_WAY_NUM; way++) {
-    if (!btb_valid[way][idx]) {
-      btb_valid[way][idx] = true;
-      btb_tag[way][idx] = tag;
-      btb_bta[way][idx] = actualAddr;
-      btb_br_type[way][idx] = br_type;
-      update_lru(idx, way);
-      DEBUG_LOG("[btb_update] btb allocated\n");
-      if (br_type == BR_IDIRECT) {
-        tc_update(pc, actualAddr);
-      }
-      return;
-    }
-  }
-
-  // all ways are occupied, find LRU way to replace
-  int lru_way = 0;
-  uint32_t max_age = 0;
-  for (int way = 0; way < BTB_WAY_NUM; way++) {
-    uint32_t age = (btb_lru[idx] >> (way * 2)) & 0x3;
-    if (age > max_age) {
-      max_age = age;
-      lru_way = way;
-    }
-  }
-
-  // replace LRU way
-  btb_valid[lru_way][idx] = true;
-  btb_tag[lru_way][idx] = tag;
-  btb_bta[lru_way][idx] = actualAddr;
-  btb_br_type[lru_way][idx] = br_type;
-  update_lru(idx, lru_way);
-
-  if (br_type == BR_IDIRECT) {
-    tc_update(pc, actualAddr);
-  }
-}
-
 void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
   // reset all outputs to prevent previous values
   for (int i = 0; i < BTB_WAY_NUM; i++) {
@@ -247,7 +186,7 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
   int lru_way = 0;
   uint32_t max_age = 0;
   for (int way = 0; way < BTB_WAY_NUM; way++) {
-    uint32_t age = (in->btb_lru_read >> (way * 2)) & 0x3;
+    uint32_t age = (in->btb_lru_read >> (way * LRU_LEN)) & LRU_MASK;
     if (age > max_age) {
       max_age = age;
       lru_way = way;
@@ -272,12 +211,10 @@ void btb_update_IO(struct btb_update_In *in, struct btb_update_Out *out) {
   }
 }
 
-struct btb_update_In btb_update_in;
-struct btb_update_Out btb_update_out;
 void C_btb_update_wrapper(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
                           bool actualdir) {
-  struct btb_update_In *in = &btb_update_in;
-  struct btb_update_Out *out = &btb_update_out;
+  struct btb_update_In *in = new btb_update_In();
+  struct btb_update_Out *out = new btb_update_Out();
   in->pc = pc;
   in->actualAddr = actualAddr;
   in->actual_dir = actualdir;
@@ -291,7 +228,9 @@ void C_btb_update_wrapper(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
     in->btb_bta_read[i] = btb_bta[i][in->btb_idx];
   }
   in->btb_lru_read = btb_lru[in->btb_idx];
+
   btb_update_IO(in, out);
+
   // update registers
   for (int i = 0; i < BTB_WAY_NUM; i++) {
     if (out->btb_valid_ctrl[i] != 0) {
@@ -310,21 +249,20 @@ void C_btb_update_wrapper(uint32_t pc, uint32_t actualAddr, uint32_t br_type,
   if (out->btb_lru_ctrl != 0) {
     btb_lru[in->btb_idx] = out->btb_lru_wdata;
   }
+  delete in;
+  delete out;
 }
 
-struct btb_pred1_In btb_pred1_in;
-struct btb_pred1_Out btb_pred1_out;
-struct btb_pred2_In btb_pred2_in;
-struct btb_pred2_Out btb_pred2_out;
-
 uint32_t C_btb_pred_wrapper(uint32_t pc) {
-  struct btb_pred1_In *in1 = &btb_pred1_in;
+  struct btb_pred1_In *in1 = new btb_pred1_In();
   in1->pc = pc;
-  struct btb_pred1_Out *out1 = &btb_pred1_out;
+  struct btb_pred1_Out *out1 = new btb_pred1_Out();
+
   btb_pred1(in1, out1);
+
   uint32_t btb_idx = out1->btb_idx;
-  struct btb_pred2_In *in2 = &btb_pred2_in;
-  struct btb_pred2_Out *out2 = &btb_pred2_out;
+  struct btb_pred2_In *in2 = new btb_pred2_In();
+  struct btb_pred2_Out *out2 = new btb_pred2_Out();
   in2->pc = pc;
   in2->btb_idx = btb_idx;
   in2->btb_tag = out1->btb_tag;
@@ -336,27 +274,17 @@ uint32_t C_btb_pred_wrapper(uint32_t pc) {
   }
   in2->btb_lru_read = btb_lru[btb_idx];
 
-  // #ifdef IO_GEN_MODE
-  //   if (io_gen_cnt >= 0) {
-  //     printf("btb");
-  //     for (int i = 0; i < BTB_WAY_NUM; i++) {
-  //       printf("%d ", btb_valid[i][btb_idx]);
-  //       printf("%d ", btb_tag[i][btb_idx]);
-  //       printf("%d ", btb_br_type[i][btb_idx]);
-  //       printf("%d ", btb_bta[i][btb_idx]);
-  //     }
-  //     printf("%d ", btb_lru[btb_idx]);
-  //     printf("\n");
-  //     printf("%d %d %d\n", ras_sp, ras[ras_sp], ras_cnt[ras_sp]);
-  //   }
-  // #endif
-
   btb_pred2(in2, out2);
+
   uint32_t pred_npc = out2->btb_pred_addr;
   // update regs
   if (out2->btb_lru_ctrl != 0) {
     btb_lru[btb_idx] = out2->btb_lru_wdata;
   }
+  delete in1;
+  delete out1;
+  delete in2;
+  delete out2;
   return pred_npc;
 }
 // using namespace std;
